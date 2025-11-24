@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jazz Events Banner</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 (Replaces Lucide) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Gallery</a>
+                <a href="#">Services</a>
+                <a href="#">Reviews</a>
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+            </nav>
+
+            <!-- Search Bar -->
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search Jazz Events...">
+            </div>
+            
+            <!-- Mobile Search Icon -->
+             <button class="mobile-btn" style="display: block; margin-left: auto; display: none;">
+                <i class="fa-solid fa-magnifying-glass" style="display: block; width: 24px; height: 24px;"></i>
+            </button>
+            <style>
+                @media (min-width: 640px) { button.mobile-btn:last-child { display: none !important; } }
+            </style>
+        </div>
+    </header>
+
+    <!-- Main Banner Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop" alt="Event Catering Buffet">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="logo-container">
+                <span class="script-text logo-jazz">Jazz</span>
+                <span class="script-text logo-events">Events</span>
+            </div>
+
+            <p class="tagline">“Make your events possible”</p>
+
+            <button class="btn-gold">
+                <span>Book Now</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Info Content Section -->
+    <section class="info-section">
+        <div class="container">
+            
+            <!-- Why Book Section -->
+            <div class="grid-2-col">
+                <div>
+                    <h2 class="section-title">Why Book From <span class="text-red">Jazz Events?</span></h2>
+                    <p class="section-desc">
+                        When it comes to creating unforgettable events, Jazz Events delivers the perfect balance of quality, creativity, and convenience. Our team takes pride in delivering high-quality, well-organized events that fit your vision, your schedule, and your budget.
+                    </p>
+                </div>
+
+                <div class="image-wrapper">
+                    <div class="glow-bg"></div>
+                    <img src="https://images.unsplash.com/photo-1487412947132-23c53f920d3e?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Elegant Table Setting" class="styled-img">
+                </div>
+            </div>
+
+            <!-- Pay Later Section -->
+            <div class="pay-later-container">
+                <div class="decorative-header">
+                     <i class="fa-brands fa-pagelines text-gold" style="font-size: 2rem; transform: rotate(90deg)"></i>
+                     <h2 class="section-title" style="margin-bottom: 0;">Book Now <span class="text-gold">Pay Later</span></h2>
+                     <i class="fa-brands fa-pagelines text-gold" style="font-size: 2rem; transform: rotate(-90deg)"></i>
+                </div>
+
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop" 
+                     alt="Delicious Appetizers" class="feature-img">
+
+                <div class="section-desc" style="max-width: 800px; margin: 0 auto; text-align: center; gap: 24px; display: flex; flex-direction: column;">
+                    <p>
+                        With our “Book Now, Pay Later” option, you can reserve your event today with a small initial payment and enjoy <strong style="color: white">flexible, manageable terms for up to six months</strong>. It’s our way of helping you celebrate life’s milestones without the financial strain.
+                    </p>
+                    <p>
+                        When you choose Jazz Events, you’re choosing <strong style="color: white">reliability, creativity, and genuine care</strong> all working together to make your event as smooth and memorable as it should be.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            
+            <div class="services-header">
+                 <div class="flourish">
+                    <svg viewBox="0 0 40 20" fill="currentColor"><path d="M40,10 C30,10 25,18 15,18 C5,18 0,10 0,10 C0,10 5,2 15,2 C25,2 30,10 40,10 Z M10,10 C10,12 8,14 6,14 C4,14 2,12 2,10 C2,8 4,6 6,6 C8,6 10,8 10,10 Z" /></svg>
+                 </div>
+                 
+                 <h2 class="section-title text-center" style="margin: 0;">Jazz Events <span class="text-gold">Services</span></h2>
+
+                 <div class="flourish flourish-right">
+                    <svg viewBox="0 0 40 20" fill="currentColor"><path d="M40,10 C30,10 25,18 15,18 C5,18 0,10 0,10 C0,10 5,2 15,2 C25,2 30,10 40,10 Z M10,10 C10,12 8,14 6,14 C4,14 2,12 2,10 C2,8 4,6 6,6 C8,6 10,8 10,10 Z" /></svg>
+                 </div>
+            </div>
+
+            <div class="services-grid">
+                <!-- Card 1 -->
+                <div class="service-card">
+                    <div class="service-img-box">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" alt="Debut">
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Debut</h3>
+                        <p class="service-text">A coming of age celebration for a girl, their transition to womanhood</p>
+                        <div class="corner-triangle"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="service-card">
+                    <div class="service-img-box">
+                        <img src="https://images.unsplash.com/photo-1574966740793-90d907099e38?q=80&w=2070&auto=format&fit=crop" alt="Catering">
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Catering</h3>
+                        <p class="service-text">Providing excellent food services and staff accommodation</p>
+                        <div class="corner-triangle"></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="service-card">
+                    <div class="service-img-box">
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=80&w=2070&auto=format&fit=crop" alt="Birthday">
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Birthday and Anniversaries</h3>
+                        <p class="service-text">To celebrate your loved ones birthdays or anniversaries</p>
+                        <div class="corner-triangle"></div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="service-card">
+                    <div class="service-img-box">
+                        <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?q=80&w=2070&auto=format&fit=crop" alt="Parties">
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">Parties and Celebrations</h3>
+                        <p class="service-text">After accomplishing something amazing celebrate it with us</p>
+                        <div class="corner-triangle"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Extraordinary Celebrations Section -->
+    <section class="extraordinary-section">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1606180325492-95963f4659b9?q=80&w=2070&auto=format&fit=crop" alt="Event Staff">
+            <div class="overlay-sepia"></div>
+            <div class="hero-overlay" style="background: rgba(0,0,0,0.4)"></div>
+        </div>
+
+        <div class="content-container">
+            <div class="small-logo-container">
+                <div class="logo-container" style="display: inline-block;">
+                    <span class="script-text logo-jazz" style="font-size: 5rem;">Jazz</span>
+                    <span class="script-text logo-events" style="font-size: 5rem; margin-top: -30px; margin-left: 30px;">Events</span>
+                </div>
+            </div>
+
+            <h2 class="uppercase" style="font-size: 1.5rem; letter-spacing: 0.1em; margin-bottom: 8px;">Transform Ordinary Moments Into</h2>
+            <h2 class="section-title text-gold" style="margin-bottom: 64px;">Extraordinary Celebrations</h2>
+
+            <div class="grid-2-col" style="margin-bottom: 0; align-items: start; gap: 48px; text-align: left;">
+                <p class="section-desc">
+                    We believe that every milestone deserves to be celebrated without limits. That’s why we offer our Buy Now, Pay Later plan — allowing you to enjoy your event today and settle your payments within six months. Because making your dream celebration possible shouldn’t have to wait.
+                </p>
+                <p class="section-desc">
+                    From intimate gatherings to grand occasions, Jazz Events delivers seamless coordination, exquisite catering, and personalized service — ensuring every moment becomes a cherished memory.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="hero-bg">
+             <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070&auto=format&fit=crop" alt="CTA Background">
+             <div class="hero-overlay" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);"></div>
+        </div>
+
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Elevate Your Event?</h2>
+            <p class="section-desc" style="font-size: 1.5rem; font-weight: 300;">
+                Let’s create something extraordinary together. Contact us to discuss your vision.
+            </p>
+            
+            <div class="cta-buttons">
+                <button class="btn-gold">Get a Quote</button>
+                <button class="btn-gold">Contact Us</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Footer Section -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1 -->
+            <div class="footer-col">
+                <div class="logo-container" style="transform: scale(0.9); transform-origin: left; margin-bottom: 24px;">
+                    <span class="script-text logo-jazz" style="font-size: 4rem;">Jazz</span>
+                    <span class="script-text logo-events" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                </div>
+                <p style="font-size: 0.875rem; line-height: 1.6; max-width: 300px;">
+                    Elevating moments with exquisite culinary experiences.
+                </p>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Weddings</a></li>
+                    <li><a href="#">Concerts</a></li>
+                    <li><a href="#">Corporate Events</a></li>
+                    <li><a href="#">Graduations</a></li>
+                    <li><a href="#">Birthday Parties</a></li>
+                    <li><a href="#">Get a Quote</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li class="contact-item">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <span>Jade Residences 1403 Imus, Philippines</span>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <div>
+                            <div>0965 633 7494</div>
+                            <div>0997 425 7958</div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-brands fa-facebook-f contact-icon"></i>
+                        <a href="#">Jazz Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="main.js"></script>
+
+</body>
+</html>
