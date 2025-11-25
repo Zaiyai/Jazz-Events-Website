@@ -258,6 +258,10 @@ header {
     line-height: 1.7;
 }
 
+.left-align {
+    text-align: left;
+}
+
 .image-wrapper {
     position: relative;
     border-radius: 8px;
@@ -384,6 +388,12 @@ header {
     height: 64px;
     background-color: var(--service-red);
     clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+}
+
+/* Reviews Section */
+.reviews-section {
+    padding: 64px 24px;
+    background-color: var(--bg-black);
 }
 
 /* --- Extraordinary Section --- */
