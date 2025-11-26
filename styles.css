@@ -331,7 +331,6 @@ header {
 .services-section {
     position: relative;
     padding: 64px 24px;
-    background-color: var(--bg-black);
 }
 
 .services-header {
