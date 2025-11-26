@@ -318,6 +318,7 @@ header {
 .services-section {
     padding: 64px 24px;
     background-color: var(--bg-black);
+    scroll-margin-top: 96px; /* offset for fixed header so anchor isn't hidden */
 }
 
 .services-header {
@@ -391,6 +392,7 @@ header {
     position: relative;
     padding: 96px 24px;
     overflow: hidden;
+    scroll-margin-top: 96px; /* ensure About anchor sits below fixed header */
 }
 
 .overlay-sepia {
