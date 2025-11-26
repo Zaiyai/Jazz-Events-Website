@@ -328,10 +328,10 @@ header {
 .feature-img:hover { transform: scale(1.05); }
 
 /* --- Services Section --- */
-.services-section {
+#services-section {
     position: relative;
     padding: 64px 24px;
-    background-color: var(--bg-black);
+    scroll-margin-top: 96px;
 }
 
 .services-header {
