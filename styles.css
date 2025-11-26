@@ -196,7 +196,6 @@ header {
 /* Script Logo Styling */
 .logo-container {
     position: relative;
-    margin-bottom: 24px;
     user-select: none;
 }
 
@@ -205,6 +204,12 @@ header {
     font-size: 6rem;
     line-height: 1;
     text-shadow: 2px 4px 6px rgba(0,0,0,0.8);
+}
+
+.logo {
+    display: block;
+    z-index: 10;
+    height: 50vh;
 }
 
 .logo-jazz {
@@ -230,10 +235,14 @@ header {
     opacity: 0.9;
 }
 
+.content-section {
+    background: url(images/Services\ Background.png);
+}
+
 /* --- Info Section (Why Book) --- */
 .info-section {
+    position: relative;
     padding: 80px 24px;
-    background-color: var(--bg-black);
 }
 
 .grid-2-col {
@@ -256,6 +265,10 @@ header {
     color: #d1d5db;
     font-size: 1.125rem;
     line-height: 1.7;
+}
+
+.left-align {
+    text-align: left;
 }
 
 .image-wrapper {
@@ -316,9 +329,9 @@ header {
 
 /* --- Services Section --- */
 .services-section {
+    position: relative;
     padding: 64px 24px;
     background-color: var(--bg-black);
-    scroll-margin-top: 96px; /* offset for fixed header so anchor isn't hidden */
 }
 
 .services-header {
@@ -385,6 +398,12 @@ header {
     height: 64px;
     background-color: var(--service-red);
     clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+}
+
+/* Reviews Section */
+.reviews-section {
+    padding: 64px 24px;
+    background-color: var(--bg-black);
 }
 
 /* --- Extraordinary Section --- */
