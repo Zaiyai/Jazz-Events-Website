@@ -328,7 +328,7 @@ header {
 .feature-img:hover { transform: scale(1.05); }
 
 /* --- Services Section --- */
-.services-section {
+#services-section {
     position: relative;
     padding: 64px 24px;
 }
@@ -400,9 +400,62 @@ header {
 }
 
 /* Reviews Section */
-.reviews-section {
+#reviews-section {
     padding: 64px 24px;
     background-color: var(--bg-black);
+}
+
+.review-cards-container {
+    width: 90vw; 
+    overflow-x: auto;
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    white-space: nowrap;
+    margin: 0 auto;
+}
+
+.review-card {
+    display: inline-block; /* Makes items flow horizontally */
+    width: 40vw;
+    height: 30vh;
+    border-radius: 12px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: transform 0.3s;
+    white-space: normal;
+    padding: 20px;
+    margin-right: 5vw;
+    background-color: #f0f0f0;
+}
+
+.stars-container i {
+    display: inline-block;
+    margin-right: 0.75vw;
+    scale: 1.5;
+    color: var(--jazz-gold);
+}
+
+.review-content {
+    margin-top: 1vh;
+    color: black;
+    word-break: break-word;
+}
+
+.reviewer {
+    display: flex;
+    padding: 12px;
+    color: black;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.reviewer img {
+    height: 5vh;
+    border-radius: 50px;
+    margin-right: 1vw;
+}
+
+.reviewer p {
+    margin-top: 0.5vh;
 }
 
 /* --- Extraordinary Section --- */
