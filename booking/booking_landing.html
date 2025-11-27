@@ -10,9 +10,12 @@
     <link rel="stylesheet" href="../styles.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        a {
+        .booking-buttons a {
             margin-right: 2vw;
             margin-left: 2vw;
         }
@@ -25,6 +28,26 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="#">Gallery</a>
+                <a href="../index.html">Services</a>
+                <a href="#">Reviews</a>
+                <a href="#about">About Us</a>
+                <a href="#">Contact</a>
+            </nav>
+        </div>
+    </header>
+
     <!-- Main Banner Hero Section -->
     <section class="hero">
         <div class="hero-bg">
@@ -34,27 +57,28 @@
 
         <div class="hero-content">
             <div class="logo-container">
-                <span class="script-text logo-jazz">Jazz</span>     
-                <span class="script-text logo-events">Events</span> 
+                <img class="logo" style="scale: 0.6" src="../images/Jazz.svg" alt="Jazz Events Logo">
+                <p class="bookCTA">What type of event are you booking?</p>
             </div>
+
             
-            <p class="bookCTA">What type of event are you booking?</p>
+            <div class="booking-buttons">
+                <a class="btn-gold" href="debut_booking.html">
+                    <span>Debut</span>
+                </a>
 
-            <a class="btn-gold" href="debut_booking.html">
-                <span>Debut</span>
-            </a>
+                <a class="btn-gold">
+                    <span>Wedding</span>
+                </a>
 
-            <a class="btn-gold">
-                <span>Wedding</span>
-            </a>
+                <a class="btn-gold">
+                    <span>Debut</span>
+                </a>
 
-            <a class="btn-gold">
-                <span>Debut</span>
-            </a>
-
-            <a class="btn-gold">
-                <span>Wedding</span>
-            </a>
+                <a class="btn-gold">
+                    <span>Wedding</span>
+                </a>
+            </div>
         </div>
     </section>
 </body>

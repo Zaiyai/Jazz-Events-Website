@@ -210,21 +210,7 @@ header {
     display: block;
     z-index: 10;
     height: 50vh;
-}
-
-.logo-jazz {
-    color: var(--jazz-gold);
-    transform: rotate(-6deg);
-    display: block;
-    position: relative;
-    z-index: 10;
-}
-
-.logo-events {
-    color: white;
-    margin-top: -40px;
-    margin-left: 48px;
-    display: block;
+    margin: 0 auto;
 }
 
 .tagline {
@@ -353,7 +339,7 @@ header {
 }
 
 .service-card {
-    background-color: var(--service-yellow);
+    background-color: var(--jazz-gold);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
@@ -375,7 +361,16 @@ header {
     transition: transform 0.5s;
 }
 
+.service-img-overlay {
+    position: absolute;
+    height: 50%;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+    transition: all 0.8s;
+}
+
 .service-card:hover .service-img-box img { transform: scale(1.1); }
+.service-card:hover .service-img-overlay { background: rgba(0, 0, 0, 0); }
 
 .service-content {
     height: 50%;
@@ -402,7 +397,6 @@ header {
 /* Reviews Section */
 #reviews-section {
     padding: 64px 24px;
-    background-color: var(--bg-black);
 }
 
 .review-cards-container {
