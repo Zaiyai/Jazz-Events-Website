@@ -166,6 +166,7 @@ header {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    overflow-y: auto;
 }
 
 .hero-bg {
@@ -222,7 +223,7 @@ header {
 }
 
 .content-section {
-    background: url(images/Services\ Background.png);
+    /* background: url(images/Services\ Background.png); */
 }
 
 /* --- Info Section (Why Book) --- */
@@ -327,8 +328,12 @@ header {
     margin-bottom: 64px;
 }
 
-.flourish { color: var(--jazz-gold); width: 40px; }
+.flourish {  width: 40px; }
 .flourish-right { transform: scaleX(-1); }
+
+.flourish img {
+    scale: 3.5;
+}
 
 .services-grid {
     display: grid;

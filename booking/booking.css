@@ -5,3 +5,23 @@ legend {
 input {
     margin-right: 10vw;
 }
+
+form {
+    box-sizing: border-box;
+    background-color: black;
+    border: 1px solid gray;
+    border-radius: 50px;
+    width: 70vw;
+    margin-top: 20vh;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
