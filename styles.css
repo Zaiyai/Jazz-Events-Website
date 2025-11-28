@@ -147,6 +147,25 @@ header {
     pointer-events: none;
 }
 
+.search-content {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: #111827;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 0.875rem;
+    /* border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px; */
+    padding: 10px 16px 10px 40px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.search-wrapper input:focus + .search-content {
+  display: block;
+}
+
 .mobile-btn {
     background: none;
     border: none;
