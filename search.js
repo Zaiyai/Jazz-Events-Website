@@ -17,9 +17,11 @@ searchInput.addEventListener('input', function() {
     );
 
     if (filteredSuggestions.length > 0) {
-        filteredSuggestions.forEach(suggestion => {
+        filteredSuggestions.forEach((suggestion, index, array) => {
             const listItem = document.createElement('li');
             listItem.textContent = suggestion;
+            if (filteredSuggestions.length === 1) { suggestionsList.style.padding = "5px 16px"; }
+            if (index === array.length - 1) { listItem.style.borderBottom = "none"; }
             listItem.addEventListener('click', function() {
                 searchInput.value = this.textContent;
                 suggestionsList.style.display = 'none';
