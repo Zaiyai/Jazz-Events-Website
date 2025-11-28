@@ -44,3 +44,15 @@ form label, input, h3, textarea, button {
     align-items: left;
     text-align: left;
 }
+
+.form-row input {
+    width: 75%;
+    background-color: #111827;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 0.875rem;
+    border-radius: 9999px;
+    padding: 10px 16px 10px 40px;
+    outline: none;
+    transition: all 0.3s;
+}
