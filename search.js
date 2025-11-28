@@ -1,7 +1,7 @@
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('search-content');
 
-const availableSuggestions = ['Service', 'Crew', 'About', 'Contact', "Clients' Reviews", 'Gallery', 'Catering', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
+const availableSuggestions = ['Home', 'Service', "Clients' Reviews", 'Crew', 'About', 'Contact', 'Catering', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
 
 searchInput.addEventListener('input', function() {
     const inputValue = this.value.toLowerCase();
@@ -20,11 +20,26 @@ searchInput.addEventListener('input', function() {
         filteredSuggestions.forEach((suggestion, index, array) => {
             const listItem = document.createElement('li');
             listItem.textContent = suggestion;
+
             if (filteredSuggestions.length === 1) { suggestionsList.style.padding = "5px 16px"; }
             if (index === array.length - 1) { listItem.style.borderBottom = "none"; }
+
+            
             listItem.addEventListener('click', function() {
-                searchInput.value = this.textContent;
+                searchInput.value = "";
                 suggestionsList.style.display = 'none';
+                
+                switch (suggestion) {
+                    case 'Home':
+                        window.scrollTo(0, 0);
+                        break;
+                    case 'Service':
+                        document.getElementById('services-section').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                    case "Clients' Reviews":
+                        document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                }
             });
             suggestionsList.appendChild(listItem);
         });
