@@ -336,12 +336,22 @@ header {
     scale: 3.5;
 }
 
+/* Added this to override container width for services section */
+#services-section .container {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 40px !important;
+}
+
 .services-grid {
-    display: flex;
+    display: flex !important;
     gap: 24px;
-    max-width: 150%;
+    max-width: none !important;
+    width: 100% !important;
     margin: 0 auto;
     padding-bottom: 12px;
+    flex-wrap: nowrap !important;
+    
 }
 
 .service-card {
@@ -350,18 +360,21 @@ header {
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    height: 300px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s;
-    flex: 0 0 70vw; /* default size on small screens */
-    width: 70vw;
+    flex: 1 1 calc(25% - 18px) !important;
+    max-width: calc(25% - 18px) !important;
+    min-width: 250px !important;
     scroll-snap-align: start;
+    
 }
 
 .service-img-box {
-    height: 110%;
+    height: 50%;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .service-img-box img {
@@ -373,7 +386,7 @@ header {
 
 .service-img-overlay {
     position: absolute;
-    height: 51.75%;
+    height: 50%;
     inset: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2), rgba(0,0,0,0.5));
     transition: all 0.8s;
@@ -387,12 +400,23 @@ header {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
 }
 
-.service-title { color:var(--jazz-gold); font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-.service-text { color: #ffffff; font-size: 1rem; }
+.service-title { 
+    color: var(--jazz-gold); 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    margin-bottom: 12px;
+    min-height: 36px;
+}
+
+.service-text { 
+    color: #ffffff; 
+    font-size: 1rem;
+    line-height: 1.5;
+}
 
 .corner-triangle {
     position: absolute;
