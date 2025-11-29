@@ -366,14 +366,18 @@ header {
     margin-bottom: 64px;
 }
 
-.flourish {  width: 40px; }
-.flourish-right { transform: scaleX(-1); }
+.flourish {
+    width: 40px;
+}
+
+.flourish-right {
+    transform: scaleX(-1);
+}
 
 .flourish img {
     scale: 3.5;
 }
 
-/* Added this to override container width for services section */
 #services-section .container {
     max-width: none !important;
     width: 100% !important;
@@ -388,49 +392,61 @@ header {
     margin: 0 auto;
     padding-bottom: 12px;
     flex-wrap: nowrap !important;
-    
 }
 
 .service-card {
-    background-color: #0C0C0C;
-    border: 1px solid #3d3c3c;
+    background-color: #1a1a1a;
+     border: 1px solid #393939;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
     height: 400px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s;
     flex: 1 1 calc(25% - 18px) !important;
     max-width: calc(25% - 18px) !important;
     min-width: 250px !important;
     scroll-snap-align: start;
     
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(204, 0, 0, 0.5);
+    border-color: var(--service-red);
 }
 
 .service-img-box {
     height: 50%;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
 }
 
 .service-img-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
+    transition: transform 0.5s ease;
 }
 
 .service-img-overlay {
     position: absolute;
-    height: 50%;
+    height: 100%;
     inset: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2), rgba(0,0,0,0.5));
-    transition: all 0.8s;
+    transition: opacity 0.5s ease;
 }
 
-.service-card:hover .service-img-box img { transform: scale(1.1); }
-.service-card:hover .service-img-overlay { background: rgba(0, 0, 0, 0); }
+.service-card:hover .service-img-box img {
+    transform: scale(1.1);
+}
+
+.service-card:hover .service-img-overlay {
+    opacity: 0.3;
+}
+
 
 .service-content {
     height: 50%;
@@ -441,29 +457,38 @@ header {
     position: relative;
 }
 
-.service-title { 
-    color: var(--jazz-gold); 
-    font-size: 1.5rem; 
-    font-weight: 700; 
+.service-title {
+    color: var(--jazz-gold);
+    font-size: 1.5rem;
+    font-weight: 700;
     margin-bottom: 12px;
     min-height: 36px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.service-text { 
-    color: #ffffff; 
+.service-card:hover .service-title {
+    color: #ff3333;
+    text-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
+}
+
+.service-text {
+    color: #d1d5db;
     font-size: 1rem;
     line-height: 1.5;
+    transition: color 0.3s ease;
 }
 
-.corner-triangle {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 64px;
-    height: 64px;
-    background-color: var(--service-red);
-    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+.service-card:hover .service-text {
+    color: #ffffff;
 }
+
+
+
+.service-card:hover .corner-triangle {
+    transform: scale(1.1);
+    filter: brightness(1.3);
+}
+
 
 /* Reviews Section */
 #reviews-section {
@@ -471,56 +496,131 @@ header {
 }
 
 .review-cards-container {
-    width: 90vw; 
-    overflow-x: auto;
-    overflow-y: hidden; /* Prevent vertical scrolling */
-    white-space: nowrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 24px 0;
 }
 
+/* Individual Review Card */
 .review-card {
-    display: inline-block; /* Makes items flow horizontally */
-    width: 40vw;
-    height: 30vh;
+    background-color: #1a1a1a;
+    border: 1px solid var(--jazz-gold);
     border-radius: 12px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    transition: transform 0.3s;
-    white-space: normal;
-    padding: 20px;
-    margin-right: 5vw;
-    background-color: #f0f0f0;
+    padding: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    height: 100%;
+}
+
+/* RED HOVER THEME - Matching Services Section */
+.review-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(204, 0, 0, 0.5);
+    border-color: var(--service-red);
+}
+
+/* Star Rating */
+.stars-container {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 6px;
 }
 
 .stars-container i {
-    display: inline-block;
-    margin-right: 0.75vw;
-    scale: 1.5;
     color: var(--jazz-gold);
+    font-size: 1.25rem;
 }
 
+/* Review Text Content - Truncated to 5 Lines */
 .review-content {
-    margin-top: 1vh;
-    color: black;
-    word-break: break-word;
+    flex: 1;
+    color: #d1d5db;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    
+    /* Text truncation at 5 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* Fallback for non-webkit browsers */
+    max-height: calc(1.6em * 5);
 }
 
+/* Reviewer Section */
 .reviewer {
     display: flex;
-    padding: 12px;
-    color: black;
-    font-weight: 700;
-    text-transform: uppercase;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    margin-top: auto;
 }
 
 .reviewer img {
-    height: 5vh;
-    border-radius: 50px;
-    margin-right: 1vw;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--jazz-gold);
+    flex-shrink: 0;
 }
 
 .reviewer p {
-    margin-top: 0.5vh;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+/* Read More Button Styling */
+.read-more-btn {
+    background: none;
+    border: none;
+    color: var(--jazz-gold);
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 8px 0;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.read-more-btn:hover {
+    color: #ff3333;
+}
+
+.read-more-btn i {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.read-more-btn:hover i {
+    transform: translateY(2px);
+}
+
+/* Expanded state */
+.review-card.expanded .review-content {
+    -webkit-line-clamp: unset;
+    max-height: none;
+}
+
+.review-card.expanded .read-more-btn i {
+    transform: rotate(180deg);
 }
 
 /* --- Extraordinary Section --- */
@@ -649,3 +749,23 @@ footer {
     .footer-grid { grid-template-columns: repeat(4, 1fr); }
     .service-card { flex: 0 0 30%; width: 30%; }
 }
+
+@media (max-width: 767px) {
+    .review-cards-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .review-cards-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .review-cards-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
