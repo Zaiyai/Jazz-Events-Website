@@ -1,5 +1,5 @@
 legend {
-    margin-bottom: 10vh;
+    margin-bottom: 10   vh;
 }
 
 input {
@@ -8,20 +8,22 @@ input {
 
 form {
     box-sizing: border-box;
-    background-color: black;
+    background-color: #161616;
     border: 1px solid gray;
     border-radius: 50px;
     width: 70vw;
-    margin-top: 20vh;
+    margin-top: 30vh;
+    margin-top: 70vh;
     position: relative;
-    z-index: 10;
+    z-index: auto;
     /* text-align: center; */
     padding-top: 32px;
     padding-bottom: 32px;
 }
 
-form label, input, h3, textarea, button {
+form label, input, h3, textarea,button{
     margin-left: 2vw;
+    margin-bottom: .5vw;
 }
 
 .line {
@@ -40,13 +42,21 @@ form label, input, h3, textarea, button {
 }
 
 .form-row {
-    display: inline-block;
-    align-items: left;
-    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    width: 100%;
 }
 
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 260px;
+}
 .form-row input {
-    width: 75%;
+    width: 80%;
     background-color: #111827;
     border: 1px solid #374151;
     color: #d1d5db;
@@ -55,4 +65,16 @@ form label, input, h3, textarea, button {
     padding: 10px 16px 10px 40px;
     outline: none;
     transition: all 0.3s;
+}
+
+textarea {
+    width: 95%;
+    min-height: 20vh;
+    background-color: #e9ecef;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    border-radius: 20px;
+    padding: 16px;
+    font-size: 0.9rem;
+    resize: vertical;
 }
