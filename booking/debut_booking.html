@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debut Booking</title>
+    <title>Event Booking</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +46,7 @@
                         <img class="gold_accent" src="../images/gold_accent.png">
                     </div>
                         
-                    <h2 class="section-title text-center" style="margin: 0;">Debut <span class="text-gold">Booking</span></h2>
+                    <h2 class="section-title text-center" style="margin: 0;">Event <span class="text-gold">Booking</span></h2>
 
                     <div class="flourish flourish-right">
                         <img class="gold_accent" src="../images/gold_accent.png">
@@ -56,6 +56,10 @@
                 <h3>Event <span class="text-gold">Details:</span></h3> <br>
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="event">Type of Event:</label>
+                        <input type="text" placeholder="e.g. Wedding Reception" name="event"/>
+
+                    <div class="form-group">
                         <label for="name">Full Name of Celebrant:</label>
                         <input type="text" placeholder="e.g. Dela Cruz, Maria B." name="name"/>
                     </div>
@@ -63,6 +67,11 @@
                     <div class="form-group">
                         <label for="date">Date:</label>
                         <input type="date" name="date"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendees">Number of Guests/Attendees:</label>
+                        <input type="number" placeholder="5-100" name="atendees"/>
                     </div>
                 </div>
 
@@ -75,6 +84,8 @@
                     <input type="tel" placeholder="09##-###-####" name="phone-number"/>
                     <label for="facebook-link">Facebook Link:</label>
                     <input type="text" placeholder="https://www.facebook.com/profile.php?id=#####" name="facebook-link"/> <br><br>
+                    <label for="email">Email Address:</label>
+                    <input type="text" placeholder="e.g mariadelacruz123@domain.com" name="email-address"/> <br><br>
                 </div>
 
                 <div class="line"></div><br>
