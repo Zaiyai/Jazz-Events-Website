@@ -801,3 +801,46 @@ footer {
         gap: 40px;
     }
 }
+
+/*Whitespace*/
+
+/* Hero - Black */
+#banner-section {
+    background-color: var(--bg-black);
+}
+
+/* Services - Black */
+#services-section {
+    background-color:#0C0C0C
+}
+
+/* Info Section - Gray (ALTERNATE COLOR) */
+.info-section {
+    background-color: #050505;
+    padding: 80px 24px;
+}
+
+/* Reviews - Black */
+#reviews-section {
+    background-color: #0C0C0C;
+    padding: 64px 24px;
+}
+
+/* About/Extraordinary - Gray (ALTERNATE COLOR) */
+.extraordinary-section {
+    background-color: #050505;
+    padding: 96px 24px;
+    position: relative;
+}
+
+/* Need to update the overlay for the new background */
+.extraordinary-section .hero-bg {
+    position: absolute;
+    overflow: hidden;
+}
+
+/* CTA - Black */
+.cta-section {
+    background-color:#0C0C0C;
+    padding: 96px 24px;
+}
