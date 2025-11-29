@@ -655,7 +655,7 @@ header {
 }
 
 /* --- CTA Section --- */
-.cta-section {
+#cta-section {
     position: relative;
     padding: 96px 24px;
     text-align: center;
