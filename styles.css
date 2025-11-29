@@ -41,6 +41,17 @@ img { display: block; max-width: 100%; height: auto; }
     padding: 0 24px;
 }
 
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+}
+
 .text-center { text-align: center; }
 .uppercase { text-transform: uppercase; }
 .font-bold { font-weight: 700; }
@@ -229,6 +240,9 @@ header {
     position: relative;
     z-index: 10;
     text-align: center;
+}
+
+.home-page {
     padding-top: 64px;
 }
 
@@ -686,7 +700,7 @@ header {
 }
 
 /* --- CTA Section --- */
-.cta-section {
+#cta-section {
     position: relative;
     padding: 96px 24px;
     text-align: center;
