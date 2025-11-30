@@ -19,11 +19,3 @@ document.querySelectorAll('.read-more-btn').forEach(btn => {
         }
     });
 });
-
-document.querySelectorAll(".logo").forEach(logo => {
-   logo.src = "assets/Jazz.svg"; 
-});
-
-document.querySelectorAll(".gold_accent").forEach(accent => {
-    accent.src = "assets/decor/gold_accent.png";
-});
