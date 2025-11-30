@@ -402,21 +402,27 @@ header {
     background-color: rgba(26, 26, 26, 0.8);
     padding: 40px 32px;
     border-radius: 12px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    transition: all 0.3s ease;
+    border: 2px solid var(--jazz-gold);
+    transition: all 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .feature-item:hover {
     transform: translateY(-8px);
-    border-color: var(--jazz-gold);
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
+    border-color: var(--service-red);
+    box-shadow: 0 15px 40px rgba(204, 0, 0, 0.5);
 }
 
 .feature-icon {
     font-size: 3rem;
     color: var(--jazz-gold);
     margin-bottom: 20px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    color: #ff3333;
+    text-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
 }
 
 .feature-title {
@@ -426,12 +432,23 @@ header {
     letter-spacing: 0.1em;
     margin-bottom: 16px;
     color: white;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.feature-item:hover .feature-title {
+    color: #ff3333;
+    text-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
 }
 
 .feature-text {
     color: #d1d5db;
     font-size: 0.95rem;
     line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+.feature-item:hover .feature-text {
+    color: #ffffff;
 }
 
 /* --- Pay Later Section --- */
@@ -456,6 +473,7 @@ header {
     letter-spacing: 0.05em;
     margin-bottom: 32px;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .pay-later-text {
@@ -480,7 +498,7 @@ header {
     height: 400px;
     object-fit: cover;
     border-radius: 12px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid var(--jazz-gold);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
