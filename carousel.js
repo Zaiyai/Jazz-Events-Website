@@ -1,7 +1,7 @@
 const backgrounds = document.querySelectorAll('.hero-img');
 
 const availableBackgrounds = [
-    'images/hero backgrounds/catering.jpg', 'images/hero backgrounds/debut.jpg', 'images/hero backgrounds/img1.jpg', 'images/hero backgrounds/the_crew.jpg'
+    'catering.jpg', 'debut.jpg', 'img1.jpg', 'the_crew.jpg'
 ]
 
 backgrounds.forEach(background => {
@@ -16,7 +16,7 @@ function cycleBackgrounds(background) {
 
         setTimeout(() => {
             index = (index + 1) % availableBackgrounds.length;
-            background.src = availableBackgrounds[index];
+            background.src = 'assets/hero backgrounds/' +availableBackgrounds[index];
             background.style.opacity = 1;
         }, 600)
     }, 3000);
