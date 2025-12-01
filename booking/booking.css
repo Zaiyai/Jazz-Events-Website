@@ -16,8 +16,12 @@ form {
     margin-top: 115vh;
     margin-bottom: 5vh;
     position: relative;
+<<<<<<< HEAD
     z-index: 10;
     /* text-align: center; */
+=======
+    z-index: auto;
+>>>>>>> origin/main
     padding-top: 32px;
     padding-bottom: 32px;
 }
@@ -48,6 +52,15 @@ form label, input, h3, textarea, button {
     text-align: left;
 }
 
+<<<<<<< HEAD
+=======
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 260px;
+}
+>>>>>>> origin/main
 .form-row input {
     width: 75%;
     background-color: #111827;
