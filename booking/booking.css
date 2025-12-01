@@ -1,23 +1,26 @@
 legend {
-    margin-bottom: 10vh;
+    margin-bottom: 10   vh;
 }
 
 input {
     margin-right: 10vw;
-    margin-bottom: 3vh;
 }
 
 form {
     box-sizing: border-box;
-    background-color: black;
+    background-color: #161616;
     border: 1px solid gray;
     border-radius: 50px;
     width: 70vw;
-    margin-top: 115vh;
-    margin-bottom: 5vh;
+    margin-top: 30vh;
+    margin-top: 130vh;
     position: relative;
 <<<<<<< HEAD
+<<<<<<< HEAD
     z-index: 10;
+=======
+    z-index: auto;
+>>>>>>> parent of 0fd58d5 (fixed booking)
     /* text-align: center; */
 =======
     z-index: auto;
@@ -26,8 +29,9 @@ form {
     padding-bottom: 32px;
 }
 
-form label, input, h3, textarea, button {
+form label, input, h3, textarea,button{
     margin-left: 2vw;
+    margin-bottom: .5vw;
 }
 
 .line {
@@ -35,7 +39,6 @@ form label, input, h3, textarea, button {
     width: 90%;
     height: 2px;
     border-radius: 50px;
-    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -47,22 +50,30 @@ form label, input, h3, textarea, button {
 }
 
 .form-row {
-    display: inline-block;
-    align-items: left;
-    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    width: 100%;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> parent of 0fd58d5 (fixed booking)
 .form-group {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-width: 260px;
 }
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> parent of 0fd58d5 (fixed booking)
 .form-row input {
-    width: 75%;
+    width: 80%;
     background-color: #111827;
     border: 1px solid #374151;
     color: #d1d5db;
@@ -73,19 +84,14 @@ form label, input, h3, textarea, button {
     transition: all 0.3s;
 }
 
-.specifics {
-    width: 50vw;
-    height: 30vh;
-}
-
 textarea {
-  width: 95%;           /* Makes it full-width and responsive */
-  max-width: 1010px;      /* Optional: limits how wide it gets on large screens */
-  height: 150px;         /* Fixed initial height */
-  resize: none;          /* Prevents the resize handle */
-  padding: 10px;
-  font-size: 16px;
-  box-sizing: border-box; /* Ensures padding doesn't break width */
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    width: 95%;
+    min-height: 20vh;
+    background-color: #e9ecef;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    border-radius: 20px;
+    padding: 16px;
+    font-size: 0.9rem;
+    resize: vertical;
 }
