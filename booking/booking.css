@@ -16,7 +16,6 @@ form {
     margin-top: 130vh;
     position: relative;
     z-index: auto;
-    /* text-align: center; */
     padding-top: 32px;
     padding-bottom: 32px;
 }
@@ -47,7 +46,6 @@ form label, input, h3, textarea,button{
     gap: 25px;
     width: 100%;
 }
-
 
 .form-group {
     display: flex;
