@@ -17,9 +17,6 @@ form {
     position: relative;
     z-index: 10;
     /* text-align: center; */
-=======
-    z-index: auto;
->>>>>>> origin/main
     padding-top: 32px;
     padding-bottom: 32px;
 }
