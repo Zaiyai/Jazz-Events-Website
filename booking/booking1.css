@@ -4,7 +4,6 @@ legend {
 
 input {
     margin-right: 10vw;
-    margin-bottom: 3vh;
 }
 
 form {
@@ -13,8 +12,7 @@ form {
     border: 1px solid gray;
     border-radius: 50px;
     width: 70vw;
-    margin-top: 115vh;
-    margin-bottom: 5vh;
+    margin-top: 20vh;
     position: relative;
     z-index: 10;
     /* text-align: center; */
@@ -31,7 +29,6 @@ form label, input, h3, textarea, button {
     width: 90%;
     height: 2px;
     border-radius: 50px;
-    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -58,21 +55,4 @@ form label, input, h3, textarea, button {
     padding: 10px 16px 10px 40px;
     outline: none;
     transition: all 0.3s;
-}
-
-.specifics {
-    width: 50vw;
-    height: 30vh;
-}
-
-textarea {
-  width: 95%;           /* Makes it full-width and responsive */
-  max-width: 1010px;      /* Optional: limits how wide it gets on large screens */
-  height: 150px;         /* Fixed initial height */
-  resize: none;          /* Prevents the resize handle */
-  padding: 10px;
-  font-size: 16px;
-  box-sizing: border-box; /* Ensures padding doesn't break width */
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
