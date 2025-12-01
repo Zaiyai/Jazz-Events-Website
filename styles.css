@@ -57,6 +57,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .text-center { text-align: center; }
 .text-gold { color: var(--jazz-gold); }
+.text-red { color: var(--service-red); }
 
 /* --- Buttons --- */
 .btn-gold {
