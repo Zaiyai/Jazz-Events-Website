@@ -960,6 +960,9 @@ footer {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .feature-item { min-height: 300px; }
+
     .review-cards-container { grid-template-columns: repeat(2, 1fr); gap: 28px; }
     .review-card { min-height: 300px; }
 
