@@ -932,6 +932,10 @@ footer {
     font-size: 0.875rem; 
 }
 
+.footer-links > li > i {
+    transform: translateY(30%);
+}
+
 .footer-links a:hover { 
     color: var(--jazz-gold); 
 }
