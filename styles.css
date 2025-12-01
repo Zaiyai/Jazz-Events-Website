@@ -635,56 +635,6 @@ header {
     color: #ffffff;
 }
 
-/* --- Pay Later Section --- */
-.pay-later-section {
-    padding: 80px 24px;
-}
-
-.pay-later-content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 48px;
-    align-items: center;
-    max-width: 1280px;
-    margin: 0 auto;
-}
-
-.pay-later-heading {
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 32px;
-    line-height: 1.2;
-    white-space: nowrap;
-}
-
-.pay-later-text {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.pay-later-text p {
-    color: #d1d5db;
-    font-size: 1rem;
-    line-height: 1.8;
-}
-
-.pay-later-text p strong {
-    color: white;
-    font-weight: 600;
-}
-
-.pay-later-image {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 1px solid var(--jazz-gold);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
 /* --- Reviews Section --- */
 #reviews-section {
     padding: 64px 24px;
@@ -976,14 +926,14 @@ footer {
     .section-title { font-size: 3rem; }
     .cta-title { font-size: 3.75rem; }
     .footer-bottom { flex-direction: row; justify-content: space-between; }
-    .pay-later-content-wrapper { grid-template-columns: 1fr 1fr; gap: 64px; }
+    .pay-later-section { grid-template-columns: 1fr 1fr; gap: 64px; }
     .pay-later-heading { font-size: 3rem; }
     .pay-later-image { height: 100%; min-height: 450px; }
 }
 
 @media (min-width: 1024px) {
     .footer-grid { grid-template-columns: repeat(4, 1fr); }
-    .pay-later-content-wrapper { gap: 80px; }
+    .pay-later-section { gap: 80px; }
     .pay-later-image { min-height: 500px; }
     .review-cards-container { grid-template-columns: repeat(3, 1fr); }
 }
@@ -993,6 +943,7 @@ footer {
     .feature-item { padding: 32px 24px; }
     .feature-title { font-size: 1.125rem; }
     .feature-text { font-size: 0.9rem; }
+    .info-section { padding-bottom: 20px; }
     .pay-later-section { grid-template-columns: 1fr; }
     .pay-later-heading { font-size: 2rem; }
     .pay-later-text p { font-size: 0.95rem; }
