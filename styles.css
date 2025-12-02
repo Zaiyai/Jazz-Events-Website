@@ -780,6 +780,11 @@ body.menu-open {
     border-color: var(--service-red);
 }
 
+/* Highlight review text to pure white on hover */
+.review-card:hover .review-content {
+    color: #ffffff;
+}
+
 .stars-container {
     margin-bottom: 16px;
     display: flex;
@@ -794,6 +799,7 @@ body.menu-open {
 .review-content {
     flex: 1;
     color: #d1d5db;
+    transition: color 0.25s ease;
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 20px;
