@@ -780,7 +780,6 @@ body.menu-open {
     border-color: var(--service-red);
 }
 
-/* Highlight review text to pure white on hover */
 .review-card:hover .review-content {
     color: #ffffff;
 }
@@ -971,6 +970,81 @@ body.menu-open {
     }
 }
 
+/*Team Section*/
+.team-section {
+    padding: 64px 24px;
+    background-color: var(--bg-darker);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+    margin-bottom: 20vh;
+}
+
+.team-member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--bg-black);
+    padding: 24px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--jazz-gold);
+}
+
+.team-member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(204, 0, 0, 0.5);
+    border-color: var(--service-red);
+}
+
+.team-member-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 3px solid var(--jazz-gold);
+    transition: border-color 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member-card:hover .team-member-image {
+    border-color: var(--service-red);
+    filter: brightness(1.05);
+    box-shadow: 0 10px 30px rgba(204, 0, 0, 0.2);
+}
+
+.team-member-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-white);
+    transition: color 0.25s ease, text-shadow 0.25s ease;
+    margin-bottom: 4px;
+}
+
+.team-member-role {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--jazz-gold);
+    transition: color 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Match the red hover style used in the Why Book feature items */
+.team-member-card:hover .team-member-name {
+    color: #ff3333;
+    text-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
+}
+
+.team-member-card:hover .team-member-role {
+    color: #ffffff;
+}
+
 /* --- CTA Section --- */
 #cta-section {
     position: relative;
@@ -1126,6 +1200,7 @@ footer {
     .mission-vision-block-centered { padding: 24px; }
     .block-title { font-size: 1.125rem; }
     .block-text { font-size: 0.9rem; }
+    .team-grid { margin-bottom: 24px; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
