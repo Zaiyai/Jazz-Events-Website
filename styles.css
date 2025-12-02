@@ -220,6 +220,7 @@ body.menu-open {
 #search-content {
     display: none;
     position: absolute;
+    top: 40px;
     width: 75%;
     transform: translateX(18%);
     background-color: rgba(60, 50, 20, 0.85);
