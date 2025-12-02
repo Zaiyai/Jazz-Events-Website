@@ -1,7 +1,7 @@
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('search-content');
 
-const availableSuggestions = ['Home', 'Service', 'Reviews', 'Crew', 'About', 'Contact', 'Catering', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
+const availableSuggestions = ['Home', 'Service', 'Reviews', 'Crew', 'About', 'Contact', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
 
 searchInput.addEventListener('input', function() {
     const inputValue = this.value.toLowerCase();
@@ -40,12 +40,10 @@ searchInput.addEventListener('input', function() {
                         document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
                         break;
                     case 'Crew':
-                        location.replace('crew/crew.html')
+                        document.getElementById('team-section').scrollIntoView({ behavior: "smooth" });
                         break;
                     case 'About':
                         document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-                        break;
-                    case 'Catering':
                         break;
                     case 'Quotation':
                         break;
@@ -53,10 +51,13 @@ searchInput.addEventListener('input', function() {
                         window.open('https://www.facebook.com/profile.php?id=61572991510337', '_blank');
                         break;
                     case 'Privacy Policy':
+                        location.replace('../policies/privacyPolicy.html');
                         break;
                     case 'Cookie Policy':
+                        location.replace('../policies/cookiePolicy.html');
                         break;
                     case 'Terms of Service':
+                        location.replace('../policies/termsOfService.html.html');
                         break;
                 }
             });
