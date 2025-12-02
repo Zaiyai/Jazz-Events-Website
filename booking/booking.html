@@ -23,11 +23,11 @@
 
             <!-- Navigation Links -->
             <nav class="nav-links">
-                <a href="../index.html">Home</a>
+                <a href="../home.html">Home</a>
                 <a href="#">Gallery</a>
-                <a href="../index.html">Services</a>
-                <a href="#">Reviews</a>
-                <a href="#about">About Us</a>
+                <a href="../home.html#services-section">Services</a>
+                <a href="../home.html#reviews-section">Reviews</a>
+                <a href="../home.html#about">About Us</a>
                 <a href="#">Contact</a>
             </nav>
         </div>
@@ -57,7 +57,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event">Type of Event:</label>
-                        <input type="text" placeholder="e.g. Wedding Reception" name="event"/>
+                            <input type="text" placeholder="e.g. Wedding Reception" name="event"/>
+                    </div>
 
                     <div class="form-group">
                         <label for="name">Full Name of Celebrant:</label>
@@ -71,7 +72,7 @@
 
                     <div class="form-group">
                         <label for="attendees">Number of Guests/Attendees:</label>
-                        <input type="number" placeholder="5-100" name="atendees"/>
+                        <input type="number" placeholder="e.g 100" name="attendees" min="0"/>
                     </div>
                 </div>
 
@@ -91,7 +92,7 @@
                 <div class="line"></div><br>
         
                 <label for="specifics"><h3>Write us a message:</h3></label><br>
-                <textarea name="specifics"></textarea><br><br>
+                <textarea id="message" name="message" rows="5" cols="40" placeholder="Write your message here..."></textarea><br><br>
                 
                 <button class="btn-gold" type="submit">
                     <span>Submit</span>
@@ -99,5 +100,7 @@
             </form>
         </div>
     </section>
+
+    <script src="../scripts/main.js"></script>
 </body>
 </html>

@@ -57,6 +57,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .text-center { text-align: center; }
 .text-gold { color: var(--jazz-gold); }
+.text-red { color: var(--service-red); }
 
 /* --- Buttons --- */
 .btn-gold {
@@ -214,7 +215,10 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+<<<<<<< HEAD
+
+=======
+>>>>>>> b20c442fcb2c32c9101445bb16019a51c208883a
 }
 
 .hero-bg {
@@ -977,6 +981,10 @@ footer {
 .footer-links li { 
     margin-bottom: 12px; 
     font-size: 0.875rem; 
+}
+
+.footer-links > li > i {
+    transform: translateY(30%);
 }
 
 .footer-links a:hover { 
