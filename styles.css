@@ -577,7 +577,7 @@ body.menu-open {
 }
 
 #services-section .container {
-    max-width: none;
+    max-width: 1400px;
     width: 100%;
     padding: 0 40px;
 }
