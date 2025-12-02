@@ -1128,3 +1128,35 @@ footer {
     .services-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
     .service-card { min-height: 300px; }
 }
+
+/*WhiteSpace*/
+/* --- Services Section --- */
+#services-section {
+    position: relative;
+    padding: 64px 24px;
+    background-color: #101010;
+}
+
+/* --- Info Section (Why Book) --- */
+.info-section {
+    background-color: #0d0d0d;
+    padding: 80px 24px;
+}
+
+/* --- Pay Later Section --- */
+.pay-later-section {
+    padding: 120px 24px;
+    background-color: #0d0d0d;
+}
+
+/* --- Reviews Section --- */
+#reviews-section {
+    padding: 64px 24px;
+    background-color: #101010;
+}
+
+/* --- About Section --- */
+#about {
+    background-color: #0d0d0d;
+    padding: 120px 24px;
+}
