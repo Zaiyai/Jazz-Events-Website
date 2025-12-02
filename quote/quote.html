@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 
     <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,56 +28,64 @@
 
             <!-- Navigation Links -->
             <nav class="nav-links">
-                <a href="home.html">Home</a>
-                <a href="home.html#services-section">Services</a>
-                <a href="home.html#team-section">Team</a>
-                <a href="home.html#reviews-section">Reviews</a>
-                <a href="home.html#about">About Us</a>
-                <a href="home.html#cta-section">Contact</a>
+                <a href="../home.html">Home</a>
+                <a href="../home.html#services-section">Services</a>
+                <a href="../home.html#team-section">Team</a>
+                <a href="../home.html#reviews-section">Reviews</a>
+                <a href="../home.html#about">About Us</a>
+                <a href="../home.html#cta-section">Contact</a>
             </nav>
-
-            <!-- Search (Visual Only for Quote Page) -->
-            <div class="search-placeholder" aria-hidden="true"></div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="quote-hero">
-        <div class="quote-hero-content">
-            <h1 class="quote-title">Plan Your Event</h1>
-            <p class="quote-subtitle">Tell us about your dream celebration, and we'll help you make it happen.</p>
+    <section class="hero quote-hero">
+        <div class="hero-bg quote-hero-bg">
+            <img src="../assets/hero backgrounds/img1.jpg">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="logo-container">
+                <img class="logo" alt="Jazz Events Logo">
+            </div>
         </div>
     </section>
-
+    
     <!-- Quote Form Section -->
     <section class="quote-section">
         <div class="form-container">
             <div class="form-intro">
+                <div class="quote-hero-content">
+                    <h1 class="quote-title">Plan Your Event</h1>
+                    <p class="quote-subtitle">Tell us about your dream celebration, and we'll help you make it happen.</p>
+                </div> <br> <br>
+
                 <h2 class="form-intro-title">Request a Quote</h2>
                 <p class="form-intro-sub">Fill in the details below. We'll get back to you within 24 hours.</p>
             </div>
 
-            <form id="quoteForm">
-                <div class="form-grid">
-                    <!-- Personal Details -->
+            <form id="quote-form">
+                <!-- Personal Details -->
+                <div class="personal-details">
                     <div class="form-group">
-                        <label>Full Name</label>
+                        <label>Full Name <span class="text-red">*</span></label>
                         <input type="text" placeholder="e.g Dela Cruz, Maria B." required>
                     </div>
                     <div class="form-group">
-                        <label>Email Address</label>
+                        <label>Email Address <span class="text-red">*</span></label>
                         <input type="email" placeholder="maria@domain.com" required>
                     </div>
                     <div class="form-group full-width">
-                        <label>Facebook</label>
+                        <label>Facebook <span class="text-red">*</span></label>
                         <input type="text" placeholder="https://www.facebook.com/profile.php?id=#####" name="facebook-link">
                     </div>
                     <div class="form-group">
-                        <label>Phone Number</label>
+                        <label>Phone Number <span class="text-red">*</span></label>
                         <input type="tel" placeholder="09##-###-####" required>
                     </div>
                     <div class="form-group">
-                        <label>Event Type</label>
+                        <label>Event Type <span class="text-red">*</span></label>
                         <select required>
                             <option value="" disabled selected>Select Event Type</option>
                             <option value="wedding">Wedding</option>
@@ -91,64 +99,68 @@
                             <option value="concert">Reunion / Get-together</option>
                         </select>
                     </div>
+                </div>
 
-                    <!-- Event Details -->
+                <hr>
+
+                <!-- Event Details -->
+                <div class="event-details">
                     <div class="form-group">
-                        <label>Event Date</label>
+                        <label>Event Date <span class="text-red">*</span></label>
                         <input type="date" required>
                     </div>
                     <div class="form-group">
-                        <label>Estimated Guests</label>
+                        <label>Estimated Guests <span class="text-red">*</span></label>
                         <input type="number" placeholder="e.g. 150" min="0">
                     </div>
                     <div class="form-group full-width">
-                        <label>Venue Location (City/Municipality)</label>
+                        <label>Venue Location (City/Municipality) <span class="text-red">*</span></label>
                         <input type="text" placeholder="e.g. Imus, Cavite or Specific Venue Name">
                     </div>
-                    
+                </div>
 
-                    <!-- Services -->
-                    <div class="form-group full-width">
-                        <label>Services Needed (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="catering">
-                                <span>Full Catering</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="styling">
-                                <span>Event Styling / Decor</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="lights-sounds">
-                                <span>Lights & Sounds</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="photo-video">
-                                <span>Photo & Video</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="coordination">
-                                <span>Guidance & Coordination</span>
-                            </label>
-                            
-                        </div>
+                <!-- Services -->
+                <div class="form-group full-width">
+                    <label>Services Needed (Check all that apply) <span class="text-red">*</span></label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="service" value="catering">
+                            <span>Full Catering</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="service" value="styling">
+                            <span>Event Styling / Decor</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="service" value="lights-sounds">
+                            <span>Lights & Sounds</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="service" value="photo-video">
+                            <span>Photo & Video</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="service" value="coordination">
+                            <span>Guidance & Coordination</span>
+                        </label>
                     </div>
-                            <hr style="margin: auto auto" width="200%"></hr>
-                    <!-- Budget & Message -->
-                    <div class="form-group full-width">
-                        <label>Estimated Budget Range</label>
-                        <select>
-                            <option value="undecided">To be discussed</option>
-                            <option value="50k-100k">₱50,000 - ₱100,000</option>
-                            <option value="100k-200k">₱100,000 - ₱200,000</option>
-                            <option value="200k-plus">₱200,000+</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Additional Notes / Special Requests</label>
-                        <textarea rows="4" placeholder="Tell us more about your theme, food preferences (e.g. Seafood, Halal), or any questions..."></textarea>
-                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Budget & Message -->
+                <div class="form-group full-width">
+                    <label>Estimated Budget Range <span class="text-red">*</span></label>
+                    <select>
+                        <option value="undecided">To be discussed</option>
+                        <option value="50k-100k">₱50,000 - ₱100,000</option>
+                        <option value="100k-200k">₱100,000 - ₱200,000</option>
+                        <option value="200k-plus">₱200,000+</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Additional Notes / Special Requests</label>
+                    <textarea rows="4" placeholder="Tell us more about your theme, food preferences (e.g. Seafood, Halal), or any questions..."></textarea>
                 </div>
 
                 <div class="form-actions">
@@ -259,5 +271,7 @@
             dateInput.min = new Date().toISOString().split("T")[0];
         }
     </script>
+
+    <script src="../scripts/main.js"></script>
 </body>
 </html>

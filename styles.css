@@ -951,6 +951,8 @@ body.menu-open {
 }
 
 .team-member-card {
+    min-width: 250px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1143,6 +1145,10 @@ footer {
 }
 
 @media (max-width: 767px) {
+    .hero { height: 50vh; margin-top: 50px; }
+    .logo { height: 35vh; }
+    .tagline { font-size: 2rem; }
+    .hero-logo { scale: 0.8; }
     .desktop-nav { display: none; }
     .mobile-only { display: block; }
     .nav-links a { font-size: 1.5rem; }
@@ -1151,9 +1157,10 @@ footer {
     .feature-title { font-size: 1.125rem; }
     .feature-text { font-size: 0.9rem; }
     .info-section { padding-bottom: 0px; }
+    .pay-later-content-wrapper { margin: 0 -40px }
     .pay-later-section { grid-template-columns: 1fr; text-align: center; padding-bottom: 0px; }
     .pay-later-heading { font-size: 2rem; }
-    .pay-later-text p { font-size: 0.95rem; }
+    .pay-later-text p { font-size: 0.95rem; text-align: left; }
     .pay-later-image { display: none; }
     .service-card { min-width: 250px; margin: auto auto;}
     .review-cards-container { grid-template-columns: 1fr; gap: 24px; }
@@ -1165,7 +1172,7 @@ footer {
     .mission-vision-block-centered { padding: 24px; }
     .block-title { font-size: 1.125rem; }
     .block-text { font-size: 0.9rem; }
-    .team-grid { margin-bottom: 24px; }
+    .team-grid { margin-bottom: 24px; display: flex; overflow: scroll; }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
