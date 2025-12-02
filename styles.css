@@ -4,8 +4,8 @@
     --service-red: #CC0000;
     --text-white: #ffffff;
     --text-gray: #9ca3af;
-    --bg-black: #0C0C0C;
-    --bg-darker: #050505;
+    --bg-black: #0d0d0d;
+    --bg-darker: #101010;
     --font-script: 'Great Vibes', cursive;
     --font-sans: 'Montserrat', sans-serif;
 }
@@ -692,7 +692,7 @@ header {
 }
 
 .feature-item:hover .feature-text {
-    color: #ffffff;
+    color: #0c0c0c0f;
 }
 
 /* --- Reviews Section --- */
@@ -1075,4 +1075,36 @@ footer {
 
     .services-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
     .service-card { min-height: 300px; }
+}
+
+/*WhiteSpace*/
+/* --- Services Section --- */
+#services-section {
+    position: relative;
+    padding: 64px 24px;
+    background-color: #101010;
+}
+
+/* --- Info Section (Why Book) --- */
+.info-section {
+    background-color: #0d0d0d;
+    padding: 80px 24px;
+}
+
+/* --- Pay Later Section --- */
+.pay-later-section {
+    padding: 120px 24px;
+    background-color: #0d0d0d;
+}
+
+/* --- Reviews Section --- */
+#reviews-section {
+    padding: 64px 24px;
+    background-color: #101010;
+}
+
+/* --- About Section --- */
+#about {
+    background-color: #0d0d0d;
+    padding: 120px 24px;
 }
