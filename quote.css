@@ -20,7 +20,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('assets/hero backgrounds/debut.jpg');
+    background-image: url('assets/hero backgrounds/img1.jpg');
     background-size: cover;
     background-position: center;
     margin-top: 80px; /* Offset for fixed header */
@@ -95,6 +95,7 @@ label {
     color: var(--jazz-gold);
     font-weight: 600;
     font-size: 0.9rem;
+    margin-bottom: 2%;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
