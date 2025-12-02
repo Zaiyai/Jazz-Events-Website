@@ -1241,6 +1241,12 @@ footer {
 
 /* --- About Section --- */
 #about {
-    background-color: #0d0d0d;
+    background-color: #101010;
     padding: 120px 24px;
+}
+
+/*Team Section*/
+.team-section {
+    padding: 64px 24px;
+    background-color: #0d0d0d;
 }
