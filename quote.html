@@ -30,9 +30,10 @@
             <nav class="nav-links">
                 <a href="home.html">Home</a>
                 <a href="home.html#services-section">Services</a>
+                <a href="home.html#team-section">Team</a>
                 <a href="home.html#reviews-section">Reviews</a>
                 <a href="home.html#about">About Us</a>
-                <a href="#" class="active">Get a Quote</a>
+                <a href="home.html#cta-section">Contact</a>
             </nav>
 
             <!-- Search (Visual Only for Quote Page) -->
@@ -237,7 +238,7 @@
         document.getElementById('quoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const btn = document.querySelector('.btn-submit');
+            const btn = document.querySelector('.btn-sub    mit');
             const msg = document.getElementById('successMsg');
 
             btn.style.opacity = '0.5';
