@@ -324,11 +324,6 @@ body.menu-open {
 }
 
 /* --- Info Section (Why Book) --- */
-.info-section {
-    position: relative;
-    padding: 80px 24px;
-}
-
 .grid-2-col {
     display: grid;
     grid-template-columns: 1fr;
@@ -439,11 +434,6 @@ body.menu-open {
 }
 
 /* Pay Later Section */
-.pay-later-section {
-    padding: 80px 24px;
-    background-color: var(--bg-darker);
-}
-
 .pay-later-content-wrapper {
     display: grid;
     grid-template-columns: 1fr;
@@ -670,11 +660,6 @@ body.menu-open {
 }
 
 /* --- Info Section --- */
-.info-section {
-    background-color: var(--bg-darker);
-    padding: 80px 24px;
-}
-
 .why-book-container {
     max-width: 1280px;
     margin: 0 auto;
@@ -746,11 +731,6 @@ body.menu-open {
 }
 
 /* --- Reviews Section --- */
-#reviews-section {
-    padding: 64px 24px;
-    background-color: var(--bg-black);
-}
-
 .review-cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -870,11 +850,6 @@ body.menu-open {
 }
 
 /* --- Extraordinary Section --- */
-#about {
-    background-color: var(--bg-black);
-    padding: 64px 24px;
-}
-
 .about-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -968,11 +943,6 @@ body.menu-open {
 }
 
 /*Team Section*/
-.team-section {
-    padding: 64px 24px;
-    background-color: var(--bg-darker);
-}
-
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1238,11 +1208,11 @@ footer {
 /* --- About Section --- */
 #about {
     background-color: #101010;
-    padding: 120px 24px;
+    padding: 32px 24px;
 }
 
 /*Team Section*/
 .team-section {
-    padding: 64px 24px;
+    padding: 32px 24px;
     background-color: #101010;
 }
