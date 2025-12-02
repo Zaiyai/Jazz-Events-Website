@@ -34,3 +34,41 @@ if (fileName != "home.html") {
 
 document.querySelectorAll(".logo").forEach(logo => { logo.src = logoPath; });
 document.querySelectorAll(".gold_accent").forEach(accent => { accent.src = decorPath; });
+
+// Mobile Burger Menu
+const burger   = document.getElementById("burger");
+const overlay  = document.getElementById("nav-overlay");
+const closeBtn = document.getElementById("close-overlay");
+
+/* OPEN */
+burger.addEventListener("click", () => {
+  if (window.innerWidth > 768) return;
+
+  overlay.classList.add("open");
+  document.body.classList.add("menu-open");
+  burger.setAttribute("aria-expanded", "true");
+});
+
+/* CLOSE BUTTON */
+closeBtn.addEventListener("click", closeMenu);
+
+/* CLOSE ON LINK CLICK */
+overlay.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", closeMenu);
+});
+
+/* ESC KEY */
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeMenu();
+});
+
+/* RESIZE SAFETY */
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) closeMenu();
+});
+
+function closeMenu() {
+  overlay.classList.remove("open");
+  document.body.classList.remove("menu-open");
+  burger.setAttribute("aria-expanded", "false");
+}
