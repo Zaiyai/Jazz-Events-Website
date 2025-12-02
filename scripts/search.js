@@ -1,11 +1,11 @@
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('search-content');
 
-const availableSuggestions = ['Home', 'Service', "Clients' Reviews", 'Crew', 'About', 'Contact', 'Catering', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
+const availableSuggestions = ['Home', 'Service', 'Reviews', 'Crew', 'About', 'Contact', 'Catering', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
 
 searchInput.addEventListener('input', function() {
     const inputValue = this.value.toLowerCase();
-    suggestionsList.innerHTML = ''; // Clear previous suggestions
+    suggestionsList.innerHTML = '';
 
     if (inputValue.length === 0) {
         suggestionsList.style.display = 'none';
@@ -36,8 +36,27 @@ searchInput.addEventListener('input', function() {
                     case 'Service':
                         document.getElementById('services-section').scrollIntoView({ behavior: 'smooth' });
                         break;
-                    case "Clients' Reviews":
+                    case 'Reviews':
                         document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                    case 'Crew':
+                        location.replace('crew/crew.html')
+                        break;
+                    case 'About':
+                        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                    case 'Catering':
+                        break;
+                    case 'Quotation':
+                        break;
+                    case 'Facebook Link':
+                        window.open('https://www.facebook.com/profile.php?id=61572991510337', '_blank');
+                        break;
+                    case 'Privacy Policy':
+                        break;
+                    case 'Cookie Policy':
+                        break;
+                    case 'Terms of Service':
                         break;
                 }
             });

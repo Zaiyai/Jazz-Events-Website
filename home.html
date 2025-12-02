@@ -20,12 +20,12 @@
     <header>
         <div class="nav-container">
             <!-- Mobile Menu Button -->
-            <button class="mobile-btn">
+            <button id="burger" class="mobile-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
             <!-- Navigation Links -->
-            <nav class="nav-links">
+            <nav class="nav-links desktop-nav">
                 <a href="#">Home</a>
                 <a href="#services-section">Services</a>
                 <a href="crew/crew.html">Crew</a>
@@ -40,16 +40,21 @@
                 <input id="search-input" type="text" placeholder="Search Jazz Events...">
                 <ul id="search-content"></ul>
             </div>
-            
-            <!-- Mobile Search Icon -->
-             <button class="mobile-btn" style="margin-left: auto;">
-                <i class="fa-solid fa-magnifying-glass" style="display: block; width: 24px; height: 24px;"></i>
-            </button>
-            <style>
-                @media (min-width: 640px) { button.mobile-btn:last-child { display: none !important; } }
-            </style>
         </div>
     </header>
+
+    <!-- Mobile nav overlay -->
+    <div id="nav-overlay" class="nav-overlay mobile-only">
+    <button id="close-overlay" class="close-btn">✕</button>
+        <nav class="nav-links overlay-links">
+            <a href="#">Home</a>
+            <a href="#services-section">Services</a>
+            <a href="crew/crew.html">Crew</a>
+            <a href="#reviews-section">Reviews</a>
+            <a href="#about">About Us</a>
+            <a href="#cta-section">Contact</a>
+        </nav>
+    </div>
 
     <!-- Main Banner Hero Section -->
     <section id="banner-section" class="hero">
