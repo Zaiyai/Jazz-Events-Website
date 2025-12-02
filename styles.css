@@ -207,6 +207,10 @@ header {
     color: var(--jazz-gold); 
 }
 
+#burger:checked ~ .nav-links {
+    display: flex !important;
+}
+
 /* --- Hero Section --- */
 .hero {
     position: relative;
@@ -943,11 +947,12 @@ footer {
     .feature-item { padding: 32px 24px; }
     .feature-title { font-size: 1.125rem; }
     .feature-text { font-size: 0.9rem; }
-    .info-section { padding-bottom: 20px; }
-    .pay-later-section { grid-template-columns: 1fr; }
+    .info-section { padding-bottom: 0px; }
+    .pay-later-section { grid-template-columns: 1fr; text-align: center; padding-bottom: 0px; }
     .pay-later-heading { font-size: 2rem; }
     .pay-later-text p { font-size: 0.95rem; }
-    .pay-later-image { height: 300px; width: 300px; }
+    .pay-later-image { display: none; }
+    .service-card { min-width: 250px; margin: auto auto;}
     .review-cards-container { grid-template-columns: 1fr; gap: 24px; }
     .review-card { padding: 20px; min-height: 280px; }
     .review-content { -webkit-line-clamp: 4; max-height: calc(1.6em * 4); font-size: 0.9rem; }
