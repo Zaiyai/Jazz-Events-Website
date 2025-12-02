@@ -13,3 +13,7 @@
     border: 1px solid var(--jazz-gold);
     border-radius: 50px;
 }
+
+ul {
+    list-style-type: disc;
+}
