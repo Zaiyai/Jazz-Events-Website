@@ -1,0 +1,170 @@
+
+/* --- CSS VARIABLES --- */
+:root {
+    --jazz-gold: #d4af37;
+    --jazz-gold-hover: #b5952f;
+    --service-red: #CC0000;
+    --text-white: #ffffff;
+    --text-gray: #9ca3af;
+    --bg-black: #0C0C0C;
+    --bg-darker: #050505;
+    --font-script: 'Great Vibes', cursive;
+    --font-sans: 'Montserrat', sans-serif;
+}
+
+/* --- Hero Section --- */
+.quote-hero {
+    height: 50vh;
+    min-height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('assets/hero backgrounds/debut.jpg');
+    background-size: cover;
+    background-position: center;
+    margin-top: 80px; /* Offset for fixed header */
+}
+.quote-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(12,12,12,0.8), rgba(12,12,12,0.9));
+}
+.quote-hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 20px;
+}
+.quote-title {
+    font-family: var(--font-script);
+    font-size: 4rem;
+    color: var(--jazz-gold);
+    margin-bottom: 10px;
+}
+.quote-subtitle {
+    font-size: 1.2rem;
+    color: #d1d5db;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- Form Section --- */
+.quote-section {
+    padding: 80px 24px;
+    background-color: var(--bg-black);
+}
+.form-container {
+    max-width: 900px;
+    margin: -100px auto 0; /* Overlap effect */
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    z-index: 20;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.form-intro { text-align:center; margin-bottom:30px; }
+.form-intro-title {
+    color: var(--jazz-gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.form-intro-sub {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Grid + controls */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.full-width { grid-column: span 2; }
+
+label {
+    color: var(--jazz-gold);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+input, select, textarea {
+    background-color: #111827;
+    border: 1px solid #333;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--jazz-gold);
+    background-color: #000;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+/* Custom Checkbox Group */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    background: #111;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.checkbox-item:hover { border-color: var(--jazz-gold); }
+.checkbox-item input { margin-right: 10px; accent-color: var(--jazz-gold); width: auto; }
+.checkbox-item span { font-size: 0.9rem; color: #ddd; }
+
+/* Submit Button Area */
+.form-actions { margin-top: 32px; text-align: center; }
+.btn-submit {
+    background: linear-gradient(45deg, var(--jazz-gold), #b5952f);
+    color: #000;
+    border: none;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Success Message */
+.success-message {
+    display: none;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--jazz-gold);
+    color: var(--jazz-gold);
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 20px;
+}

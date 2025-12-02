@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get a Quote | Jazz Events</title>
+
+    <!-- Google Fonts (Matching Home) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="quote.css">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-btn" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="home.html">Home</a>
+                <a href="home.html#services-section">Services</a>
+                <a href="home.html#team-section">Team</a>
+                <a href="home.html#reviews-section">Reviews</a>
+                <a href="home.html#about">About Us</a>
+                <a href="home.html#cta-section">Contact</a>
+            </nav>
+
+            <!-- Search (Visual Only for Quote Page) -->
+            <div class="search-placeholder" aria-hidden="true"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="quote-hero">
+        <div class="quote-hero-content">
+            <h1 class="quote-title">Plan Your Event</h1>
+            <p class="quote-subtitle">Tell us about your dream celebration, and we'll help you make it happen.</p>
+        </div>
+    </section>
+
+    <!-- Quote Form Section -->
+    <section class="quote-section">
+        <div class="form-container">
+            <div class="form-intro">
+                <h2 class="form-intro-title">Request a Quote</h2>
+                <p class="form-intro-sub">Fill in the details below. We'll get back to you within 24 hours.</p>
+            </div>
+
+            <form id="quoteForm">
+                <div class="form-grid">
+                    <!-- Personal Details -->
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="e.g Dela Cruz, Maria B." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="maria@domain.com" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Facebook</label>
+                        <input type="text" placeholder="https://www.facebook.com/profile.php?id=#####" name="facebook-link">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="09##-###-####" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type</label>
+                        <select required>
+                            <option value="" disabled selected>Select Event Type</option>
+                            <option value="wedding">Wedding</option>
+                            <option value="concert">Birthday</option>
+                            <option value="debut">Debut (18th Birthday)</option>
+                            <option value="kids-party">Kiddie Party</option>
+                            <option value="christening">Christening / Baptism</option>
+                            <option value="corporate">Corporate Event</option>
+                            <option value="fiesta">Fiesta</option>
+                            <option value="concert">Concert / Show</option>
+                            <option value="concert">Reunion / Get-together</option>
+                        </select>
+                    </div>
+
+                    <!-- Event Details -->
+                    <div class="form-group">
+                        <label>Event Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated Guests</label>
+                        <input type="number" placeholder="e.g. 150" min="0">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Venue Location (City/Municipality)</label>
+                        <input type="text" placeholder="e.g. Imus, Cavite or Specific Venue Name">
+                    </div>
+                    
+
+                    <!-- Services -->
+                    <div class="form-group full-width">
+                        <label>Services Needed (Check all that apply)</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="catering">
+                                <span>Full Catering</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="styling">
+                                <span>Event Styling / Decor</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="lights-sounds">
+                                <span>Lights & Sounds</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="photo-video">
+                                <span>Photo & Video</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="coordination">
+                                <span>Guidance & Coordination</span>
+                            </label>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Budget & Message -->
+                    <div class="form-group full-width">
+                        <label>Estimated Budget Range</label>
+                        <select>
+                            <option value="undecided">To be discussed</option>
+                            <option value="50k-100k">₱50,000 - ₱100,000</option>
+                            <option value="100k-200k">₱100,000 - ₱200,000</option>
+                            <option value="200k-plus">₱200,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Additional Notes / Special Requests</label>
+                        <textarea rows="4" placeholder="Tell us more about your theme, food preferences (e.g. Seafood, Halal), or any questions..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Submit Inquiry <i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+
+                <div id="successMsg" class="success-message" role="status" aria-live="polite">
+                    <h3><i class="fa-solid fa-check-circle"></i> Inquiry Sent!</h3>
+                    <p>Thank you for choosing Jazz Events. Our team will review your details and contact you shortly.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Detailed Footer Section -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Logo Column -->
+            <div class="footer-col">
+                <div class="logo-container" >
+                    <span class="script-text" style="font-size: 4rem;">Jazz</span>
+                    <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                </div>
+                <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+                    Elevating moments with exquisite culinary experiences.
+                </p>
+            </div>
+
+            <!-- Quick Links Column -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="../home.html#services-section">Services</a></li>
+                    <li><a href="../home.html#reviews-section">Reviews</a></li>
+                    <li><a href="../home.html#about">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Services Column -->
+            <div class="footer-col">
+                <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Weddings</a></li>
+                        <li><a href="#">Concerts</a></li>
+                        <li><a href="#">Corporate Events</a></li>
+                        <li><a href="#">Graduations</a></li>
+                        <li><a href="#">Birthday Parties</a></li>
+                        <li><a href="quote1.html">Get a Quote</a></li>
+                    </ul>
+                </div>
+
+            <!-- Contact Column -->
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li class="contact-item">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <div>
+                            <div>0965 633 7494</div>
+                            <div>0997 425 7958</div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-brands fa-facebook-f contact-icon"></i>
+                        <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        
+        document.getElementById('quoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.querySelector('.btn-sub    mit');
+            const msg = document.getElementById('successMsg');
+
+            btn.style.opacity = '0.5';
+            btn.textContent = 'Sending...';
+
+            setTimeout(() => {
+                btn.style.display = 'none';
+                msg.style.display = 'block';
+                
+                msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1500);
+        });
+
+        
+        const dateInput = document.querySelector('input[type="date"]');
+        if (dateInput) {
+            dateInput.min = new Date().toISOString().split("T")[0];
+        }
+    </script>
+</body>
+</html>
