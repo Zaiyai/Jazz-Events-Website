@@ -1,7 +1,7 @@
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('search-content');
 
-const availableSuggestions = ['Home', 'Service', 'Reviews', 'Crew', 'About', 'Contact', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
+const availableSuggestions = ['Home', 'Service', 'Reviews', 'Crew', 'About', 'Contact', 'Book', 'Quotation', 'Facebook Link', 'Privacy Policy', 'Cookie Policy', 'Terms of Service'];
 
 searchInput.addEventListener('input', function() {
     const inputValue = this.value.toLowerCase();
@@ -44,6 +44,9 @@ searchInput.addEventListener('input', function() {
                         break;
                     case 'About':
                         document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                    case 'Book':
+                        window.open('../booking/booking.html');
                         break;
                     case 'Quotation':
                         break;
