@@ -20,15 +20,15 @@
     <header>
         <div class="nav-container">
             <!-- Mobile Menu Button -->
-            <button class="mobile-btn">
+            <button id="burger" class="mobile-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
             <!-- Navigation Links -->
-            <nav class="nav-links">
+            <nav class="nav-links desktop-nav">
                 <a href="#">Home</a>
                 <a href="#services-section">Services</a>
-                <a href="crew/crew.html">Crew</a>
+                <a href="crew/crew.html">Team</a>
                 <a href="#reviews-section">Reviews</a>
                 <a href="#about">About Us</a>
                 <a href="#cta-section">Contact</a>
@@ -40,16 +40,21 @@
                 <input id="search-input" type="text" placeholder="Search Jazz Events...">
                 <ul id="search-content"></ul>
             </div>
-            
-            <!-- Mobile Search Icon -->
-             <button class="mobile-btn" style="display: block; margin-left: auto; display: none;">
-                <i class="fa-solid fa-magnifying-glass" style="display: block; width: 24px; height: 24px;"></i>
-            </button>
-            <style>
-                @media (min-width: 640px) { button.mobile-btn:last-child { display: none !important; } }
-            </style>
         </div>
     </header>
+
+    <!-- Mobile nav overlay -->
+    <div id="nav-overlay" class="nav-overlay mobile-only">
+    <button id="close-overlay" class="close-btn">✕</button>
+        <nav class="nav-links overlay-links">
+            <a href="#">Home</a>
+            <a href="#services-section">Services</a>
+            <a href="crew/crew.html">Crew</a>
+            <a href="#reviews-section">Reviews</a>
+            <a href="#about">About Us</a>
+            <a href="#cta-section">Contact</a>
+        </nav>
+    </div>
 
     <!-- Main Banner Hero Section -->
     <section id="banner-section" class="hero">
@@ -72,64 +77,6 @@
         </div>
     </section>
 
-        <!-- Info Content Section -->
-        <section class="info-section">
-            <div class="container">
-                
-            <!-- Why Book Section -->
-            <div class="container">
-                <div class="why-book-container">
-                    <h2 class="section-title text-center">Why Book From <span class="text-gold">Jazz Events?</span></h2>
-                    
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <i class="fa-solid fa-gem feature-icon"></i>
-                            <h3 class="feature-title">Exceptional Quality</h3>
-                            <p class="feature-text">Our commitment to detail ensures your event is flawlessly executed, from gourmet catering to elegant decor.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
-                            <h3 class="feature-title">Personalized Creativity</h3>
-                            <p class="feature-text">We tailor every detail to your unique vision, transforming your dream celebration into reality.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <i class="fa-solid fa-calendar-check feature-icon"></i>
-                            <h3 class="feature-title">Stress-Free Convenience</h3>
-                            <p class="feature-text">Enjoy our "Book Now, Pay Later" option and seamless coordination for effortless event planning.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                
-            <!-- Pay Later Section -->
-            <div class="pay-later-section">
-                <div class="container">
-                    <div class="pay-later-content-wrapper">
-                        <div class="pay-later-left">
-                            <h2 class="pay-later-heading">
-                                Book Now <span class="text-gold">Pay Later</span>
-                            </h2>
-                            
-                            <div class="pay-later-text">
-                                <p>
-                                    With our "Book Now, Pay Later" option, you can reserve your event today with a small initial payment and enjoy <strong>flexible, manageable terms for up to six months</strong>. It's our way of helping you celebrate life's milestones without the financial strain.
-                                </p>
-                                <p>
-                                    When you choose Jazz Events, you're choosing <strong>reliability, creativity, and genuine care</strong> all working together to make your event as smooth and memorable as it should be.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="pay-later-right">
-                            <img src="assets/food/catering1.jpg" alt="Event setup" class="pay-later-image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
         <!-- Services Section -->
         <section id="services-section">
             <div class="container">
@@ -196,6 +143,64 @@
                             <h3 class="service-title">Weddings</h3>
                             <p class="service-text">Celebrating another year of you! Wishing you the happiest of birthdays.</p>
                             <div class="corner-triangle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Content Section -->
+        <section class="info-section">
+            <div class="container">
+                
+            <!-- Why Book Section -->
+            <div class="container">
+                <div class="why-book-container">
+                    <h2 class="section-title text-center">Why Book From <span class="text-gold">Jazz Events?</span></h2>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fa-solid fa-gem feature-icon"></i>
+                            <h3 class="feature-title">Exceptional Quality</h3>
+                            <p class="feature-text">Our commitment to detail ensures your event is flawlessly executed, from gourmet catering to elegant decor.</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
+                            <h3 class="feature-title">Personalized Creativity</h3>
+                            <p class="feature-text">We tailor every detail to your unique vision, transforming your dream celebration into reality.</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <i class="fa-solid fa-calendar-check feature-icon"></i>
+                            <h3 class="feature-title">Stress-Free Convenience</h3>
+                            <p class="feature-text">Enjoy our "Book Now, Pay Later" option and seamless coordination for effortless event planning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <!-- Pay Later Section -->
+            <div class="pay-later-section">
+                <div class="container">
+                    <div class="pay-later-content-wrapper">
+                        <div class="pay-later-left">
+                            <h2 class="pay-later-heading">
+                                Book Now <span class="text-gold">Pay Later</span>
+                            </h2>
+                            
+                            <div class="pay-later-text">
+                                <p>
+                                    With our "Book Now, Pay Later" option, you can reserve your event today with a small initial payment and enjoy <strong>flexible, manageable terms for up to six months</strong>. It's our way of helping you celebrate life's milestones without the financial strain.
+                                </p>
+                                <p>
+                                    When you choose Jazz Events, you're choosing <strong>reliability, creativity, and genuine care</strong> all working together to make your event as smooth and memorable as it should be.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="pay-later-right">
+                            <img src="assets/booknowpaylater.jpg" alt="Event setup" class="pay-later-image">
                         </div>
                     </div>
                 </div>
@@ -270,39 +275,34 @@
 
     <!-- Extraordinary Section -->
     <section id="about">
-        <div class="extraordinary-container-centered">
-            
-            <!-- Heading -->
-            <h2 class="extraordinary-heading-centered">
-                Transform Ordinary Moments Into<br>
-                <span class="text-gold">Extraordinary Celebrations</span>
-            </h2>
+        <div class="about-container">
 
-            <!-- Logo Image - Centered -->
-            <div class="logo-centered">
-                <img alt="Jazz Events Logo" class="logo logo-image-centered">
+            <div class="about-image-wrapper">
+                <img src="assets/food/extraordinary.jpg" alt="Jazz Events Celebration" class="about-image">
             </div>
 
-            <!-- Mission/Vision Grid - Side by Side -->
-            <div class="mission-vision-grid">
-                <!-- Mission Block -->
-                <div class="mission-vision-block-centered">
-                    <h3 class="block-title">Mission</h3>
-                    <p class="block-text">
-                        We believe that every milestone deserves to be celebrated without limits. That's why we offer our Buy Now, Pay Later plan — allowing you to enjoy your event today and settle your payments within six months. Because making your dream celebration possible shouldn't have to wait.
-                    </p>
-                </div>
-
-                <!-- Vision Block -->
-                <div class="mission-vision-block-centered">
-                    <h3 class="block-title">Vision</h3>
-                    <p class="block-text">
-                        From intimate gatherings to grand occasions, Jazz Events delivers seamless coordination, exquisite catering, and personalized service — ensuring every moment becomes a cherished memory.
-                    </p>
-                </div>
+            <div class="about-content">
+                <p class="about-label">ABOUT US</p>
+                <h2 class="about-heading">
+                    TRANSFORM ORDINARY MOMENTS INTO<br>
+                    <span class="text-gold">EXTRAORDINARY CELEBRATIONS</span>
+                </h2>
+                
+                <p class="about-text">
+                    Jazz Events has been creating unforgettable celebrations since our founding. We believe that every milestone deserves to be celebrated without limits. That's why we offer our Buy Now, Pay Later plan — allowing you to enjoy your event today and settle your payments within six months.
+                </p>
+                
+                <p class="about-text">
+                    From intimate gatherings to grand occasions, we deliver seamless coordination, exquisite catering, and personalized service — ensuring every moment becomes a cherished memory. Our team of trained professionals brings years of experience and genuine care to make your vision a reality.
+                </p>
             </div>
         </div>
-    </section>
+</section>
+
+    <!-- Team Section-->
+     
+
+
 
 
     <!-- Call to Action Section -->
@@ -320,7 +320,6 @@
             
             <div class="cta-buttons">
                 <button class="btn-gold">Get a Quote</button>
-                <button class="btn-gold">Contact Us</button>
             </div>
         </div>
     </section>
@@ -389,9 +388,9 @@
         <div class="footer-bottom">
             <p>&copy; 2025 Jazz Events. All rights reserved.</p>
             <div class="legal-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+                <a href="policies/privacyPolicy.html">Privacy Policy</a>
+                <a href="policies/termsOfService.html">Terms of Service</a>
+                <a href="policies/cookiePolicy.html">Cookie Policy</a>
             </div>
         </div>
     </footer>
