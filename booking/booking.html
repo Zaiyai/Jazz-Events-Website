@@ -3,102 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Booking</title>
+    <title>Event Booking - Jazz Events</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="booking.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
 </head>
 <body>
-    <!-- Navigation Header -->
     <header>
         <div class="nav-container">
-            <!-- Mobile Menu Button -->
-            <button class="mobile-btn">
+            <button id="burger" class="mobile-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
-            <!-- Navigation Links -->
-            <nav class="nav-links">
+            <nav class="nav-links desktop-nav">
                 <a href="../home.html">Home</a>
-                <a href="#">Gallery</a>
-                <a href="../home.html">Services</a>
-                <a href="#">Reviews</a>
-                <a href="#about">About Us</a>
-                <a href="#">Contact</a>
+                <a href="../home.html#services-section">Services</a>
+                <a href="../crew/crew.html">Crew</a>
+                <a href="../home.html#reviews-section">Reviews</a>
+                <a href="../home.html#about">About Us</a>
+                <a href="../home.html#cta-section">Contact</a>
             </nav>
         </div>
     </header>
 
+    <div id="nav-overlay" class="nav-overlay mobile-only">
+        <button id="close-overlay" class="close-btn">✕</button>
+        <nav class="nav-links overlay-links">
+            <a href="../home.html">Home</a>
+            <a href="../home.html#services-section">Services</a>
+            <a href="../crew/crew.html">Crew</a>
+            <a href="../home.html#reviews-section">Reviews</a>
+            <a href="../home.html#about">About Us</a>
+            <a href="../home.html#cta-section">Contact</a>
+        </nav>
+    </div>
+
     <section id="banner-section" class="hero">
         <div class="hero-bg">
-            <img src="../images/img1.jpg" alt="Event Catering Buffet">
+            <img src="../images/img1.jpg" alt="Event Booking">
             <div class="hero-overlay"></div>
         </div>
 
-        <div class="container">
-            <form>
+        <div class="hero-content">
+            <form class="form-container" action="#" method="POST">
                 <div class="services-header">
                     <div class="flourish">
-                        <img class="gold_accent" src="../images/gold_accent.png">
+                        <img class="gold_accent" src="../images/gold_accent.png" alt="">
                     </div>
-                        
-                    <h2 class="section-title text-center" style="margin: 0;">Event <span class="text-gold">Booking</span></h2>
+                    
+                    <h2 class="section-title text-center">Event <span class="text-gold">Booking</span></h2>
 
                     <div class="flourish flourish-right">
-                        <img class="gold_accent" src="../images/gold_accent.png">
+                        <img class="gold_accent" src="../images/gold_accent.png" alt="">
                     </div>
                 </div>
                 
-                <h3>Event <span class="text-gold">Details:</span></h3> <br>
+                <h3 class="section-subtitle">Event <span class="text-gold">Details</span></h3>
+                
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="event">Type of Event:</label>
-                            <input type="text" placeholder="e.g. Wedding Reception" name="event"/>
+                        <label for="event">Type of Event *</label>
+                        <input type="text" id="event" name="event" placeholder="e.g. Wedding Reception" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Full Name of Celebrant:</label>
-                        <input type="text" placeholder="e.g. Dela Cruz, Maria B." name="name"/>
+                        <label for="name">Full Name of Celebrant *</label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Date:</label>
-                        <input type="date" name="date"/>
+                        <label for="date">Event Date *</label>
+                        <input type="date" id="date" name="date" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="attendees">Number of Guests/Attendees:</label>
-                        <input type="number" placeholder="e.g 100" name="attendees" min="0"/>
+                        <label for="attendees">Number of Guests *</label>
+                        <input type="number" id="attendees" name="attendees" placeholder="e.g. 100" min="1" required>
                     </div>
                 </div>
 
+                <div class="line"></div>
                 
-                <div class="line"></div><br>
-                
-                <h3>Where can we <span class="text-gold">contact you?</span></h3><br>
-                <div class="form-row">
-                    <label for="phone-number">Phone Number:</label>
-                    <input type="tel" placeholder="09##-###-####" name="phone-number"/>
-                    <label for="facebook-link">Facebook Link:</label>
-                    <input type="text" placeholder="https://www.facebook.com/profile.php?id=#####" name="facebook-link"/> <br><br>
-                    <label for="email">Email Address:</label>
-                    <input type="text" placeholder="e.g mariadelacruz123@domain.com" name="email-address"/> <br><br>
+            <h3 class="section-subtitle">Where Can We <span class="text-gold">Contact You?</span></h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone-number">Phone Number *</label>
+                    <input type="tel" id="phone-number" name="phone-number" placeholder="09##-###-####" required>
                 </div>
 
-                <div class="line"></div><br>
+                <div class="form-group">
+                    <label for="facebook-link">Facebook Link</label>
+                    <input type="url" id="facebook-link" name="facebook-link" placeholder="https://www.facebook.com/...">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com" required>
+                </div>
+            </div>
+
+                <div class="line"></div>
         
-                <label for="specifics"><h3>Write us a message:</h3></label><br>
-                <textarea id="message" name="message" rows="5" cols="40" placeholder="Write your message here..."></textarea><br><br>
+                <h3 class="section-subtitle">Write Us a <span class="text-gold">Message</span></h3>
+                <textarea id="message" name="message" placeholder="Tell us about your vision for this event..."></textarea>
                 
                 <button class="btn-gold" type="submit">
-                    <span>Submit</span>
+                    <span>Submit Booking</span>
+                    <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </form>
         </div>
     </section>
+
+    <script src="../scripts/main.js"></script>
 </body>
 </html>
