@@ -29,6 +29,7 @@ searchInput.addEventListener('input', function() {
                 searchInput.value = "";
                 suggestionsList.style.display = 'none';
                 
+                // Function of suggestions
                 switch (suggestion) {
                     case 'Home':
                         window.scrollTo(0, 0);
