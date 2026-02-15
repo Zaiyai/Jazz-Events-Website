@@ -28,7 +28,7 @@
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
     margin-bottom: 24px;
 }
@@ -67,6 +67,10 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
+.form-group.full-width {
+    grid-column: span 2;
+}
+
 textarea {
     resize: vertical;
     min-height: 150px;
@@ -77,6 +81,30 @@ textarea {
     width: 100%;
     margin-top: 24px;
 }
+
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+.checkbox-item {
+    display: flex;
+    text-align: left;
+    align-items: center;
+    background-color: #111827;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: scroll;
+}
+
+.checkbox-item:hover { border-color: var(--jazz-gold); }
+.checkbox-item input { margin-right: 10px; accent-color: var(--jazz-gold); width: auto;}
+.checkbox-item span { font-size: 0.9rem; color: #ddd; }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

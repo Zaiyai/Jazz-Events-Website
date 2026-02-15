@@ -82,10 +82,44 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="attendees">Number of Guests <span class="text-red">*</span></label>
+                        <label for="attendees">Estimated Number of Guests <span class="text-red">*</span></label>
                         <input type="number" id="attendees" name="attendees" placeholder="e.g. 100" min="1" required>
                     </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>Services Needed (Check all that apply) <span class="text-red">*</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="catering">
+                                <span>Full Catering</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="styling">
+                                <span>Event Styling / Decor</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="lights-sounds">
+                                <span>Lights & Sounds</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="photo-video">
+                                <span>Photo & Video</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="coordination">
+                                <span>Guidance & Coordination</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="name">Venue Location <span class="text-red">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
+                    </div>
                 </div>
 
                 <div class="form-row" style="display: flex; justify-content: center;">
@@ -95,9 +129,6 @@
                     </div>
                 </div>
 
-                <div class="search-wrapper">
-                    
-                </div>
 
                 <div class="line"></div>
                 
