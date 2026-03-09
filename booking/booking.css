@@ -167,6 +167,7 @@ input::-webkit-inner-spin-button {
 #calendar {
   max-width: 900px;
   margin: 40px auto;
+  margin-top: 10%;
 }
 
 .fc-toolbar-title {
@@ -186,6 +187,7 @@ input::-webkit-inner-spin-button {
 .fc-day-today {
   background-color: #fff3cd;
 }
+
 
 
 
