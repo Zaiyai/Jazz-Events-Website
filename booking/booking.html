@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="booking.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
     
 </head>
 <body>
@@ -42,19 +45,20 @@
             <a href="../home.html#cta-section">Contact</a>
         </nav>
     </div>
-
+    <div id="calendar"></div>
     <section id="banner-section" class="hero">
         <div class="hero-bg">
             <img src="../images/img1.jpg" alt="Event Booking">
             <div class="hero-overlay"></div>
         </div>
-
+            
         <div class="hero-content">
             <form class="form-container" action="#" method="POST">
                 <div class="services-header">
                     <div class="flourish">
                         <img class="gold_accent" src="../images/gold_accent.png" alt="">
                     </div>
+                    
                     
                     <h2 class="section-title text-center">Event <span class="text-gold">Booking</span></h2>
 
@@ -132,26 +136,6 @@
 
                 <div class="line"></div>
                 
-                <h3 class="section-subtitle">Where Can We <span class="text-gold">Contact You?</span></h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone-number">Phone Number <span class="text-red">*</span></label>
-                        <input type="tel" id="phone-number" name="phone-number" placeholder="09##-###-####" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="facebook-link">Facebook Link <span class="text-red">*</span></label>
-                        <input type="url" id="facebook-link" name="facebook-link" placeholder="https://www.facebook.com/..." required>
-                    </div>
-                </div>
-
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <div class="form-group">
-                        <label for="email">Email Address <span class="optional">(optional)</span></label>
-                        <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com">
-                    </div>
-                </div>
 
                 <div class="line"></div>
         
@@ -167,5 +151,8 @@
     </section>
 
     <script src="../scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="../booking/booking.js"></script>
+    
 </body>
 </html>
