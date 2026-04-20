@@ -1,31 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jazz Events</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jazz Events</title>
+        
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+        
+        <!-- FontAwesome 6 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
 
-    <!-- Navigation Header -->
-    <header>
-        <div class="nav-container">
-            <!-- Mobile Menu Button -->
-            <button id="burger" class="mobile-btn">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+        <!-- Navigation Header -->
+        <header>
+            <div class="nav-container">
+                <!-- Mobile Menu Button -->
+                <button id="burger" class="mobile-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
 
-            <!-- Navigation Links -->
-            <nav class="nav-links desktop-nav">
+                <!-- Navigation Links -->
+                <nav class="nav-links desktop-nav">
+                    <a href="#">Home</a>
+                    <a href="#services-section">Services</a>
+                    <a href="#team-section">Team</a>
+                    <a href="#reviews-section">Reviews</a>
+                    <a href="#about">About Us</a>
+                    <a href="#cta-section">Contact</a>
+                </nav>
+
+                <!-- Search Bar -->
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input id="search-input" type="text" placeholder="Search Jazz Events...">
+                    <ul id="search-content"></ul>
+                </div>
+
+                <!-- Either LogIn Btn or Admin Panel -->
+                <div id="nav-auth-slot"></div>
+            </div>
+        </header>
+
+        <!-- Mobile nav overlay -->
+        <div id="nav-overlay" class="nav-overlay mobile-only">
+        <button id="close-overlay" class="close-btn">✕</button>
+            <nav class="nav-links overlay-links">
                 <a href="#">Home</a>
                 <a href="#services-section">Services</a>
                 <a href="#team-section">Team</a>
@@ -33,408 +57,405 @@
                 <a href="#about">About Us</a>
                 <a href="#cta-section">Contact</a>
             </nav>
-
-            <!-- Search Bar -->
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input id="search-input" type="text" placeholder="Search Jazz Events...">
-                <ul id="search-content"></ul>
-            </div>
-        </div>
-    </header>
-
-    <!-- Mobile nav overlay -->
-    <div id="nav-overlay" class="nav-overlay mobile-only">
-    <button id="close-overlay" class="close-btn">✕</button>
-        <nav class="nav-links overlay-links">
-            <a href="#">Home</a>
-            <a href="#services-section">Services</a>
-            <a href="#team-section">Team</a>
-            <a href="#reviews-section">Reviews</a>
-            <a href="#about">About Us</a>
-            <a href="#cta-section">Contact</a>
-        </nav>
-    </div>
-
-    <!-- Main Banner Hero Section -->
-    <section id="banner-section" class="hero">
-        <div class="hero-bg">
-            <img class="hero-img" src="assets/hero backgrounds/debut.jpg" alt="Event Catering Buffet">
-            <div class="hero-overlay"></div>
         </div>
 
-        <div class="hero-content home-page">
-            <div class="logo-container">
-                <img class="logo hero-logo" alt="Jazz Events Logo">
+        <!-- Main Banner Hero Section -->
+        <section id="banner-section" class="hero">
+            <div class="hero-bg">
+                <img class="hero-img" src="assets/hero backgrounds/debut.jpg" alt="Event Catering Buffet">
+                <div class="hero-overlay"></div>
             </div>
 
-            <p class="tagline">“Make your events possible”</p>
-
-            <button class="btn-gold bookBtn">
-                <span>Book Now</span>
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
-    </section>
-
-        <!-- Services Section -->
-        <section id="services-section">
-            <div class="container">
-                
-                <div class="services-header">
-                    <div class="flourish">
-                        <img class="gold_accent"/>
-                    </div>
-                    
-                    <h2 class="section-title text-center" style="margin: 0;"> <span class="text-gold">Services</span></h2>
-
-                    <div class="flourish flourish-right">
-                        <img class="gold_accent"/>
-                    </div>
+            <div class="hero-content home-page">
+                <div class="logo-container">
+                    <img class="logo hero-logo" alt="Jazz Events Logo">
                 </div>
 
-                <div class="services-grid">
-                    <!-- Debut Card -->
-                    <div class="service-card">
-                        <div class="service-img-box">
-                            <img src="assets/people/debut2.jpg" alt="Debut">
-                            <div class="service-img-overlay"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-title">Debut</h3>
-                            <p class="service-text">A coming of age celebration for a girl, their transition to womanhood</p>
-                            <div class="corner-triangle"></div>
-                        </div>
-                    </div>
+                <p class="tagline">“Make your events possible”</p>
 
-                    <!-- Catering Card -->
-                    <div class="service-card">
-                        <div class="service-img-box">
-                            <img src="assets/food/cater4.jpg" alt="Catering">
-                            <div class="service-img-overlay"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-title">Catering</h3>
-                            <p class="service-text">Providing excellent food services and staff accommodation</p>
-                            <div class="corner-triangle"></div>
-                        </div>
-                    </div>
-
-                    <!-- Parties and Celebrations Card -->
-                    <div class="service-card">
-                        <div class="service-img-box">
-                            <img src="assets/people/people3.jpg" alt="Celebrations">
-                            <div class="service-img-overlay"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-title">Celebrations</h3>
-                            <p class="service-text">To celebrate your loved ones birthdays or anniversaries</p>
-                            <div class="corner-triangle"></div>
-                        </div>
-                    </div>
-
-                    <!-- Crews Card -->
-                    <div class="service-card">
-                        <div class="service-img-box">
-                            <img src="assets/people/wedding.jpg" alt="Wedding">
-                            <div class="service-img-overlay"></div>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="service-title">Weddings</h3>
-                            <p class="service-text">Celebrating another year of you! Wishing you the happiest of birthdays.</p>
-                            <div class="corner-triangle"></div>
-                        </div>
-                    </div>
-                </div>
+                <a href="jazz-events/pages/booking.html" class="btn-gold bookBtn">
+                    <span>Book Now</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </section>
 
-        <!-- Info Content Section -->
-        <section class="info-section">
-            <div class="container">
-                
-            <!-- Why Book Section -->
-            <div class="container">
-                <div class="why-book-container">
-                    <h2 class="section-title text-center">Why Book From <span class="text-gold">Jazz Events?</span></h2>
+            <!-- Services Section -->
+            <section id="services-section">
+                <div class="container">
                     
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <i class="fa-solid fa-gem feature-icon"></i>
-                            <h3 class="feature-title">Exceptional Quality</h3>
-                            <p class="feature-text">Our commitment to detail ensures your event is flawlessly executed, from gourmet catering to elegant decor.</p>
+                    <div class="services-header">
+                        <div class="flourish">
+                            <img class="gold_accent"/>
                         </div>
                         
-                        <div class="feature-item">
-                            <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
-                            <h3 class="feature-title">Personalized Creativity</h3>
-                            <p class="feature-text">We tailor every detail to your unique vision, transforming your dream celebration into reality.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <i class="fa-solid fa-calendar-check feature-icon"></i>
-                            <h3 class="feature-title">Stress-Free Convenience</h3>
-                            <p class="feature-text">Enjoy our "Book Now, Pay Later" option and seamless coordination for effortless event planning.</p>
+                        <h2 class="section-title text-center" style="margin: 0;"> <span class="text-gold">Services</span></h2>
+
+                        <div class="flourish flourish-right">
+                            <img class="gold_accent"/>
                         </div>
                     </div>
-                </div>
-            </div>
-                
-            <!-- Pay Later Section -->
-            <div class="pay-later-section">
-                <div class="container">
-                    <div class="pay-later-content-wrapper">
-                        <div class="pay-later-left">
-                            <h2 class="pay-later-heading">
-                                Book Now<br><span class="text-gold">Pay Later</span>
-                            </h2>
-                            
-                            <div class="pay-later-text">
-                                <p>
-                                    With our "Book Now, Pay Later" option, you can reserve your event today with a small initial payment and enjoy <strong>flexible, manageable terms for up to six months</strong>. It's our way of helping you celebrate life's milestones without the financial strain.
-                                </p>
-                                <p>
-                                    When you choose Jazz Events, you're choosing <strong>reliability, creativity, and genuine care</strong> all working together to make your event as smooth and memorable as it should be.
-                                </p>
+
+                    <div class="services-grid">
+                        <!-- Debut Card -->
+                        <div class="service-card">
+                            <div class="service-img-box">
+                                <img src="assets/people/debut2.jpg" alt="Debut">
+                                <div class="service-img-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="service-title">Debut</h3>
+                                <p class="service-text">A coming of age celebration for a girl, their transition to womanhood</p>
+                                <div class="corner-triangle"></div>
                             </div>
                         </div>
-                        
-                        <div class="pay-later-right">
-                            <img src="assets/booknowpaylater.jpg" alt="Event setup" class="pay-later-image">
+
+                        <!-- Catering Card -->
+                        <div class="service-card">
+                            <div class="service-img-box">
+                                <img src="assets/food/cater4.jpg" alt="Catering">
+                                <div class="service-img-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="service-title">Catering</h3>
+                                <p class="service-text">Providing excellent food services and staff accommodation</p>
+                                <div class="corner-triangle"></div>
+                            </div>
                         </div>
+
+                        <!-- Parties and Celebrations Card -->
+                        <div class="service-card">
+                            <div class="service-img-box">
+                                <img src="assets/people/people3.jpg" alt="Celebrations">
+                                <div class="service-img-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="service-title">Celebrations</h3>
+                                <p class="service-text">To celebrate your loved ones birthdays or anniversaries</p>
+                                <div class="corner-triangle"></div>
+                            </div>
+                        </div>
+
+                        <!-- Crews Card -->
+                        <div class="service-card">
+                            <div class="service-img-box">
+                                <img src="assets/people/wedding.jpg" alt="Wedding">
+                                <div class="service-img-overlay"></div>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="service-title">Weddings</h3>
+                                <p class="service-text">Celebrating another year of you! Wishing you the happiest of birthdays.</p>
+                                <div class="corner-triangle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Content Section -->
+            <section class="info-section">
+                <div class="container">
+                    
+                <!-- Why Book Section -->
+                <div class="container">
+                    <div class="why-book-container">
+                        <h2 class="section-title text-center">Why Book From <span class="text-gold">Jazz Events?</span></h2>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <i class="fa-solid fa-gem feature-icon"></i>
+                                <h3 class="feature-title">Exceptional Quality</h3>
+                                <p class="feature-text">Our commitment to detail ensures your event is flawlessly executed, from gourmet catering to elegant decor.</p>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
+                                <h3 class="feature-title">Personalized Creativity</h3>
+                                <p class="feature-text">We tailor every detail to your unique vision, transforming your dream celebration into reality.</p>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <i class="fa-solid fa-calendar-check feature-icon"></i>
+                                <h3 class="feature-title">Stress-Free Convenience</h3>
+                                <p class="feature-text">Enjoy our "Book Now, Pay Later" option and seamless coordination for effortless event planning.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <!-- Pay Later Section -->
+                <div class="pay-later-section">
+                    <div class="container">
+                        <div class="pay-later-content-wrapper">
+                            <div class="pay-later-left">
+                                <h2 class="pay-later-heading">
+                                    Book Now<br><span class="text-gold">Pay Later</span>
+                                </h2>
+                                
+                                <div class="pay-later-text">
+                                    <p>
+                                        With our "Book Now, Pay Later" option, you can reserve your event today with a small initial payment and enjoy <strong>flexible, manageable terms for up to six months</strong>. It's our way of helping you celebrate life's milestones without the financial strain.
+                                    </p>
+                                    <p>
+                                        When you choose Jazz Events, you're choosing <strong>reliability, creativity, and genuine care</strong> all working together to make your event as smooth and memorable as it should be.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="pay-later-right">
+                                <img src="assets/booknowpaylater.jpg" alt="Event setup" class="pay-later-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        <!-- Team Section-->
+        <section id="team-section" class="team-section">
+            <div class="container">
+                <div class="services-header">
+                    <div class="flourish">
+                        <img class="gold_accent">
+                    </div>
+                        
+                    <h2 class="section-title text-center" style="margin: 0;">Meet the <span class="text-gold">Team</span></h2>
+                    <div class="flourish flourish-right">
+                        <img class="gold_accent">
+                    </div>
+                </div>
+
+                <div class="team-grid">
+                    <div class="team-member-card">
+                        <img src="assets/team/queen.jpg" alt="Team Member 1" class="team-member-image">
+                        <h3 class="team-member-name">Queen Albero-Velasco</h3>
+                        <p class="team-member-role">Founder</p>
+                    </div>
+
+                    <div class="team-member-card">
+                        <img src="assets/team/aj.jpg" alt="Team Member 2" class="team-member-image">
+                        <h3 class="team-member-name">Aj Velasco</h3>
+                        <p class="team-member-role">Founder</p>
+                    </div>
+
+                    <div class="team-member-card">
+                        <img src="assets/team/edrian.jpg" alt="Team Member 3" class="team-member-image">
+                        <h3 class="team-member-name">Edrian Albero</h3>
+                        <p class="team-member-role">Event Organizer</p>
+                    </div>
+
+                    <div class="team-member-card">
+                        <img src="assets/team/Xhyryn.jpg" alt="Team Member 4" class="team-member-image">
+                        <h3 class="team-member-name">Xhyryn Buenaobra</h3>
+                        <p class="team-member-role">Customer Relations</p>
                     </div>
                 </div>
             </div>
         </section>
 
-
-    <!-- Team Section-->
-    <section id="team-section" class="team-section">
+        <!-- Reviews Section -->
+        <section id="reviews-section">
         <div class="container">
             <div class="services-header">
                 <div class="flourish">
                     <img class="gold_accent">
                 </div>
                     
-                <h2 class="section-title text-center" style="margin: 0;">Meet the <span class="text-gold">Team</span></h2>
+                <h2 class="section-title text-center" style="margin: 0;"><span class="text-gold">Reviews</span></h2>
                 <div class="flourish flourish-right">
                     <img class="gold_accent">
                 </div>
             </div>
-
-            <div class="team-grid">
-                <div class="team-member-card">
-                    <img src="assets/team/queen.jpg" alt="Team Member 1" class="team-member-image">
-                    <h3 class="team-member-name">Queen Albero-Velasco</h3>
-                    <p class="team-member-role">Founder</p>
+            <div class="review-cards-container">
+                <div class="review-card">
+                    <div class="stars-container">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    
+                    <p class="review-content">Thank you so much for making my daughter’s 18th birthday extra special! Everything was beautifully done - from the setup to the flow of the event. We truly appreciate all your hard work and effort. You helped create a day we’ll never forget. Big thanks again! Bravo!</p>
+                    <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
+                    <div class="reviewer">
+                        <img src="assets/reviewers/reviewer1.jpg" alt="reviewer 1"/>
+                        <p>Adrian Melecio</p>
+                    </div>
                 </div>
-
-                <div class="team-member-card">
-                    <img src="assets/team/aj.jpg" alt="Team Member 2" class="team-member-image">
-                    <h3 class="team-member-name">Aj Velasco</h3>
-                    <p class="team-member-role">Founder</p>
+                <div class="review-card">
+                    <div class="stars-container">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    
+                    <p class="review-content">Food-wise, everything was so delicious! As for the decorations, super ganda! Even with my last-minute requests, they managed to adjust right away. The staff and servers were very friendly and accommodating, and of course, the owners were incredibly kind! Thank you so much, Jazz Events! Wishing you more successful events to come! </p>
+                    <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
+                    <div class="reviewer">
+                        <img src="assets/reviewers/reviewer2.jpg" alt="reviewer 2"/>
+                        <p>Leira Sumilang</p>
+                    </div>
                 </div>
-
-                <div class="team-member-card">
-                    <img src="assets/team/edrian.jpg" alt="Team Member 3" class="team-member-image">
-                    <h3 class="team-member-name">Edrian Albero</h3>
-                    <p class="team-member-role">Event Organizer</p>
-                </div>
-
-                <div class="team-member-card">
-                    <img src="assets/team/Xhyryn.jpg" alt="Team Member 4" class="team-member-image">
-                    <h3 class="team-member-name">Xhyryn Buenaobra</h3>
-                    <p class="team-member-role">Customer Relations</p>
+                <div class="review-card">
+                    <div class="stars-container">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    
+                    <p class="review-content">Thank you and God Bless Jazz Events! Your effort and help were truly appreciated and super worth it. Guests raved about the delicious food, and your crew was very kind, attentive, and helpful. The owners were incredibly hands-on, focused on the event, and always there to assist with our needs. Praying your business continues to grow and flourish with many more successful events. God Bless!</p>
+                        <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
+                    <div class="reviewer">
+                        <img src="assets/reviewers/reviewer3.jpg" alt="reviewer 3"/>
+                        <p>Jhen Pama Aquino</p>
+                    </div>
                 </div>
             </div>
         </div>
+        </section>
+
+        <!-- Extraordinary Section -->
+        <section id="about">
+            <div class="about-container">
+
+                <div class="about-image-wrapper">
+                    <img src="assets/food/extraordinary.jpg" alt="Jazz Events Celebration" class="about-image">
+                </div>
+
+                <div class="about-content">
+                    <p class="about-label">ABOUT US</p>
+                    <h2 class="about-heading">
+                        TRANSFORM ORDINARY MOMENTS INTO<br>
+                        <span class="text-gold">EXTRAORDINARY CELEBRATIONS</span>
+                    </h2>
+                    
+                    <p class="about-text">
+                        Jazz Events has been creating unforgettable celebrations since our founding. We believe that every milestone deserves to be celebrated without limits. That's why we offer our Buy Now, Pay Later plan — allowing you to enjoy your event today and settle your payments within six months.
+                    </p>
+                    
+                    <p class="about-text">
+                        From intimate gatherings to grand occasions, we deliver seamless coordination, exquisite catering, and personalized service — ensuring every moment becomes a cherished memory. Our team of trained professionals brings years of experience and genuine care to make your vision a reality.
+                    </p>
+                </div>
+            </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews-section">
-       <div class="container">
-           <div class="services-header">
-               <div class="flourish">
-                   <img class="gold_accent">
-               </div>
-                   
-               <h2 class="section-title text-center" style="margin: 0;"><span class="text-gold">Reviews</span></h2>
-               <div class="flourish flourish-right">
-                   <img class="gold_accent">
-               </div>
-           </div>
-           <div class="review-cards-container">
-               <div class="review-card">
-                   <div class="stars-container">
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                   </div>
-                   
-                   <p class="review-content">Thank you so much for making my daughter’s 18th birthday extra special! Everything was beautifully done - from the setup to the flow of the event. We truly appreciate all your hard work and effort. You helped create a day we’ll never forget. Big thanks again! Bravo!</p>
-                   <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
-                   <div class="reviewer">
-                       <img src="assets/reviewers/reviewer1.jpg" alt="reviewer 1"/>
-                       <p>Adrian Melecio</p>
-                   </div>
-               </div>
-               <div class="review-card">
-                   <div class="stars-container">
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                   </div>
-                   
-                   <p class="review-content">Food-wise, everything was so delicious! As for the decorations, super ganda! Even with my last-minute requests, they managed to adjust right away. The staff and servers were very friendly and accommodating, and of course, the owners were incredibly kind! Thank you so much, Jazz Events! Wishing you more successful events to come! </p>
-                   <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
-                   <div class="reviewer">
-                       <img src="assets/reviewers/reviewer2.jpg" alt="reviewer 2"/>
-                       <p>Leira Sumilang</p>
-                   </div>
-               </div>
-               <div class="review-card">
-                   <div class="stars-container">
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                       <i class="fa-solid fa-star"></i>
-                   </div>
-                   
-                   <p class="review-content">Thank you and God Bless Jazz Events! Your effort and help were truly appreciated and super worth it. Guests raved about the delicious food, and your crew was very kind, attentive, and helpful. The owners were incredibly hands-on, focused on the event, and always there to assist with our needs. Praying your business continues to grow and flourish with many more successful events. God Bless!</p>
-                       <button class="read-more-btn"> Read More <i class="fa-solid fa-chevron-down"></i> </button>
-                   <div class="reviewer">
-                       <img src="assets/reviewers/reviewer3.jpg" alt="reviewer 3"/>
-                       <p>Jhen Pama Aquino</p>
-                   </div>
-               </div>
-           </div>
-       </div>
-    </section>
-
-    <!-- Extraordinary Section -->
-    <section id="about">
-        <div class="about-container">
-
-            <div class="about-image-wrapper">
-                <img src="assets/food/extraordinary.jpg" alt="Jazz Events Celebration" class="about-image">
+        <!-- Call to Action Section -->
+        <section id="cta-section" class="cta-section">
+            <div class="hero-bg">
+                <img src="assets/people/people.jpg" alt="CTA Background">
+                <div class="hero-overlay" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);"></div>
             </div>
 
-            <div class="about-content">
-                <p class="about-label">ABOUT US</p>
-                <h2 class="about-heading">
-                    TRANSFORM ORDINARY MOMENTS INTO<br>
-                    <span class="text-gold">EXTRAORDINARY CELEBRATIONS</span>
-                </h2>
-                
-                <p class="about-text">
-                    Jazz Events has been creating unforgettable celebrations since our founding. We believe that every milestone deserves to be celebrated without limits. That's why we offer our Buy Now, Pay Later plan — allowing you to enjoy your event today and settle your payments within six months.
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Elevate Your Event?</h2>
+                <p class="section-desc" style="font-size: 1.5rem; font-weight: 300;">
+                    Let’s create something extraordinary together. Contact us to discuss your vision.
                 </p>
                 
-                <p class="about-text">
-                    From intimate gatherings to grand occasions, we deliver seamless coordination, exquisite catering, and personalized service — ensuring every moment becomes a cherished memory. Our team of trained professionals brings years of experience and genuine care to make your vision a reality.
-                </p>
-            </div>
-        </div>
-</section>
-
-    <!-- Call to Action Section -->
-    <section id="cta-section" class="cta-section">
-        <div class="hero-bg">
-             <img src="assets/people/people.jpg" alt="CTA Background">
-             <div class="hero-overlay" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);"></div>
-        </div>
-
-        <div class="cta-content">
-            <h2 class="cta-title">Ready to Elevate Your Event?</h2>
-            <p class="section-desc" style="font-size: 1.5rem; font-weight: 300;">
-                Let’s create something extraordinary together. Contact us to discuss your vision.
-            </p>
-            
-            <div class="cta-buttons">
-                <button class="btn-gold"><a href="quote/quote.html">Get a Quote</a></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Detailed Footer Section -->
-    <footer>
-        <div class="footer-grid">
-            <!-- Logo Column -->
-            <div class="footer-col">
-                <div class="logo-container" >
-                    <span class="script-text" style="font-size: 4rem;">Jazz</span>
-                    <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                <div class="cta-buttons">
+                    <a href="jazz-events/pages/booking.html" class="btn-gold">Get a Quote</a>
                 </div>
-                <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
-                    Elevating moments with exquisite culinary experiences.
-                </p>
+            </div>
+        </section>
+
+        <!-- Detailed Footer Section -->
+        <footer>
+            <div class="footer-grid">
+                <!-- Logo Column -->
+                <div class="footer-col">
+                    <div class="logo-container" >
+                        <span class="script-text" style="font-size: 4rem;">Jazz</span>
+                        <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                    </div>
+                    <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+                        Elevating moments with exquisite culinary experiences.
+                    </p>
+                </div>
+
+                <!-- Quick Links Column -->
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#banner-section">Home</a></li>
+                        <li><a href="#services-section">Services</a></li>
+                        <li><a href="#team-section">Team</a></li>
+                        <li><a href="#reviews-section">Reviews</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Column -->
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li>Weddings</li>
+                        <li>Concerts</li>
+                        <li>Corporate Events</li>
+                        <li>Graduations</li>
+                        <li>Birthday Parties</li>
+                        <li><a href="quote/quote.html">Get a Quote</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Column -->
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li class="contact-item">
+                            <i class="fa-solid fa-location-dot contact-icon"></i>
+                            <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+                        </li>
+                        <li class="contact-item">
+                            <i class="fa-solid fa-phone contact-icon"></i>
+                            <div>
+                                <div>0965 633 7494</div>
+                                <div>0997 425 7958</div>
+                            </div>
+                        </li>
+                        <li class="contact-item">
+                            <i class="fa-brands fa-facebook-f contact-icon"></i>
+                            <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Quick Links Column -->
-            <div class="footer-col">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#banner-section">Home</a></li>
-                    <li><a href="#services-section">Services</a></li>
-                    <li><a href="#team-section">Team</a></li>
-                    <li><a href="#reviews-section">Reviews</a></li>
-                    <li><a href="#about">About Us</a></li>
-                </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="policies/privacyPolicy.html">Privacy Policy</a>
+                    <a href="policies/termsOfService.html">Terms of Service</a>
+                </div>
             </div>
+        </footer>
+        
+        <script src="scripts/main.js"></script>
+        <script src="scripts/search.js"></script>
+        <script src="scripts/carousel.js"></script>
 
-            <!-- Services Column -->
-            <div class="footer-col">
-                <h3>Services</h3>
-                <ul class="footer-links">
-                    <li>Weddings</li>
-                    <li>Concerts</li>
-                    <li>Corporate Events</li>
-                    <li>Graduations</li>
-                    <li>Birthday Parties</li>
-                    <li><a href="quote/quote.html">Get a Quote</a></li>
-                </ul>
-            </div>
 
-            <!-- Contact Column -->
-            <div class="footer-col">
-                <h3>Contact Us</h3>
-                <ul class="footer-links">
-                    <li class="contact-item">
-                        <i class="fa-solid fa-location-dot contact-icon"></i>
-                        <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
-                    </li>
-                    <li class="contact-item">
-                        <i class="fa-solid fa-phone contact-icon"></i>
-                        <div>
-                            <div>0965 633 7494</div>
-                            <div>0997 425 7958</div>
-                        </div>
-                    </li>
-                    <li class="contact-item">
-                        <i class="fa-brands fa-facebook-f contact-icon"></i>
-                        <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2025 Jazz Events. All rights reserved.</p>
-            <div class="legal-links">
-                <a href="policies/privacyPolicy.html">Privacy Policy</a>
-                <a href="policies/termsOfService.html">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
-    
-    <script src="scripts/main.js"></script>
-    <script src="scripts/search.js"></script>
-    <script src="scripts/carousel.js"></script>
-
-</body>
-</html>
+    <!-- Auth-aware nav slot -->
+    <script src="scripts/db.js"></script>
+    <script>
+        (function () {
+            var user = DB.getUser();
+            var slot = document.getElementById('nav-auth-slot');
+            if (!slot) return;
+            if (user) {
+                slot.innerHTML =
+                    '<a href="dashboard/dashboard.html" class="btn-nav-login" style="display:flex;align-items:center;gap:8px;">' +
+                    '<i class="fa-solid fa-grip"></i>&nbsp;Admin Panel</a>';
+            } else {
+                slot.innerHTML =
+                    '<a href="login/login.html" class="btn-nav-login">LOG IN</a>';
+            }
+        })();
+    </script>
+    </body>
+    </html>

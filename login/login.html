@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — Jazz Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- The ONE styles.css from the project root, same file home.html uses -->
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <style>
+    /* Auth-page layout extras */
+    .auth-hero {
+      position: relative; height: 300px; overflow: hidden;
+      background: linear-gradient(135deg,#0d0d0d 0%,#1a1208 50%,#0d0d0d 100%);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 80px;
+    }
+    .auth-hero-overlay { position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(13,13,13,1)); }
+    .auth-hero-logo {
+      position:relative;z-index:2;
+      font-family:var(--font-script);font-size:5rem;
+      color:var(--text-white);text-align:center;line-height:1;
+      text-shadow:2px 4px 20px rgba(0,0,0,.9);
+    }
+    .auth-section { background-color:var(--bg-darker);padding:3rem 1rem 5rem; }
+    .auth-card {
+      background:#1a1a1a;
+      border:1px solid rgba(212,175,55,.25);
+      border-radius:12px;padding:2.5rem 2.2rem;
+      width:100%;max-width:480px;margin:0 auto;
+      box-shadow:0 20px 60px rgba(0,0,0,.5);
+    }
+    .auth-card.wide { max-width:520px; }
+    .auth-title { font-family:var(--font-script);font-size:2.4rem;color:var(--jazz-gold);text-align:center;margin-bottom:6px; }
+    .auth-subtitle { text-align:center;font-size:.78rem;color:var(--text-gray);margin-bottom:1.8rem; }
+    .field-group { margin-bottom:14px; }
+    .field-label { display:block;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--jazz-gold);margin-bottom:5px; }
+    .field-label .req { color:var(--service-red); }
+    .field-input {
+      width:100%;background:#111827;border:1px solid #374151;border-radius:8px;
+      padding:10px 14px;color:var(--text-white);font-family:var(--font-sans);
+      font-size:.82rem;outline:none;transition:border .25s,box-shadow .25s;
+    }
+    .field-input:focus { border-color:var(--jazz-gold);box-shadow:0 0 0 3px rgba(212,175,55,.12); }
+    .field-input::placeholder { color:#4b5563; }
+    .field-input.has-error { border-color:var(--service-red); }
+    .field-row { display:grid;grid-template-columns:1fr auto;gap:8px; }
+    .btn-resend {
+      background:#1f2937;border:1px solid #374151;color:var(--text-gray);
+      border-radius:8px;padding:10px 14px;font-family:var(--font-sans);
+      font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;
+    }
+    .btn-resend:hover { border-color:var(--jazz-gold);color:var(--jazz-gold); }
+    .btn-resend:disabled { opacity:.5;cursor:not-allowed; }
+    .pass-wrap { position:relative; }
+    .pass-wrap .field-input { padding-right:42px; }
+    .eye-btn { position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b7280;cursor:pointer;font-size:.85rem;padding:0;transition:color .2s; }
+    .eye-btn:hover { color:var(--jazz-gold); }
+    .err-msg { font-size:.63rem;color:#f87171;margin-top:4px;display:none; }
+    .err-msg.show { display:block; }
+    .btn-auth-submit {
+      width:100%;background:var(--jazz-gold);color:#000;font-family:var(--font-sans);
+      font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;
+      padding:13px;border:none;border-radius:9999px;cursor:pointer;margin-top:8px;
+      transition:all .3s ease;box-shadow:0 4px 16px rgba(212,175,55,.2);
+    }
+    .btn-auth-submit:hover { background:var(--jazz-gold-hover);transform:scale(1.02);box-shadow:0 6px 24px rgba(212,175,55,.4); }
+    .btn-auth-submit:disabled { opacity:.7;cursor:not-allowed;transform:none; }
+    .auth-switch { text-align:center;margin-top:14px;font-size:.76rem;color:var(--text-gray); }
+    .auth-switch a { color:var(--text-white);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none; }
+    .auth-switch a:hover { color:var(--jazz-gold); }
+    .page-toast {
+      position:fixed;bottom:24px;right:24px;background:#1a1a1a;
+      border:1px solid var(--jazz-gold);border-radius:10px;padding:13px 18px;
+      font-size:.8rem;font-family:var(--font-sans);color:#fff;z-index:9999;
+      box-shadow:0 8px 30px rgba(0,0,0,.5);
+      transform:translateY(80px);opacity:0;transition:all .3s ease;
+      max-width:320px;pointer-events:none;
+    }
+    .page-toast.show { transform:translateY(0);opacity:1; }
+    .page-toast.error { border-color:#CC0000; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <button class="mobile-btn" id="burger"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links desktop-nav">
+      <a href="../home.html">Home</a>
+      <a href="../home.html#services-section">Services</a>
+      <a href="../home.html#team-section">Team</a>
+      <a href="../home.html#reviews-section">Reviews</a>
+      <a href="../home.html#about">About Us</a>
+      <a href="../home.html#cta-section">Contact</a>
+    </nav>
+    <div class="search-wrapper">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search Jazz Events...">
+    </div>
+    <a href="login.html" class="btn-nav-login">LOG IN</a>
+  </div>
+</header>
+
+<div id="nav-overlay" class="nav-overlay mobile-only">
+  <button id="close-overlay" class="close-btn">✕</button>
+  <nav class="nav-links overlay-links">
+    <a href="../home.html">Home</a>
+    <a href="../home.html#services-section">Services</a>
+    <a href="../home.html#team-section">Team</a>
+    <a href="../home.html#reviews-section">Reviews</a>
+    <a href="../home.html#about">About Us</a>
+    <a href="../home.html#cta-section">Contact</a>
+  </nav>
+</div>
+
+<div class="auth-hero">
+  <div class="auth-hero-overlay"></div>
+  <div class="auth-hero-logo">Jazz Events</div>
+</div>
+
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-title">Log In</div>
+    <div class="auth-subtitle">Log in to your account to track your events.</div>
+
+    <div class="field-group">
+      <label class="field-label" for="l-email">Email Address <span class="req">*</span></label>
+      <input class="field-input" type="email" id="l-email" placeholder="maria@domain.com" autocomplete="email">
+      <div class="err-msg" id="l-email-err">Email address is required.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="l-code">Verification Code <span class="req">*</span></label>
+      <div class="field-row">
+        <input class="field-input" type="text" id="l-code" placeholder="Enter the code from your email" autocomplete="one-time-code">
+        <button class="btn-resend" id="l-resend-btn" onclick="sendCode('l-email','l-resend-btn')">Re-send</button>
+      </div>
+      <div class="err-msg" id="l-code-err">Verification code is required.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="l-pass">Password <span class="req">*</span></label>
+      <div class="pass-wrap">
+        <input class="field-input" type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password">
+        <button class="eye-btn" onclick="togglePass('l-pass')" type="button"><i class="fa-regular fa-eye"></i></button>
+      </div>
+      <div class="err-msg" id="l-pass-err">Password is required.</div>
+    </div>
+
+    <button class="btn-auth-submit" id="l-submit-btn" onclick="handleLogin()">LOG IN</button>
+
+    <div class="auth-switch">
+      Don't have an account yet? <a href="register.html">REGISTER</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;flex-direction:column;">
+        <span class="script-text">Jazz</span>
+        <span class="script-text" style="margin-top:-24px;margin-left:24px;">Events</span>
+      </div>
+      <p style="font-size:.875rem;margin-top:32px;line-height:1.6;max-width:300px;">Elevating moments with exquisite culinary experiences.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul class="footer-links">
+        <li><a href="../home.html">Home</a></li>
+        <li><a href="../home.html#services-section">Services</a></li>
+        <li><a href="../home.html#reviews-section">Reviews</a></li>
+        <li><a href="../home.html#about">About Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Services</h3>
+      <ul class="footer-links">
+        <li>Weddings</li><li>Concerts</li>
+        <li>Corporate Events</li><li>Graduations</li>
+        <li>Birthday Parties</li>
+        <li><a href="booking.html">Get a Quote</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Contact Us</h3>
+      <ul class="footer-links">
+        <li class="contact-item"><i class="fa-solid fa-location-dot contact-icon"></i><a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a></li>
+        <li class="contact-item"><i class="fa-solid fa-phone contact-icon"></i><div><div>0965 633 7494</div><div>0997 425 7958</div></div></li>
+        <li class="contact-item"><i class="fa-brands fa-facebook-f contact-icon"></i><a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+    <div class="legal-links">
+      <a href="../policies/privacyPolicy.html">Privacy Policy</a>
+      <a href="../policies/termsOfService.html">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<div class="page-toast" id="toast"></div>
+
+<script src="../scripts/db.js"></script>
+<script>
+  /* Mobile nav */
+  document.getElementById('burger')?.addEventListener('click',()=>document.getElementById('nav-overlay').classList.add('open'));
+  document.getElementById('close-overlay')?.addEventListener('click',()=>document.getElementById('nav-overlay').classList.remove('open'));
+
+  function showToast(msg,type){
+    const el=document.getElementById('toast');
+    el.textContent=msg;el.className='page-toast'+(type?' '+type:'');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+    clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3800);
+  }
+  function togglePass(id){
+    const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';
+    const i=el.nextElementSibling?.querySelector('i');
+    if(i){i.classList.toggle('fa-eye');i.classList.toggle('fa-eye-slash');}
+  }
+  function sendCode(emailId,btnId){
+    const email=document.getElementById(emailId)?.value.trim();
+    if(!email){showToast('Please enter your email first.','error');return;}
+    const btn=document.getElementById(btnId);if(btn.disabled)return;
+    showToast('Verification code sent to '+email);
+    let cd=60;btn.disabled=true;
+    const t=setInterval(()=>{
+      btn.textContent=`Re-send (${--cd}s)`;
+      if(cd<=0){clearInterval(t);btn.disabled=false;btn.textContent='Re-send';}
+    },1000);
+  }
+  function validate(id,errId){
+    const el=document.getElementById(id),err=document.getElementById(errId);
+    const empty=!el?.value.trim();
+    el?.classList.toggle('has-error',empty);err?.classList.toggle('show',empty);return !empty;
+  }
+  async function handleLogin(){
+    const ok=[validate('l-email','l-email-err'),validate('l-pass','l-pass-err')].every(Boolean);
+    if(!ok)return;
+    const btn=document.getElementById('l-submit-btn');
+    btn.disabled=true;btn.textContent='Logging in…';
+    // TODO: replace DB.login with real POST /api/auth/login
+    const result=await DB.login(document.getElementById('l-email').value.trim(),document.getElementById('l-pass').value);
+    if(result.ok){
+      showToast('Login successful! Redirecting…');
+      setTimeout(()=>window.location.href='../dashboard/dashboard.html',900);
+    } else {
+      showToast(result.message||'Login failed.','error');
+      btn.disabled=false;btn.textContent='LOG IN';
+    }
+  }
+  document.getElementById('l-pass')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin();});
+</script>
+</body>
+</html>

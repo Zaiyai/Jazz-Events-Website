@@ -1223,3 +1223,28 @@ footer {
     padding: 32px 24px;
     background-color: #101010;
 }
+
+/* ── Login Button (added to nav) ── */
+.btn-nav-login {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 20px;
+    background: transparent;
+    color: var(--jazz-gold);
+    border: 1.5px solid var(--jazz-gold);
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.btn-nav-login:hover {
+    background: var(--jazz-gold);
+    color: #000;
+}
