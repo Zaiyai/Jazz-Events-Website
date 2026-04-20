@@ -1,0 +1,194 @@
+.auth-section { 
+    display: none;
+    position: absolute;
+    top: 10vh;
+    left: 50vh;
+    z-index: 90000;
+    background-color:var(--bg-darker);
+    padding:3rem 1rem 5rem; 
+}
+
+.auth-card {
+    background:#1a1a1a;
+    border:1px solid rgba(212,175,55,.25);
+    border-radius:12px;padding:2.5rem 2.2rem;
+    width:100%;max-width:480px;margin:0 auto;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.auth-card.wide { max-width:520px; }
+.auth-title { 
+    font-family:var(--font-script);
+    font-size:2.4rem;
+    color:var(--jazz-gold);
+    text-align:center;
+    margin-bottom:6px; 
+}
+
+.auth-subtitle { text-align:center;
+    font-size:.78rem;
+    color:var(--text-gray);
+    margin-bottom:1.8rem; 
+}
+
+.field-group { margin-bottom:14px; }
+
+.field-label { display:block;
+    font-size:.62rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--jazz-gold);
+    margin-bottom:5px; 
+}
+
+.field-label .req { color:var(--service-red); }
+
+.field-input {
+    width:100%;
+    background:#111827;
+    border:1px solid #374151;
+    border-radius:8px;
+    padding:10px 14px;
+    color:var(--text-white);
+    font-family:var(--font-sans);
+    font-size:.82rem;
+    outline:none;
+    transition:border .25s, box-shadow .25s;
+}
+
+.field-input:focus { 
+    border-color:var(--jazz-gold);
+    box-shadow:0 0 0 3px rgba(212,175,55,.12); 
+}
+
+.field-input::placeholder { color:#4b5563; }
+
+.field-input.has-error { border-color:var(--service-red); }
+
+.field-row { 
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px; 
+}
+
+.btn-resend {
+    background:#1f2937;
+    border:1px solid #374151;
+    color:var(--text-gray);
+    border-radius:8px;
+    padding:10px 14px;
+    font-family:var(--font-sans);
+    font-size:.72rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+}
+
+.btn-resend:hover { 
+    border-color:var(--jazz-gold);
+    color:var(--jazz-gold); 
+}
+
+.btn-resend:disabled { 
+    opacity:.5;
+    cursor:not-allowed; 
+}
+
+.pass-wrap { position:relative; }
+
+.pass-wrap .field-input { padding-right:42px; }
+
+.eye-btn { 
+    position:absolute;
+    right:12px; top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:#6b7280;
+    cursor:pointer;
+    font-size:.85rem;
+    padding:0;
+    transition:color .2s; 
+}
+
+.eye-btn:hover { color:var(--jazz-gold); }
+
+.err-msg { 
+    font-size:.63rem;
+    color:#f87171;
+    margin-top:4px;
+    display:none; 
+}
+
+.err-msg.show { display:block; }
+.btn-auth-submit {
+    width:100%;
+    background:var(--jazz-gold);
+    color:#000;
+    font-family:var(--font-sans);
+    font-weight:700;
+    font-size:.82rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:13px;
+    border:none;
+    border-radius:9999px;
+    cursor:pointer;
+    margin-top:8px;
+    transition:all .3s ease;
+    box-shadow:0 4px 16px rgba(212,175,55,.2);
+}
+
+.btn-auth-submit:hover { 
+    background:var(--jazz-gold-hover);
+    transform:scale(1.02);
+    box-shadow:0 6px 24px rgba(212,175,55,.4);
+}
+
+.btn-auth-submit:disabled { 
+    opacity:.7;
+    cursor:not-allowed;
+    transform:none; 
+}
+
+.auth-switch { 
+    text-align:center;
+    margin-top:14px;
+    font-size:.76rem;
+    color:var(--text-gray); 
+}
+
+.auth-switch a { 
+    color:var(--text-white);
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    text-decoration:none; 
+}
+
+.auth-switch a:hover { color:var(--jazz-gold); }
+
+.page-toast {
+    position:fixed;
+    bottom:24px;right:24px;
+    background:#1a1a1a;
+    border:1px solid var(--jazz-gold);
+    border-radius:10px;
+    padding:13px 18px;
+    font-size:.8rem;
+    font-family:var(--font-sans);
+    color:#fff;
+    z-index:9999;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+    transform:translateY(80px);
+    opacity:0;
+    transition:all .3s ease;
+    max-width:320px;
+    pointer-events:none;
+}
+
+.page-toast.show { transform:translateY(0);opacity:1; }
+
+.page-toast.error { border-color:#CC0000; }

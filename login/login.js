@@ -1,6 +1,9 @@
-/* =============================================================
-   JAZZ EVENTS — login.js
-   ============================================================= */
+const loginBtn = document.getElementById('nav-auth-slot');
+const loginSection = document.getElementsByClassName('auth-section')[0];
+
+function displayLogin() {
+  loginSection.style.display = "block";
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   // If already logged in, redirect
