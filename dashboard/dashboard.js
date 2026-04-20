@@ -14,10 +14,10 @@ let deletePending = null; // { type: 'event'|'task', id }
 document.addEventListener('DOMContentLoaded', async () => {
   // Auth guard — redirect to login if no session
   const user = DB.getUser();
-  if (!user) {
-    window.location.href = 'login.html';
-    return;
-  }
+  // if (!user) {
+  //   window.location.href = 'login.html';
+  //   return;
+  // }
 
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;

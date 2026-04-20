@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="../dashboard/dashboard.css">
   <style>
     .auth-hero {
       position:relative;height:260px;overflow:hidden;
@@ -142,13 +141,13 @@
 
     <div class="check-row">
       <input type="checkbox" id="r-terms">
-      <label for="r-terms">I agree to the <a href="../../policies/termsOfService.html" target="_blank">Terms of Service</a> and <a href="../policies/privacyPolicy.html" target="_blank">Privacy Policy</a></label>
+      <label for="r-terms">I agree to the <a href="../policies/termsOfService.html" target="_blank">Terms of Service</a> and <a href="../policies/privacyPolicy.html" target="_blank">Privacy Policy</a></label>
     </div>
     <div class="err-msg" id="r-terms-err" style="margin-top:-10px;margin-bottom:10px;">You must agree to continue.</div>
 
     <button class="btn-auth-submit" id="r-submit-btn" onclick="handleRegister()">REGISTER</button>
 
-    <div class="auth-switch">Already have an account? <a href="login.html">LOG IN</a></div>
+    <div class="auth-switch">Already have an account? <a href="../home.html" onclick="displayLogin()">LOG IN</a></div>
   </div>
 </section>
 
@@ -167,27 +166,16 @@
 
 <div class="page-toast" id="toast"></div>
 <script src="../scripts/db.js"></script>
+<script src="register.js"></script>
 <script>
-  document.getElementById('burger')?.addEventListener('click',()=>document.getElementById('nav-overlay').classList.add('open'));
-  document.getElementById('close-overlay')?.addEventListener('click',()=>document.getElementById('nav-overlay').classList.remove('open'));
-  function showToast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='page-toast'+(type?' '+type:'');requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3800);}
+  document.getElementById('burger')?.addEventListener('click', ()=> document.getElementById('nav-overlay').classList.add('open'));
+
+  document.getElementById('close-overlay') ?.addEventListener('click', () => document.getElementById('nav-overlay').classList.remove('open'));
+
+  function showToast(msg,type) {
+    const el=document.getElementById('toast');el.textContent=msg;el.className='page-toast'+(type?' '+type:'');requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3800);}
   function togglePass(id){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';const i=el.nextElementSibling?.querySelector('i');if(i){i.classList.toggle('fa-eye');i.classList.toggle('fa-eye-slash');}}
   function sendCode(emailId,btnId){const email=document.getElementById(emailId)?.value.trim();if(!email){showToast('Please enter your email first.','error');return;}const btn=document.getElementById(btnId);if(btn.disabled)return;showToast('Verification code sent to '+email);let cd=60;btn.disabled=true;const t=setInterval(()=>{btn.textContent=`Re-send (${--cd}s)`;if(cd<=0){clearInterval(t);btn.disabled=false;btn.textContent='Re-send';}},1000);}
-  function validate(id,errId){const el=document.getElementById(id),err=document.getElementById(errId);const empty=!el?.value.trim();el?.classList.toggle('has-error',empty);err?.classList.toggle('show',empty);return !empty;}
-  async function handleRegister(){
-    const ok=[validate('r-name','r-name-err'),validate('r-email','r-email-err'),validate('r-code','r-code-err'),validate('r-pass','r-pass-err'),validate('r-pass2','r-pass2-err')].every(Boolean);
-    const pass=document.getElementById('r-pass').value,pass2=document.getElementById('r-pass2').value;
-    const p2err=document.getElementById('r-pass2-err');
-    if(pass&&pass2&&pass!==pass2){document.getElementById('r-pass2').classList.add('has-error');p2err.textContent='Passwords do not match.';p2err.classList.add('show');return;}else{p2err.classList.remove('show');}
-    const terms=document.getElementById('r-terms'),terr=document.getElementById('r-terms-err');
-    if(!terms.checked){terr.classList.add('show');return;}else{terr.classList.remove('show');}
-    if(!ok)return;
-    const btn=document.getElementById('r-submit-btn');btn.disabled=true;btn.textContent='Creating account…';
-    // TODO: replace with real POST /api/auth/register
-    const result=await DB.register({name:document.getElementById('r-name').value.trim(),email:document.getElementById('r-email').value.trim(),code:document.getElementById('r-code').value.trim(),password:pass});
-    if(result.ok){showToast('Account created! Redirecting to login…');setTimeout(()=>window.location.href='login.html',1100);}
-    else{showToast(result.message||'Registration failed.','error');btn.disabled=false;btn.textContent='REGISTER';}
-  }
 </script>
 </body>
 </html>

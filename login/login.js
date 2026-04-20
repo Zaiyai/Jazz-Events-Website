@@ -16,54 +16,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+function validate(id,errId){
+  const el=document.getElementById(id),err=document.getElementById(errId);
+  const empty=!el?.value.trim();
+  el?.classList.toggle('has-error',empty);err?.classList.toggle('show',empty);return !empty;
+}
+
 async function handleLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value;
+  const ok=[validate('l-email','l-email-err'),validate('l-pass','l-pass-err')].every(Boolean);
+  
+  if(!ok)return;
 
-  const valid = validateForm([
-    { id: 'login-email', msg: 'Email address is required.' },
-    { id: 'login-pass',  msg: 'Password is required.' },
-  ]);
-  if (!valid) return;
+  const btn=document.getElementById('l-submit-btn');
 
-  const btn = document.getElementById('login-btn');
-  btn.textContent = 'Logging in…';
-  btn.disabled = true;
+  btn.disabled=true;btn.textContent='Logging in…';
 
-  const result = await DB.login(email, pass);
+  // TODO: replace DB.login with real POST /api/auth/login
 
-  if (result.ok) {
+  const result=await DB.login(document.getElementById('l-email').value.trim(),document.getElementById('l-pass').value);
+
+  if(result.ok){
     showToast('Login successful! Redirecting…');
-    setTimeout(() => window.location.href = '../dashboard/dashboard.html', 900);
+    setTimeout(()=>window.location.href='../dashboard/dashboard.html',900);
   } else {
-    showToast(result.message || 'Login failed.', 'error');
-    btn.textContent = 'LOG IN';
-    btn.disabled = false;
+    showToast(result.message||'Login failed.','error');
+    btn.disabled=false;btn.textContent='LOG IN';
   }
 }
 
-let resendTimer = null;
-let resendCooldown = 0;
-
-function handleResend() {
-  if (resendCooldown > 0) return;
-  const email = document.getElementById('login-email').value.trim();
-  if (!email) { showToast('Please enter your email first.', 'error'); return; }
-
-  // TODO: call POST /api/auth/send-code with email
-  showToast('Verification code sent to ' + email);
-
-  resendCooldown = 60;
-  const btn = document.getElementById('resend-btn');
-  resendTimer = setInterval(() => {
-    resendCooldown--;
-    btn.textContent = `Re-send (${resendCooldown}s)`;
-    if (resendCooldown <= 0) {
-      clearInterval(resendTimer);
-      btn.textContent = 'Re-send';
-    }
-  }, 1000);
+function showToast(msg,type){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='page-toast'+(type?' '+type:'');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),3800);
 }
-
-window.handleLogin  = handleLogin;
-window.handleResend = handleResend;

@@ -2,7 +2,7 @@
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initialogin-scale=1.0">
         <title>Jazz Events</title>
         
         <!-- Google Fonts -->
@@ -88,37 +88,36 @@
                 <div class="auth-subtitle">Log in to your account to track your events.</div>
 
                 <div class="field-group">
-                <label class="field-label" for="l-email">Email Address <span class="req">*</span></label>
-                <input class="field-input" type="email" id="l-email" placeholder="maria@domain.com" autocomplete="email">
-                <div class="err-msg" id="l-email-err">Email address is required.</div>
+                <label class="field-label" for="login-email">Email Address <span class="req">*</span></label>
+                <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                <div class="err-msg" id="login-emailogin-err">Email address is required.</div>
                 </div>
 
                 <div class="field-group">
-                <label class="field-label" for="l-code">Verification Code <span class="req">*</span></label>
+                <label class="field-label" for="login-code">Verification Code <span class="req">*</span></label>
                 <div class="field-row">
-                    <input class="field-input" type="text" id="l-code" placeholder="Enter the code from your email" autocomplete="one-time-code">
-                    <button class="btn-resend" id="l-resend-btn" onclick="sendCode('l-email','l-resend-btn')">Re-send</button>
+                    <input class="field-input" type="text" id="login-code" placeholder="Enter the code from your email" autocomplete="one-time-code">
+                    <button class="btn-resend" id="login-resend-btn" onclick="sendCode('login-email','login-resend-btn')">Re-send</button>
                 </div>
-                <div class="err-msg" id="l-code-err">Verification code is required.</div>
+                <div class="err-msg" id="login-code-err">Verification code is required.</div>
                 </div>
 
                 <div class="field-group">
-                <label class="field-label" for="l-pass">Password <span class="req">*</span></label>
+                <label class="field-label" for="login-pass">Password <span class="req">*</span></label>
                 <div class="pass-wrap">
-                    <input class="field-input" type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password">
-                    <button class="eye-btn" onclick="togglePass('l-pass')" type="button"><i class="fa-regular fa-eye"></i></button>
+                    <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+                    <button class="eye-btn" onclick="togglePass('login-pass')" type="button"><i class="fa-regular fa-eye"></i></button>
                 </div>
-                <div class="err-msg" id="l-pass-err">Password is required.</div>
+                <div class="err-msg" id="login-pass-err">Password is required.</div>
                 </div>
 
-                <button class="btn-auth-submit" id="l-submit-btn" onclick="handleLogin()">LOG IN</button>
+                <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
 
                 <div class="auth-switch">
-                Don't have an account yet? <a href="register.html">REGISTER</a>
+                Don't have an account yet? <a href="login/register.html">REGISTER</a>
                 </div>
             </div>
         </div>
-
 
             <!-- Services Section -->
             <section id="services-section">
@@ -468,12 +467,14 @@
 
             <div class="footer-bottom">
                 <p>&copy; 2025 Jazz Events. All rights reserved.</p>
-                <div class="legal-links">
+                <div class="legalogin-links">
                     <a href="policies/privacyPolicy.html">Privacy Policy</a>
                     <a href="policies/termsOfService.html">Terms of Service</a>
                 </div>
             </div>
         </footer>
+
+        <div class="page-toast" id="toast"></div>
         
         <script src="scripts/main.js"></script>
         <script src="scripts/search.js"></script>

@@ -1,61 +1,55 @@
-/* =============================================================
-   JAZZ EVENTS — register.js
-   ============================================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
   guestOnly('../dashboard/dashboard.html');
   renderNavUser('nav-user-slot');
 });
 
+function validate(id,errId) {
+  const el = document.getElementById(id), err = document.getElementById(errId); 
+  const empty =! el ?.value.trim();
+  el ?.classList.toggle('has-error',empty);
+  err ?.classList.toggle('show',empty);
+  return !empty;
+}
+
 async function handleRegister() {
-  const name   = document.getElementById('reg-name').value.trim();
-  const email  = document.getElementById('reg-email').value.trim();
-  const code   = document.getElementById('reg-code').value.trim();
-  const pass   = document.getElementById('reg-pass').value;
-  const pass2  = document.getElementById('reg-pass2').value;
-  const terms  = document.getElementById('terms-cb').checked;
+  const ok = [
+    validate('r-name','r-name-err'), 
+    validate('r-email','r-email-err'),
+    validate('r-code','r-code-err'),
+    validate('r-pass','r-pass-err'),
+    validate('r-pass2','r-pass2-err')].every(Boolean);
 
-  // Required field validation
-  const valid = validateForm([
-    { id: 'reg-name',  msg: 'Full name is required.' },
-    { id: 'reg-email', msg: 'Email address is required.' },
-    { id: 'reg-code',  msg: 'Verification code is required.' },
-    { id: 'reg-pass',  msg: 'Password is required.' },
-    { id: 'reg-pass2', msg: 'Please confirm your password.' },
-  ]);
-
-  // Password match
-  const p2Err = document.getElementById('reg-pass2-err');
+  const pass = document.getElementById('r-pass').value, pass2 = document.getElementById('r-pass2').value;
+  const p2err = document.getElementById('r-pass2-err');
+  
   if (pass && pass2 && pass !== pass2) {
-    document.getElementById('reg-pass2').classList.add('error');
-    p2Err.textContent = 'Passwords do not match.';
-    p2Err.classList.add('show');
+    document.getElementById('r-pass2').classList.add('has-error');
+    p2err.textContent = 'Passwords do not match.';
+    p2err.classList.add('show');
     return;
+  } else { p2err.classList.remove('show'); }
+  
+  const terms = document.getElementById('r-terms'), terr = document.getElementById('r-terms-err');
+  
+  if (!terms.checked) {
+    terr.classList.add('show');
+    return; 
   } else {
-    p2Err.classList.remove('show');
+    terr.classList.remove('show');
   }
+  
+  if (!ok) return;
 
-  // Terms
-  const termsErr = document.getElementById('terms-err');
-  if (!terms) {
-    termsErr.textContent = 'You must agree to the Terms of Service.';
-    termsErr.classList.add('show');
-    return;
-  } else {
-    termsErr.classList.remove('show');
-  }
-
-  if (!valid) return;
-
-  const btn = document.getElementById('reg-btn');
-  btn.textContent = 'Creating account…';
+  const btn = document.getElementById('r-submit-btn');
   btn.disabled = true;
+  btn.textContent = 'Creating account…';
 
-  const result = await DB.register({ name, email, code, pass });
+  // TODO: replace with real POST /api/auth/register
+  const result = await DB.register({name:document.getElementById('r-name').value.trim(), email:document.getElementById('r-email').value.trim(), code:document.getElementById('r-code').value.trim(), password:pass});
 
   if (result.ok) {
     showToast('Account created! Redirecting to login…');
-    setTimeout(() => window.location.href = 'login.html', 1200);
+    window.location.href = '../home.html'
   } else {
     showToast(result.message || 'Registration failed.', 'error');
     btn.textContent = 'REGISTER';
@@ -86,5 +80,5 @@ function handleRegResend() {
   }, 1000);
 }
 
-window.handleRegister  = handleRegister;
-window.handleRegResend = handleRegResend;
+// window.handleRegister  = handleRegister;
+// window.handleRegResend = handleRegResend;
