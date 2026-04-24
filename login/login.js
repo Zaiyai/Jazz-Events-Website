@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function validate(id,errId){
-  const el = document.getElementById(id),err=document.getElementById(errId);
+  const el = document.getElementById(id), err=document.getElementById(errId);
   const empty =! el?.value.trim();
   el?.classList.toggle('has-error',empty);
   err?.classList.toggle('show',empty);
@@ -25,7 +25,7 @@ function validate(id,errId){
 }
 
 async function handleLogin() {
-  const ok = [validate('login-email','login-emailogin-err'),validate('login-pass','login-pass-err')].every(Boolean);
+  const ok = [validate('login-email','login-emailogin-err'), validate('login-pass','login-pass-err')].every(Boolean);
   
   if (!ok) return;
 
@@ -36,15 +36,29 @@ async function handleLogin() {
 
   // TODO: replace DB.login with real POST /api/auth/login
 
-  const result=await DB.login(document.getElementById('login-email').value.trim(),document.getElementById('login-pass').value);
+  const loginRequest = new Request("http://localhost/Jazz Events Website/database.php", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username: "example_user" }), 
+  });
 
-  if(result.ok){
+  await fetch(loginRequest)
+    .then(response => response.text())
+    .then(data => console.log("Server says: " + data))
+    .catch(error => console.error("Error:", error));
+  console.log(loginRequest.status);
+
+  const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
+
+  if (result.ok) {
     showToast('Login successful! Redirecting…');
     setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
   } else {
     showToast(result.message||'Login failed.','error'); 
-    btn.disabled=false;
-    btn.textContent='LOG IN';
+    btn.disabled = false;
+    btn.textContent = 'LOG IN';
   }
 }
 
