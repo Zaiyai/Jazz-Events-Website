@@ -6,9 +6,9 @@
     <title>Event Booking - Jazz Events</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="booking.css">
     
@@ -168,33 +168,36 @@
                     </div>
                 </div>
 
-
-
-                <div class="line"></div>
-                
-                <h3 class="section-subtitle">Where Can We <span class="text-gold">Contact You?</span></h3>
-
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone-number">Phone Number <span class="text-red">*</span></label>
-                        <input type="tel" id="phone-number" name="phone-number" placeholder="09##-###-####" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="facebook-link">Facebook Link <span class="text-red">*</span></label>
-                        <input type="url" id="facebook-link" name="facebook-link" placeholder="https://www.facebook.com/..." required>
+                    <div class="form-group full-width">
+                        <label for="event-budget">Estimated Event Budget</label>
+                        <div class="budget-input-container">
+                            <p class="currency-symbol">₱</p>
+                            <div class="divider"></div>
+                            <input class="budget-input" type="number" id="event-budget" name="budget" placeholder="~XXX,XXX" required>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <div class="form-group">
-                        <label for="email">Email Address <span class="optional">(optional)</span></label>
+                <div class="additional-detail">
+                    <p>*Tentative budget bracket based on number of guests and services applied for</p>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="email">Email Address <span class="text-red">*</span></label>
                         <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com">
                     </div>
                 </div>
 
-                <div class="line"></div>
-        
+                <div class="additional-detail">
+                    <p>(We will send a copy of your event details through this email)</p>
+                </div>
+                
+                <br><br>
+
                 <h3 class="section-subtitle">Personal <span class="text-gold">Requests</span></h3>
                 <textarea id="message" name="message" placeholder="Tell us about your vision for this event..."></textarea>
                 
