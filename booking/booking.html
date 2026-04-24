@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 
-                <h3 class="section-subtitle">Event <span class="text-gold">Details</span></h3>
+                <h3 class="section-subtitle">Your Event <span class="text-gold">Details</span></h3>
                 
                 <div class="form-row">
                     <div class="form-group">
@@ -77,7 +77,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Event Date <span class="text-red">*</span></label>
+                        <label for="date">Event Date From <span class="text-red">*</span></label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Event Date To <span class="text-red">*</span></label>
                         <input type="date" id="date" name="date" required>
                     </div>
 
@@ -85,8 +90,20 @@
                         <label for="attendees">Estimated Number of Guests <span class="text-red">*</span></label>
                         <input type="number" id="attendees" name="attendees" placeholder="e.g. 100" min="1" required>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Venue Location <span class="text-red">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
+                    </div>
                 </div>
                 
+                <div class="form-row full-width">
+                    <div class="form-group">
+                        <label for="theme">Event Theme <span class="text-red">*</span></label>
+                        <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label>Services Needed (Check all that apply) <span class="text-red">*</span></label>
@@ -115,19 +132,6 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="name">Venue Location <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
-                    </div>
-                </div>
-
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <div class="form-group">
-                        <label for="theme">Event Theme <span class="text-red">*</span></label>
-                        <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
-                    </div>
-                </div>
 
 
                 <div class="line"></div>
