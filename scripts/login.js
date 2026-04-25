@@ -37,8 +37,6 @@ async function handleLogin() {
   btn.disabled = true;
   btn.textContent = 'Logging in…';
 
-  // const loginRequest = new Request();
-
   fetch("scripts/login.php", {
     method: "POST",
     headers: {
@@ -60,16 +58,16 @@ async function handleLogin() {
     });
     // .catch(error => console.error("Error:", error));
 
-  // const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
+  const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
 
-  // if (result.ok) {
-  //   showToast('Login successful! Redirecting…');
-    // setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
-  // } else {
-  //   showToast(result.message||'Login failed.','error'); 
-  //   btn.disabled = false;
-  //   btn.textContent = 'LOG IN';
-  // }
+  if (result.ok) {
+    showToast('Login successful! Redirecting…');
+    setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
+  } else {
+    showToast(result.message||'Login failed.','error'); 
+    btn.disabled = false;
+    btn.textContent = 'LOG IN';
+  }
 }
 
 function showToast(msg,type){
