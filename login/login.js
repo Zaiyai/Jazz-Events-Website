@@ -1,3 +1,6 @@
+const loginEmail = document.getElementById('login-email');
+const loginPass = document.getElementById('login-pass');
+
 const loginBtn = document.getElementById('nav-auth-slot');
 const loginSection = document.getElementsByClassName('auth-section')[0];
 
@@ -29,26 +32,27 @@ async function handleLogin() {
   
   if (!ok) return;
 
+  const data = {
+    email: loginEmail.value.trim()
+  }
+
   const btn = document.getElementById('login-submit-btn');
 
-  btn.disabled=true;
-  btn.textContent='Logging in…';
+  btn.disabled = true;
+  btn.textContent = 'Logging in…';
 
-  // TODO: replace DB.login with real POST /api/auth/login
-
-  const loginRequest = new Request("http://localhost/Jazz Events Website/database.php", {
+  const loginRequest = new Request("../scripts/database.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({ username: "example_user" }), 
+    body: JSON.stringify(data), 
   });
 
   await fetch(loginRequest)
     .then(response => response.text())
     .then(data => console.log("Server says: " + data))
     .catch(error => console.error("Error:", error));
-  console.log(loginRequest.status);
 
   const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
 
