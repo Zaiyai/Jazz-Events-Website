@@ -1,3 +1,6 @@
+const loginEmail = document.getElementById('login-email');
+const loginPass = document.getElementById('login-pass');
+
 const loginBtn = document.getElementById('nav-auth-slot');
 const loginSection = document.getElementsByClassName('auth-section')[0];
 
@@ -7,8 +10,8 @@ function displayLogin() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // If already logged in, redirect
-  guestOnly('dashboard/dashboard.html');
-  renderNavUser('nav-user-slot');
+  // guestOnly('dashboard/dashboard.html');
+  // renderNavUser('nav-user-slot');
 
   // Enter key submits
   document.addEventListener('keydown', e => {
@@ -31,35 +34,42 @@ async function handleLogin() {
 
   const btn = document.getElementById('login-submit-btn');
 
-  btn.disabled=true;
-  btn.textContent='Logging in…';
+  btn.disabled = true;
+  btn.textContent = 'Logging in…';
 
-  // TODO: replace DB.login with real POST /api/auth/login
+  // const loginRequest = new Request();
 
-  const loginRequest = new Request("http://localhost/Jazz Events Website/database.php", {
+  fetch("scripts/login.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({ username: "example_user" }), 
-  });
+    body: JSON.stringify({ email: loginEmail.value.trim() }), 
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    })
+    .then(data => {
+      if(data.status == "success"){
+          window.alert(data.message);
+          setTimeout(() => window.location.href = data.redirect, 1500);
+      } else {
+        console.log("Server says: " + data)
+      }
+    });
+    // .catch(error => console.error("Error:", error));
 
-  await fetch(loginRequest)
-    .then(response => response.text())
-    .then(data => console.log("Server says: " + data))
-    .catch(error => console.error("Error:", error));
-  console.log(loginRequest.status);
+  // const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
 
-  const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
-
-  if (result.ok) {
-    showToast('Login successful! Redirecting…');
-    setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
-  } else {
-    showToast(result.message||'Login failed.','error'); 
-    btn.disabled = false;
-    btn.textContent = 'LOG IN';
-  }
+  // if (result.ok) {
+  //   showToast('Login successful! Redirecting…');
+    // setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
+  // } else {
+  //   showToast(result.message||'Login failed.','error'); 
+  //   btn.disabled = false;
+  //   btn.textContent = 'LOG IN';
+  // }
 }
 
 function showToast(msg,type){
