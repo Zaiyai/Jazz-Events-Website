@@ -53,24 +53,17 @@ async function handleLogin() {
       return response.json();
     })
     .then(data => {
-      if(data.status == "success"){
-          window.alert(data.message);
-          setTimeout(() => window.location.href = data.redirect, 1500);
-      } else {
-        console.log("Server says: " + data)
+      showToast(data.message);
+      if (data.status == "success") { 
+        setTimeout(() => 
+          window.location.href = data.redirect, 1500); 
+      } else { 
+        btn.disabled = false;
+        btn.textContent = 'LOG IN';
       }
     });
 
-  const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
-
-  if (result.ok) {
-    showToast('Login successful! Redirecting…');
-    setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
-  } else {
-    showToast(result.message||'Login failed.','error'); 
-    btn.disabled = false;
-    btn.textContent = 'LOG IN';
-  }
+  // const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
 }
 
 function showToast(msg,type){

@@ -32,7 +32,7 @@ if ($result && $result->num_rows === 1) {
     echo json_encode([
         "status"   => "success",
         "message"  => "Login successful!",
-        "redirect" => "/dashboard.php"
+        "redirect" => "dashboard/dashboard.php"
     ]);
 } else {
     echo json_encode([
