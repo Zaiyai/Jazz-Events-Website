@@ -32,6 +32,10 @@ async function handleLogin() {
   
   if (!ok) return;
 
+  const data = {
+    email: loginEmail.value.trim()
+  }
+
   const btn = document.getElementById('login-submit-btn');
 
   btn.disabled = true;
@@ -56,7 +60,6 @@ async function handleLogin() {
         console.log("Server says: " + data)
       }
     });
-    // .catch(error => console.error("Error:", error));
 
   const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
 

@@ -6,9 +6,9 @@
     <title>Event Booking - Jazz Events</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="booking.css">
     
@@ -50,7 +50,7 @@
         </div>
 
         <div class="hero-content">
-            <form class="form-container" action="#" method="POST">
+            <form class="form-container" action="booking_registry.php" method="post">
                 <div class="services-header">
                     <div class="flourish">
                         <img class="gold_accent" src="../images/gold_accent.png" alt="">
@@ -63,53 +63,107 @@
                     </div>
                 </div>
                 
-                <h3 class="section-subtitle">Event <span class="text-gold">Details</span></h3>
+                <h3 class="section-subtitle">Your Event <span class="text-gold">Details</span></h3>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event">Type of Event <span class="text-red">*</span></label>
-                        <input type="text" id="event" name="event" placeholder="e.g. Wedding Reception" required>
+                        <input type="text" id="event" name="type" placeholder="e.g. Wedding Reception" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Full Name of Celebrant/s <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B." required>
+                        <label for="celebrant_name">Full Name of Celebrant/s <span class="text-red">*</span></label>
+                        <input type="text" id="name" name="celebrant_name" placeholder="e.g. Dela Cruz, Maria B." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Event Date <span class="text-red">*</span></label>
-                        <input type="date" id="date" name="date" required>
+                        <label for="event_date_from">Event Date From <span class="text-red">*</span></label>
+                        <input type="date" id="date" name="event_date_from" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="attendees">Estimated Number of Guests <span class="text-red">*</span></label>
-                        <input type="number" id="attendees" name="attendees" placeholder="e.g. 100" min="1" required>
+                        <label for="event_date_to">Event Date To <span class="text-red">*</span></label>
+                        <input type="date" id="date" name="event_date_to" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_of_guests">Estimated Number of Guests <span class="text-red">*</span></label>
+                        <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="venue">Venue Location <span class="text-red">*</span></label>
+                        <input type="text" id="name" name="venue" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group full-width">
+                        <label for="theme">Event Themed <span class="text-red">*</span></label>
+                        <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
                         <label>Services Needed (Check all that apply) <span class="text-red">*</span></label>
-                        <div class="checkbox-group">
+                        <div class="checkb
+                        ox-group">
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="catering">
-                                <span>Full Catering</span>
+                                <div class="service">
+                                    <span>Full Catering</span>
+                                    <p class="service-detail">Food & Beverage</p>
+                                </div>
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="styling">
-                                <span>Event Styling / Decor</span>
+                                <div class="service">
+                                    <span>Event Styling</span>
+                                    <p class="service-detail">Concept & Layout Design</p>
+                                </div>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="lights-sounds">
-                                <span>Lights & Sounds</span>
+                                <input type="checkbox" name="service" value="decoration">
+                                <div class="service">
+                                    <span>Decoration</span>
+                                    <p class="service-detail">Floral, Table & Venue Decor</p>
+                                </div>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="service" value="photo-video">
-                                <span>Photo & Video</span>
+                                <input type="checkbox" name="service" value="lights">
+                                <div class="service">
+                                    <span>Lights</span>
+                                    <p class="service-detail">Ambient & Stage Lighting</p>
+                                </div>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="sounds">
+                                <div class="service">
+                                    <span>Sounds</span>
+                                    <p class="service-detail">PA System & Audio Setup</p>
+                                </div>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="photography">
+                                <div class="service">
+                                    <span>Photography</span>
+                                    <p class="service-detail">Professional Photo Coverage</p>
+                                </div>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="service" value="videography">
+                                <div class="service">
+                                    <span>Videography</span>
+                                    <p class="service-detail">Full Video Production</p>
+                                </div>
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="coordination">
-                                <span>Guidance & Coordination</span>
+                                <div class="service">
+                                    <span>Guidance & Coordination</span>
+                                    <p class="service-detail">Day-of Event Coordination</p>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -117,44 +171,34 @@
 
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="name">Venue Location <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
+                        <label for="event-budget">Estimated Event Budget</label>
+                        <div class="budget-input-container">
+                            <p class="currency-symbol">₱</p>
+                            <div class="divider"></div>
+                            <input class="budget-input" type="number" id="event-budget" name="budget" placeholder="~XXX,XXX" required>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <div class="form-group">
-                        <label for="theme">Event Theme <span class="text-red">*</span></label>
-                        <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
-                    </div>
+                <div class="additional-detail">
+                    <p>*Tentative budget bracket based on number of guests and services applied for</p>
                 </div>
-
 
                 <div class="line"></div>
-                
-                <h3 class="section-subtitle">Where Can We <span class="text-gold">Contact You?</span></h3>
 
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone-number">Phone Number <span class="text-red">*</span></label>
-                        <input type="tel" id="phone-number" name="phone-number" placeholder="09##-###-####" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="facebook-link">Facebook Link <span class="text-red">*</span></label>
-                        <input type="url" id="facebook-link" name="facebook-link" placeholder="https://www.facebook.com/..." required>
-                    </div>
-                </div>
-
-                <div class="form-row" style="display: flex; justify-content: center;">
-                    <div class="form-group">
-                        <label for="email">Email Address <span class="optional">(optional)</span></label>
+                    <div class="form-group full-width">
+                        <label for="email">Email Address <span class="text-red">*</span></label>
                         <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com">
                     </div>
                 </div>
 
-                <div class="line"></div>
-        
+                <div class="additional-detail">
+                    <p>(We will send a copy of your event details through this email)</p>
+                </div>
+                
+                <br><br>
+
                 <h3 class="section-subtitle">Personal <span class="text-gold">Requests</span></h3>
                 <textarea id="message" name="message" placeholder="Tell us about your vision for this event..."></textarea>
                 

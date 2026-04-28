@@ -1,11 +1,3 @@
-var bookBtn = document.getElementsByClassName("bookBtn");
-
-for(i = 0; i < bookBtn.length; i++) {
-    bookBtn[i].addEventListener("click", () => {
-        window.location.href = "booking/booking.html";
-    })
-}
-
 // Read More functionality for reviews
 document.querySelectorAll('.read-more-btn').forEach(btn => {
     btn.addEventListener('click', function() {
