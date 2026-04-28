@@ -1,0 +1,115 @@
+function validate(id,errId) {
+  const el = document.getElementById(id), err = document.getElementById(errId); 
+  const empty =! el ?.value.trim();
+  el ?.classList.toggle('has-error',empty);
+  err ?.classList.toggle('show',empty);
+  return !empty;
+}
+
+async function handleRegister() {
+  const ok = [
+    validate('name','name-err'), 
+    validate('email','email-err'),
+    validate('code','code-err'),
+    validate('pass','pass-err'),
+    validate('pass2','pass2-err')].every(Boolean);
+
+  const pass = document.getElementById('pass').value, pass2 = document.getElementById('pass2').value;
+  const p2err = document.getElementById('pass2-err');
+  
+  if (pass && pass2 && pass !== pass2) {
+    document.getElementById('pass2').classList.add('has-error');
+    p2err.classList.add('show');
+    return;
+  } else { p2err.classList.remove('show'); }
+  
+  const terms = document.getElementById('terms'), terr = document.getElementById('terms-err');
+  
+  if (!terms.checked) {
+    terr.classList.add('show');
+    return; 
+  } else {
+    terr.classList.remove('show');
+  }
+  
+  if (!ok) return;
+
+  const btn = document.getElementById('submit-btn');
+
+  const registerData = {
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    password: pass
+  }
+
+  fetch("register.php", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(registerData), 
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    })
+    .then(data => { 
+      showToast(data.message);
+      if (data.status == "success") { 
+        btn.disabled = true;
+        btn.textContent = 'Creating account…';
+        setTimeout(() => 
+          window.location.href = data.redirect, 1500);
+      } else { 
+        btn.disabled = false;
+        btn.textContent = 'REGISTER';
+      }
+    });
+
+  // TODO: replace with real POST /api/auth/register
+  // const result = await DB.register({name:document.getElementById('name').value.trim(), email:document.getElementById('email').value.trim(), code:document.getElementById('code').value.trim(), password:pass});
+
+  // if (result.ok) {
+  //   showToast('Account created! Redirecting to login…');
+  //   window.location.href = '../home.html'
+  // } else {
+  //   showToast(result.message || 'Registration failed.', 'error');
+  //   btn.textContent = 'REGISTER';
+  //   btn.disabled = false;
+  // }
+}
+
+let regResendTimer = null;
+let regResendCooldown = 0;
+
+function handleRegResend() {
+  if (regResendCooldown > 0) return;
+  const email = document.getElementById('reg-email').value.trim();
+  if (!email) { showToast('Please enter your email first.', 'error'); return; }
+
+  // TODO: call POST /api/auth/send-code
+  showToast('Verification code sent to ' + email);
+
+  regResendCooldown = 60;
+  const btn = document.getElementById('reg-resend-btn');
+  regResendTimer = setInterval(() => {
+    regResendCooldown--;
+    btn.textContent = `Re-send (${regResendCooldown}s)`;
+    if (regResendCooldown <= 0) {
+      clearInterval(regResendTimer);
+      btn.textContent = 'Re-send';
+    }
+  }, 1000);
+}
+
+function showToast(msg,type){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'page-toast' + (type ? ' ' + type : '');
+  requestAnimationFrame(() => requestAnimationFrame ( () => el.classList.add('show')));
+  clearTimeout(el._t); 
+  el._t=setTimeout(() => el.classList.remove('show'), 3800);
+}
+
+// window.handleRegister  = handleRegister;
+// window.handleRegResend = handleRegResend;

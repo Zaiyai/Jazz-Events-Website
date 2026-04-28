@@ -32,21 +32,18 @@ async function handleLogin() {
   
   if (!ok) return;
 
-  const data = {
+  const loginData = {
     email: loginEmail.value.trim()
   }
 
   const btn = document.getElementById('login-submit-btn');
-
-  btn.disabled = true;
-  btn.textContent = 'Logging in…';
 
   fetch("scripts/login.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({ email: loginEmail.value.trim() }), 
+    body: JSON.stringify(loginData), 
   })
     .then(response => {
       if (!response.ok) throw new Error("HTTP error: " + response.status);
@@ -55,8 +52,10 @@ async function handleLogin() {
     .then(data => {
       showToast(data.message);
       if (data.status == "success") { 
+        btn.disabled = true;
+        btn.textContent = 'Logging in…';
         setTimeout(() => 
-          window.location.href = data.redirect, 1500); 
+          window.location.href = data.redirect, 1500);
       } else { 
         btn.disabled = false;
         btn.textContent = 'LOG IN';

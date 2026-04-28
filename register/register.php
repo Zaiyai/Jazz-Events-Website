@@ -17,27 +17,24 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-if (!isset($data->email) || empty(trim($data->email))) {
-    echo json_encode(["status" => "error", "message" => "Email is required."]);
-    exit;
-}
+$name = $conn->real_escape_string($data->name);
+$email = $conn->real_escape_string($data->email);
+$password = $conn->real_escape_string($data->password);
 
-$email = $conn->real_escape_string(trim($data->email));
-
-// Look up the user by email
-$sql = "SELECT user_id, email FROM users WHERE email = '$email' LIMIT 1";
+$sql = "INSERT INTO users (name, email, password, user_type)
+VALUES ('$name', '$email', '$password', 'CLIENT')";
 $result = $conn->query($sql);
 
-if ($result && $result->num_rows === 1) {
+if ($result) {
     echo json_encode([
         "status"   => "success",
-        "message"  => "Login successful!",
-        "redirect" => "dashboard/dashboard.php"
+        "message"  => "Account successfully created!",
+        "redirect" => "../home.html"
     ]);
 } else {
     echo json_encode([
         "status"  => "error",
-        "message" => "No account found with that email."
+        "message" => "Something went wrong."
     ]);
 }
 
