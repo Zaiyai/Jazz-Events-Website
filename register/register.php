@@ -21,9 +21,21 @@ $name = $conn->real_escape_string($data->name);
 $email = $conn->real_escape_string($data->email);
 $password = $conn->real_escape_string($data->password);
 
-$sql = "INSERT INTO users (name, email, password, user_type)
+$validateEmailSQL = "SELECT email FROM users WHERE email = '$email'";
+$result = $conn->query($validateEmailSQL);
+
+// If email already registered
+if ($result->num_rows > 0) {
+    echo json_encode([
+        "status"  => "error",
+        "message" => "Email already taken."
+    ]);
+    exit;
+}
+
+$insertSQL = "INSERT INTO users (name, email, password, user_type)
 VALUES ('$name', '$email', '$password', 'CLIENT')";
-$result = $conn->query($sql);
+$result = $conn->query($insertSQL);
 
 if ($result) {
     echo json_encode([
