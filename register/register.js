@@ -63,43 +63,15 @@ async function handleRegister() {
       } else { 
         btn.disabled = false;
         btn.textContent = 'REGISTER';
+
+        if (data.message == "Email already taken.") {
+            let emailError = document.getElementById('email-err');
+            emailError.textContent = "Email already taken";
+            emailError.classList.toggle('show');
+            emailError.textContent = "Email is required";
+        }
       }
     });
-
-  // TODO: replace with real POST /api/auth/register
-  // const result = await DB.register({name:document.getElementById('name').value.trim(), email:document.getElementById('email').value.trim(), code:document.getElementById('code').value.trim(), password:pass});
-
-  // if (result.ok) {
-  //   showToast('Account created! Redirecting to login…');
-  //   window.location.href = '../home.html'
-  // } else {
-  //   showToast(result.message || 'Registration failed.', 'error');
-  //   btn.textContent = 'REGISTER';
-  //   btn.disabled = false;
-  // }
-}
-
-let regResendTimer = null;
-let regResendCooldown = 0;
-
-function handleRegResend() {
-  if (regResendCooldown > 0) return;
-  const email = document.getElementById('reg-email').value.trim();
-  if (!email) { showToast('Please enter your email first.', 'error'); return; }
-
-  // TODO: call POST /api/auth/send-code
-  showToast('Verification code sent to ' + email);
-
-  regResendCooldown = 60;
-  const btn = document.getElementById('reg-resend-btn');
-  regResendTimer = setInterval(() => {
-    regResendCooldown--;
-    btn.textContent = `Re-send (${regResendCooldown}s)`;
-    if (regResendCooldown <= 0) {
-      clearInterval(regResendTimer);
-      btn.textContent = 'Re-send';
-    }
-  }, 1000);
 }
 
 function showToast(msg,type){
@@ -110,6 +82,29 @@ function showToast(msg,type){
   clearTimeout(el._t); 
   el._t=setTimeout(() => el.classList.remove('show'), 3800);
 }
+
+// let regResendTimer = null;
+// let regResendCooldown = 0;
+
+// function handleRegResend() {
+//   if (regResendCooldown > 0) return;
+//   const email = document.getElementById('reg-email').value.trim();
+//   if (!email) { showToast('Please enter your email first.', 'error'); return; }
+
+//   // TODO: call POST /api/auth/send-code
+//   showToast('Verification code sent to ' + email);
+
+//   regResendCooldown = 60;
+//   const btn = document.getElementById('reg-resend-btn');
+//   regResendTimer = setInterval(() => {
+//     regResendCooldown--;
+//     btn.textContent = `Re-send (${regResendCooldown}s)`;
+//     if (regResendCooldown <= 0) {
+//       clearInterval(regResendTimer);
+//       btn.textContent = 'Re-send';
+//     }
+//   }, 1000);
+// }
 
 // window.handleRegister  = handleRegister;
 // window.handleRegResend = handleRegResend;
