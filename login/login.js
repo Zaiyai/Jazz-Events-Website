@@ -1,6 +1,3 @@
-const loginEmail = document.getElementById('login-email');
-const loginPass = document.getElementById('login-pass');
-
 const loginBtn = document.getElementById('nav-auth-slot');
 const loginSection = document.getElementsByClassName('auth-section')[0];
 
@@ -33,12 +30,13 @@ async function handleLogin() {
   if (!ok) return;
 
   const loginData = {
-    email: loginEmail.value.trim()
+    email: document.getElementById('login-email').value.trim(),
+    password: document.getElementById('login-pass').value.trim()
   }
 
   const btn = document.getElementById('login-submit-btn');
 
-  fetch("scripts/login.php", {
+  fetch("login/login.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
