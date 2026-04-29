@@ -6,9 +6,7 @@ function displayLogin() {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  // If already logged in, redirect
-  // guestOnly('dashboard/dashboard.html');
-  // renderNavUser('nav-user-slot');
+  
 
   // Enter key submits
   document.addEventListener('keydown', e => {
@@ -52,6 +50,7 @@ async function handleLogin() {
       if (data.status == "success") { 
         btn.disabled = true;
         btn.textContent = 'Logging in…';
+        COOKIES.setCookie(loginData.email, 30);
         setTimeout(() => 
           window.location.href = data.redirect, 1500);
       } else { 
@@ -59,8 +58,6 @@ async function handleLogin() {
         btn.textContent = 'LOG IN';
       }
     });
-
-  // const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
 }
 
 function showToast(msg,type){
