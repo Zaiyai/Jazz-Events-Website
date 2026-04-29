@@ -21,13 +21,15 @@ $email = $conn->real_escape_string($data->email);
 $password = $conn->real_escape_string($data->password);
 
 // Look up the user by email
-$sql = "SELECT user_id, email FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
+$sql = "SELECT user_id, email, user_type FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows === 1) {
+    $row = $result->fetch_assoc();
     echo json_encode([
         "status"   => "success",
         "message"  => "Login successful!",
+        "user_type" => $row["user_type"],
         "redirect" => "dashboard/dashboard.html"
     ]);
 } else {

@@ -487,10 +487,15 @@
         (function () {
             // If Email Cookie Found
             var slot = document.getElementById('nav-auth-slot');
+
             if (COOKIES.getCookie("email") != "") {
-                slot.innerHTML =
-                    '<a href="dashboard/dashboard.html" class="btn-nav-login" style="display:flex;align-items:center;gap:8px;">' +
-                    '<i class="fa-solid fa-grip"></i>&nbsp;Admin Panel</a>';
+                if (COOKIES.getCookie("user_type") == 'ADMIN') {
+                    slot.innerHTML =
+                        '<a href="dashboard/dashboard.html" class="btn-nav-login" style="display:flex;align-items:center;gap:8px;">' +
+                        '<i class="fa-solid fa-grip"></i>&nbsp;Admin Panel</a>';
+                } else {
+                    slot.innerHTML = '<i class="fa-regular fa-user"></i>';
+                }
             } else {
                 slot.innerHTML =
                     '<a onclick="displayLogin()" class="btn-nav-login">LOG IN</a>';
@@ -503,10 +508,9 @@
             } else {
                 displayLogin();
             }
-            }
+        }
 
-
-            function displayLogin() {
+        function displayLogin() {
             document.getElementsByClassName('auth-section')[0].style.display = "block";
         };
     </script>

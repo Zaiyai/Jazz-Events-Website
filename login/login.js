@@ -35,8 +35,13 @@ async function handleLogin() {
         btn.disabled = true;
         btn.textContent = 'Logging in…';
         COOKIES.setCookie(loginData.email, 30);
-        setTimeout(() => 
-          window.location.href = data.redirect, 1500);
+        COOKIES.setUserType(data.user_type);
+        setTimeout(() => {
+        if (data.user_type == 'ADMIN') {
+            window.location.href = data.redirect;
+        } else {
+            location.reload();
+        }}, 1500)
       } else { 
         btn.disabled = false;
         btn.textContent = 'LOG IN';

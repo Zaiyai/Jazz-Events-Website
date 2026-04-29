@@ -5,6 +5,10 @@ const COOKIES = {
       let expires = "expires="+ d.toUTCString();
       document.cookie = "email=" + email + ";" + expires + ";path=/";
     },
+
+    setUserType(user_type) {
+      document.cookie = "user_type=" + user_type + ";";
+    },
     
     getCookie(cname) {
       let name = cname + "=";
