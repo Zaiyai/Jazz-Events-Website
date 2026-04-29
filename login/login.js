@@ -1,6 +1,3 @@
-const loginEmail = document.getElementById('login-email');
-const loginPass = document.getElementById('login-pass');
-
 const loginBtn = document.getElementById('nav-auth-slot');
 const loginSection = document.getElementsByClassName('auth-section')[0];
 
@@ -10,8 +7,8 @@ function displayLogin() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // If already logged in, redirect
-  guestOnly('dashboard/dashboard.html');
-  renderNavUser('nav-user-slot');
+  // guestOnly('dashboard/dashboard.html');
+  // renderNavUser('nav-user-slot');
 
   // Enter key submits
   document.addEventListener('keydown', e => {
@@ -32,38 +29,38 @@ async function handleLogin() {
   
   if (!ok) return;
 
-  const data = {
-    email: loginEmail.value.trim()
+  const loginData = {
+    email: document.getElementById('login-email').value.trim(),
+    password: document.getElementById('login-pass').value.trim()
   }
 
   const btn = document.getElementById('login-submit-btn');
 
-  btn.disabled = true;
-  btn.textContent = 'Logging in…';
-
-  const loginRequest = new Request("../scripts/database.php", {
+  fetch("login/login.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify(data), 
-  });
+    body: JSON.stringify(loginData), 
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    })
+    .then(data => {
+      showToast(data.message);
+      if (data.status == "success") { 
+        btn.disabled = true;
+        btn.textContent = 'Logging in…';
+        setTimeout(() => 
+          window.location.href = data.redirect, 1500);
+      } else { 
+        btn.disabled = false;
+        btn.textContent = 'LOG IN';
+      }
+    });
 
-  await fetch(loginRequest)
-    .then(response => response.text())
-    .then(data => console.log("Server says: " + data))
-    .catch(error => console.error("Error:", error));
-
-  const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value);
-
-  if (result.ok) {
-    showToast('Login successful! Redirecting…');
-    setTimeout(() => window.location.href = 'dashboard/dashboard.html', 900);
-  } else {
-    showToast(result.message||'Login failed.','error'); 
-    btn.disabled = false;
-    btn.textContent = 'LOG IN';
-  }
+  // const result = await DB.login(document.getElementById('login-email').value.trim(), document.getElementById('login-pass').value); 
 }
 
 function showToast(msg,type){

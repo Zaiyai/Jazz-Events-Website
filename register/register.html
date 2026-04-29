@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Jazz Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <button class="mobile-btn" id="burger"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links desktop-nav">
+      <a href="../home.html">Home</a>
+      <a href="../home.html#services-section">Services</a>
+      <a href="../home.html#team-section">Team</a>
+      <a href="../home.html#reviews-section">Reviews</a>
+      <a href="../home.html#about">About Us</a>
+      <a href="../home.html#cta-section">Contact</a>
+    </nav>
+    <div class="search-wrapper">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search Jazz Events...">
+    </div>
+    <a href="../home.html" class="btn-nav-login">LOG IN</a>
+  </div>
+</header>
+
+<div id="nav-overlay" class="nav-overlay mobile-only">
+  <button id="close-overlay" class="close-btn">✕</button>
+  <nav class="nav-links overlay-links">
+    <a href="../home.html">Home</a>
+    <a href="../home.html#services-section">Services</a>
+    <a href="../home.html#team-section">Team</a>
+    <a href="../home.html#reviews-section">Reviews</a>
+    <a href="../home.html#about">About Us</a>
+    <a href="../home.html#cta-section">Contact</a>
+  </nav>
+</div>
+
+<div class="auth-hero">
+  <div class="auth-hero-overlay"></div>
+  <div class="auth-hero-logo">Jazz Events</div>
+</div>
+
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-title">Register an Account</div>
+    <div class="auth-subtitle">Create an account to track your event's status.</div>
+
+    <div class="field-group">
+      <label class="field-label" for="name">Full Name <span class="req">*</span></label>
+      <input class="field-input" type="text" id="name" placeholder="e.g Dela Cruz, Maria B." autocomplete="name">
+      <div class="err-msg" id="name-err">Full name is required.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="email">Email Address <span class="req">*</span></label>
+      <input class="field-input" type="email" id="email" placeholder="maria@domain.com" autocomplete="email">
+      <div class="err-msg" id="email-err">Email is required.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="code">Verification Code <span class="req">*</span></label>
+      <div class="field-row">
+        <input class="field-input" type="text" id="code" placeholder="Enter the code from your email" autocomplete="one-time-code">
+        <button class="btn-resend" id="resend-btn" onclick="sendCode('email','resend-btn')">Re-send</button>
+      </div>
+      <div class="err-msg" id="code-err">Verification code is required.</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field-group">
+        <label class="field-label" for="pass">Password <span class="req">*</span></label>
+        <div class="pass-wrap">
+          <input class="field-input" type="password" id="pass" placeholder="Enter password" autocomplete="new-password">
+          <button class="eye-btn" onclick="togglePass('pass')" type="button"><i class="fa-regular fa-eye"></i></button>
+        </div>
+        <div class="err-msg" id="pass-err">Password is required.</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="pass2">Confirm Password <span class="req">*</span></label>
+        <div class="pass-wrap">
+          <input class="field-input" type="password" id="pass2" placeholder="Re-enter password" autocomplete="new-password">
+          <button class="eye-btn" onclick="togglePass('pass2')" type="button"><i class="fa-regular fa-eye"></i></button>
+        </div>
+        <div class="err-msg" id="pass2-err">Passwords do not match.</div>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <input type="checkbox" id="terms">
+      <label for="terms">I agree to the <a href="../policies/termsOfService.html" target="_blank">Terms of Service</a> and <a href="../policies/privacyPolicy.html" target="_blank">Privacy Policy</a></label>
+    </div>
+    <div class="err-msg" id="terms-err" style="margin-top:-10px;margin-bottom:10px;">You must agree to continue.</div>
+
+    <button class="btn-auth-submit" id="submit-btn" onclick="handleRegister()">REGISTER</button>
+
+    <div class="auth-switch">Already have an account? <a href="../home.html" onclick="displayLogin()">LOG IN</a></div>
+  </div>
+</section>
+
+<!-- Detailed Footer Section -->
+<footer>
+  <div class="footer-grid">
+      <!-- Logo Column -->
+      <div class="footer-col">
+          <div class="logo-container" >
+              <span class="script-text" style="font-size: 4rem;">Jazz</span>
+              <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+          </div>
+          <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+              Elevating moments with exquisite culinary experiences.
+          </p>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+              <li><a href="#banner-section">Home</a></li>
+              <li><a href="#services-section">Services</a></li>
+              <li><a href="#team-section">Team</a></li>
+              <li><a href="#reviews-section">Reviews</a></li>
+              <li><a href="#about">About Us</a></li>
+          </ul>
+      </div>
+
+      <!-- Services Column -->
+      <div class="footer-col">
+          <h3>Services</h3>
+          <ul class="footer-links">
+              <li>Weddings</li>
+              <li>Concerts</li>
+              <li>Corporate Events</li>
+              <li>Graduations</li>
+              <li>Birthday Parties</li>
+              <li><a href="quote/quote.html">Get a Quote</a></li>
+          </ul>
+      </div>
+
+      <!-- Contact Column -->
+      <div class="footer-col">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+              <li class="contact-item">
+                  <i class="fa-solid fa-location-dot contact-icon"></i>
+                  <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+              </li>
+              <li class="contact-item">
+                  <i class="fa-solid fa-phone contact-icon"></i>
+                  <div>
+                      <div>0965 633 7494</div>
+                      <div>0997 425 7958</div>
+                  </div>
+              </li>
+              <li class="contact-item">
+                  <i class="fa-brands fa-facebook-f contact-icon"></i>
+                  <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+              </li>
+          </ul>
+      </div>
+  </div>
+
+  <div class="footer-bottom">
+      <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+      <div class="legalogin-links">
+          <a href="policies/privacyPolicy.html">Privacy Policy</a>
+          <a href="policies/termsOfService.html">Terms of Service</a>
+      </div>
+  </div>
+</footer>
+
+<div class="page-toast" id="toast"></div>
+<script src="../scripts/db.js"></script>
+<script src="register.js"></script>
+<script>
+  document.getElementById('burger')?.addEventListener('click', ()=> document.getElementById('nav-overlay').classList.add('open'));
+
+  document.getElementById('close-overlay') ?.addEventListener('click', () => document.getElementById('nav-overlay').classList.remove('open'));
+</script>
+</body>
+</html>

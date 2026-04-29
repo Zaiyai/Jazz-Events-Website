@@ -19,11 +19,11 @@ const DB = {
     return { ok: false, message: 'Invalid credentials' };
   },
 
-  async register(data) {
-    // TODO: replace with POST /api/auth/register
-    await delay(800);
-    return { ok: true };
-  },
+  // async register(data) {
+  //   // TODO: replace with POST /api/auth/register
+  //   await delay(800);
+  //   return { ok: true };
+  // },
 
   logout() {
     DB.currentUser = null;
