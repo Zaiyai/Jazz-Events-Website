@@ -1,19 +1,3 @@
-const loginBtn = document.getElementById('nav-auth-slot');
-const loginSection = document.getElementsByClassName('auth-section')[0];
-
-function displayLogin() {
-  loginSection.style.display = "block";
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  
-
-  // Enter key submits
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleLogin();
-  });
-});
-
 function validate(id,errId){
   const el = document.getElementById(id), err=document.getElementById(errId);
   const empty =! el?.value.trim();

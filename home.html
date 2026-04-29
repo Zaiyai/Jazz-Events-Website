@@ -74,7 +74,7 @@
 
                 <p class="tagline">“Make your events possible”</p>
 
-                <a href="booking/booking.html" class="btn-gold bookBtn">
+                <a onclick="bookingRedirect()" class="btn-gold bookBtn">
                     <span>Book Now</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
@@ -398,7 +398,7 @@
                 </p>
                 
                 <div class="cta-buttons">
-                    <a href="booking/booking.html" class="btn-gold">Book Now</a>
+                    <a onclick="bookingRedirect()" class="btn-gold">Book Now</a>
                 </div>
             </div>
         </section>
@@ -496,6 +496,19 @@
                     '<a onclick="displayLogin()" class="btn-nav-login">LOG IN</a>';
             }
         })();
+        
+        function bookingRedirect() {
+            if (COOKIES.getCookie("email") != "") {
+                window.location.href = "booking/booking.html";
+            } else {
+                displayLogin();
+            }
+            }
+
+
+            function displayLogin() {
+            document.getElementsByClassName('auth-section')[0].style.display = "block";
+        };
     </script>
     </body>
     </html>
