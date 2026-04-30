@@ -1,0 +1,27 @@
+login-emailogin-err > login-emaillogin-err
+togglePass() and showToast() should also be implemented on home.html
+Add <script src="scripts/ui.js"></script> before login/login.js in home.html.
+[update] deleted the get a quote feature (quote.hmlt, css, js and footer link)
+
+Dashboard
+remove support quick link
+remove catering option (haven’t decided its contents)
+remove messaging feature
+define the purpose of options in the settings tab
+Input default value/text for the events tab instead of just loading trying to fetch the data  if there’s no booked event
+create a function to make the notification bell work
+discuss what to do with the add event feature
+if we choose to keep
+create a design in figma as a guide
+	else
+	     -   fetch data from database to events tab
+delete team on duty tab
+fix calendar  tab
+make the side bar a pop up
+fix placements of recent events, event overview, and event types text (make it responsive for the desktop view)
+
+Figma
+create ui for notification
+create ui for add task feature
+create ui for payments, analytics, events, clients
+
