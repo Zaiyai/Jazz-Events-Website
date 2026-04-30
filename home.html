@@ -488,7 +488,7 @@
             // If Email Cookie Found
             var slot = document.getElementById('nav-auth-slot');
 
-            if (COOKIES.getCookie("email") != "") {
+            if (COOKIES.hasEmail()) {
                 if (COOKIES.getCookie("user_type") == 'ADMIN') {
                     slot.innerHTML =
                         '<a href="dashboard/dashboard.html" class="btn-nav-login" style="display:flex;align-items:center;gap:8px;">' +
@@ -503,7 +503,7 @@
         })();
 
         function bookingRedirect() {
-            if (COOKIES.getCookie("email") != "") {
+            if (COOKIES.hasEmail()) {
                 window.location.href = "booking/booking.html";
             } else {
                 displayLogin();

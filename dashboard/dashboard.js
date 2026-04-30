@@ -9,19 +9,14 @@ let allEventsCache = [];
 let calYear, calMonth;
 let filterStatus = '', filterClient = '';
 let deletePending = null; // { type: 'event'|'task', id }
-
-/* ── Init ─────────────────────────────────────────────────── */
+  
+  /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  // Auth guard — redirect to login if no session
-  const user = DB.getUser();
-  // if (!user) {
-  //   window.location.href = 'login.html';
-  //   return;
-  // }
+  const user = await DB.getUser();
+  if (!user) window.location.href = '../home.html';
 
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;
-  document.getElementById('sidebar-role').textContent = user.role;
   document.getElementById('sidebar-avatar').textContent = user.initials;
   document.getElementById('topbar-greeting').textContent = `Welcome back, ${user.name.split(' ')[0]}`;
 

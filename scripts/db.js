@@ -1,29 +1,5 @@
-/* =============================================================
-   JAZZ EVENTS — db.js
-   Mock database layer. Replace fetch() calls with real API
-   endpoints (e.g. /api/events, /api/tasks, etc.)
-   ============================================================= */
-
 const DB = {
-  /* ── AUTH (stub) ────────────────────────────────────────── */
   currentUser: null,
-
-  async login(email, password) {
-    // TODO: replace with POST /api/auth/login
-    await delay(600);
-    if (email && password) {
-      DB.currentUser = { name: 'Edrian Albero', role: 'Event Organizer', initials: 'EA' };
-      localStorage.setItem('je_user', JSON.stringify(DB.currentUser));
-      return { ok: true };
-    }
-    return { ok: false, message: 'Invalid credentials' };
-  },
-
-  // async register(data) {
-  //   // TODO: replace with POST /api/auth/register
-  //   await delay(800);
-  //   return { ok: true };
-  // },
 
   logout() {
     DB.currentUser = null;
@@ -33,10 +9,34 @@ const DB = {
     window.location.href = isInPages ? 'login.html' : 'jazz-events/pages/login.html';
   },
 
-  getUser() {
-    if (DB.currentUser) return DB.currentUser;
-    const stored = localStorage.getItem('je_user');
-    if (stored) { DB.currentUser = JSON.parse(stored); return DB.currentUser; }
+  async getUser() {
+    if (COOKIES.hasEmail()) {
+      try {
+        const response = await fetch("../scripts/user.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: COOKIES.getCookie("email") }), 
+        });
+
+        if (!response.ok) throw new Error("HTTP error: " + response.status);
+
+        const data = await response.json();
+
+        if (data.status == "success") {
+          DB.currentUser = data;
+          return DB.currentUser;
+        } else {
+          console.warn("Something went wrong with getting the user");
+          return null;
+        }
+      } catch (error) {
+        console.error("Fetch failed:", error);
+        return null;
+      }
+    }
+
     return null;
   },
 
@@ -159,12 +159,12 @@ function getLocalOrDefault(key, def) {
 
 /* ── Seed data (used if localStorage is empty) ───────────── */
 const DEFAULT_EVENTS = [
-  { id: 'e1', name: 'Golden Anniversary Gala',      type: 'Corporate Dinner',  guests: 120, client: 'Pat',     clientInitials: 'P', date: '2026-12-28', venue: 'Shang-ri La',         status: 'confirmed',  amount: 349000, emoji: '🎊' },
-  { id: 'e2', name: 'Garden Wedding',                type: 'Wedding',           guests: 200, client: 'Emma',    clientInitials: 'E', date: '2026-07-15', venue: 'Fernwood Gardens',     status: 'pending',    amount: 599000, emoji: '💐' },
-  { id: 'e3', name: "New Year's Executive Retreat",  type: 'Corporate',         guests: 50,  client: 'Michael', clientInitials: 'M', date: '2025-10-02', venue: 'Mountain Lodge Resort',status: 'completed',  amount: 109000, emoji: '🏢' },
-  { id: 'e4', name: '50th Birthday Celebration',     type: 'Private Party',     guests: 80,  client: 'Sarah',   clientInitials: 'S', date: '2026-11-20', venue: 'Rooftop Terrace',     status: 'confirmed',  amount: 289000, emoji: '🎂' },
-  { id: 'e5', name: 'Silver Wedding Anniversary',    type: 'Wedding',           guests: 150, client: 'Jose',    clientInitials: 'J', date: '2026-09-10', venue: 'Crimson Hotel',        status: 'pending',    amount: 420000, emoji: '💍' },
-  { id: 'e6', name: 'Debut Celebration',             type: 'Private Party',     guests: 100, client: 'Lea',     clientInitials: 'L', date: '2026-08-05', venue: 'Diamond Events Place', status: 'confirmed',  amount: 180000, emoji: '🌸' },
+  { id: '1', name: 'Golden Anniversary Gala',      type: 'Corporate Dinner',  guests: 120, client: 'Pat',     clientInitials: 'P', date: '2026-12-28', venue: 'Shang-ri La',         status: 'confirmed',  amount: 349000, emoji: '🎊' },
+  { id: '2', name: 'Garden Wedding',                type: 'Wedding',           guests: 200, client: 'Emma',    clientInitials: 'E', date: '2026-07-15', venue: 'Fernwood Gardens',     status: 'pending',    amount: 599000, emoji: '💐' },
+  { id: '3', name: "New Year's Executive Retreat",  type: 'Corporate',         guests: 50,  client: 'Michael', clientInitials: 'M', date: '2025-10-02', venue: 'Mountain Lodge Resort',status: 'completed',  amount: 109000, emoji: '🏢' },
+  { id: '4', name: '50th Birthday Celebration',     type: 'Private Party',     guests: 80,  client: 'Sarah',   clientInitials: 'S', date: '2026-11-20', venue: 'Rooftop Terrace',     status: 'confirmed',  amount: 289000, emoji: '🎂' },
+  { id: '5', name: 'Silver Wedding Anniversary',    type: 'Wedding',           guests: 150, client: 'Jose',    clientInitials: 'J', date: '2026-09-10', venue: 'Crimson Hotel',        status: 'pending',    amount: 420000, emoji: '💍' },
+  { id: '6', name: 'Debut Celebration',             type: 'Private Party',     guests: 100, client: 'Lea',     clientInitials: 'L', date: '2026-08-05', venue: 'Diamond Events Place', status: 'confirmed',  amount: 180000, emoji: '🌸' },
 ];
 
 const DEFAULT_TASKS = [
