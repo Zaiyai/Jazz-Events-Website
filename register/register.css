@@ -43,8 +43,9 @@
 }
 
 .auth-title {
-    font-family: var(--font-script);
+    font-family: var(--font-sans);
     font-size: 2.4rem;
+    font-weight: 700;
     color: var(--jazz-gold);
     text-align: center;
     margin-bottom: 6px;

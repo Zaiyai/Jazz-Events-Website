@@ -5,25 +5,25 @@ BRANCH DASHBOARD - - -
 
 1. Registration - Proper email verification not yet implemented (either through code or other methods)
 
-2. Registration - No "view password" when typing in password to check for the spelling and for confirming password
+2. Registration - No "view password" when typing in password to check for the spelling and for confirming password ✅
 
-3. Registration - Change font (remove the cursive stuff and use the font used for titles like in the main menu "SERVICES" etc.)
+3. Registration - Change font (remove the cursive stuff and use the font used for titles like in the main menu "SERVICES" etc.) ✅
 
 4. Login - overlay position, should be close to log in button, also it is not sticky. Font needs to be changed like in registration.
 
 5. Login - After logging in, directly clicking on back button in browser moves you back to "logging in". *refer to image 1
 
 6. Dashboard - Everything is fucked period. *refer to image 2
-6.05 - No log out button
+6.05 - No log out button ✅
 6.1 - Formatting, Layout, Fonts
 6.2 - Clicking on Jazz Events icon leads to logged out version of website ✅
 6.3 - Adding new task popup layout is not good
-6.4 - Adding new task popup has no restrictions (e.g. location and date can be anything)
-6.5 - Adding new event layout is dogshit
+6.4 - Adding new task popup has no restrictions (e.g. location and date can be anything) ✅
+6.5 - Adding new event layout is dogshit 
 
 BRANCH BOOKING - - - 
 
- ̶1̶.̶ ̶G̶e̶t̶ ̶a̶ ̶q̶o̶u̶t̶e̶ ̶i̶s̶ ̶s̶t̶i̶l̶l̶ ̶h̶e̶r̶e̶ ̶(̶i̶d̶k̶ ̶i̶f̶ ̶t̶h̶i̶s̶ ̶i̶m̶p̶o̶r̶t̶a̶n̶t̶)̶
+ ̶1̶.̶ ̶G̶e̶t̶ ̶a̶ ̶q̶o̶u̶t̶e̶ ̶i̶s̶ ̶s̶t̶i̶l̶l̶ ̶h̶e̶r̶e̶ ̶(̶i̶d̶k̶ ̶i̶f̶ ̶t̶h̶i̶s̶ ̶i̶m̶p̶o̶r̶t̶a̶n̶t̶)̶  ✅
 
 2. Type of Event - Maybe add a dropdown for the Type of event with "others"
 
@@ -46,8 +46,4 @@ BRANCH BOOKING - - -
 
 BRANCH MAIN - - - 
 
-1. Booking - checkboxes are in a vertical format
-
-2. Log in and dashboard - same complaints from other branch
-
-3. This branch is the worst branch. (the get a quote is fixed tho - al)
+1. Booking - checkboxes are in a vertical format ✅
