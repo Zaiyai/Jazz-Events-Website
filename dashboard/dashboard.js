@@ -1,8 +1,3 @@
-/* =============================================================
-   JAZZ EVENTS — dashboard.js
-   All dashboard logic: stats, events table, tasks, calendar, team
-   ============================================================= */
-
 var events;
 let eventsPage = 1;
 let noEventStatement = "Wala po event...";
@@ -342,32 +337,6 @@ async function saveTask() {
   document.getElementById('task-location').value = '';
   await loadTasks();
 }
-
-/* ── Team ─────────────────────────────────────────────────── */
-// async function loadTeam() {
-//   const team = await DB.getTeam();
-//   const el = document.getElementById('team-list');
-//   const onlineCount = team.filter(m => m.online).length;
-//   document.getElementById('team-active-count').textContent = onlineCount + ' Active';
-//   el.innerHTML = team.map(m => `
-//     <div class="team-duty-item">
-//       <div class="team-duty-avatar">${m.initials}</div>
-//       <div>
-//         <div class="team-duty-name">${m.name}</div>
-//         <div class="team-duty-role">${m.role}</div>
-//       </div>
-//       <div class="team-duty-dot ${m.online ? 'online' : 'offline'}" title="${m.online ? 'Online' : 'Offline'}"></div>
-//       <button class="row-action-btn" onclick="toggleTeamOnline('${m.id}','${m.online}')" title="Toggle status" style="margin-left:4px;">
-//         <i class="fa-solid ${m.online ? 'fa-toggle-on' : 'fa-toggle-off'}" style="color:${m.online ? 'var(--jazz-gold)' : 'var(--text-gray)'}"></i>
-//       </button>
-//     </div>
-//   `).join('');
-// }
-
-// async function toggleTeamOnline(id, currentOnline) {
-//   await DB.updateTeamMember(id, { online: currentOnline !== 'true' });
-//   await loadTeam();
-// }
 
 /* ── Calendar ─────────────────────────────────────────────── */
 function calNav(dir) {

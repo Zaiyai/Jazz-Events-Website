@@ -113,21 +113,6 @@ const DB = {
     return { ok: true };
   },
 
-  /* ── TEAM ───────────────────────────────────────────────── */
-  // async getTeam() {
-    // TODO: replace with GET /api/team
-  //   await delay(200);
-  //   return getDataOrDefault('teams', DEFAULT_TEAM);
-  // },
-
-  // async updateTeamMember(id, updates) {
-  //   await delay(300);
-  //   let all = getDataOrDefault('teams', DEFAULT_TEAM);
-  //   all = all.map(m => m.id === id ? { ...m, ...updates } : m);
-  //   localStorage.setItem('je_team', JSON.stringify(all));
-  //   return { ok: true };
-  // },
-
   /* ── STATS ──────────────────────────────────────────────── */
   async getStats() {
     // TODO: replace with GET /api/stats
@@ -187,13 +172,6 @@ const DEFAULT_TASKS = [
   { id: 't2', name: 'Arrange floral decorations delivery',      due: 'July 15, 2026',  location: 'Fernwood Gardens', done: false },
   { id: 't3', name: 'Process payment for Corporate Retreat',    due: 'Oct 2, 2025',    location: '',                 done: true  },
   { id: 't4', name: 'Send contract to Emma for Garden Wedding', due: 'June 1, 2026',   location: '',                 done: false },
-];
-
-const DEFAULT_TEAM = [
-  { id: 'm1', name: 'Queen Albero-Velasco', role: 'Founder',             initials: 'QA', online: true  },
-  { id: 'm2', name: 'Aj Velasco',           role: 'Founder',             initials: 'AV', online: true  },
-  { id: 'm3', name: 'Edrian Albero',        role: 'Event Organizer',     initials: 'EA', online: false },
-  { id: 'm4', name: 'Xhyryn Buenaobra',     role: 'Customer Relations',  initials: 'XB', online: false },
 ];
 
 const DEFAULT_STATS = {
