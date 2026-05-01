@@ -3,15 +3,18 @@
    All dashboard logic: stats, events table, tasks, calendar, team
    ============================================================= */
 
+var events;
 let eventsPage = 1;
 const eventsPerPage = 4;
 let allEventsCache = [];
 let calYear, calMonth;
 let filterStatus = '', filterClient = '';
 let deletePending = null; // { type: 'event'|'task', id }
-  
-  /* ── Init ─────────────────────────────────────────────────── */
+
+
+/* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
+  events = await getDataOrDefault('events', DEFAULT_EVENTS);
   const user = await DB.getUser();
   if (!user) window.location.href = '../home.html';
 
@@ -27,10 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load everything in parallel
   await Promise.all([
-    loadStats(),
+    // loadStats(),
     loadEvents(),
-    loadTasks(),
-    loadTeam(),
+    // loadTasks(),
+    // loadTeam(),
   ]);
   renderCalendar();
   renderDonut();
@@ -80,6 +83,7 @@ function statCard(icon, label, value, change, sub, badgeType) {
 /* ── Events Table ─────────────────────────────────────────── */
 async function loadEvents() {
   const result = await DB.getEvents(eventsPage, eventsPerPage);
+  console.log(await result)
   allEventsCache = result;
   renderEventsTable(result);
 }
@@ -159,7 +163,7 @@ function openNewEventModal() {
 }
 
 async function editEvent(id) {
-  const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+  const all = getDataOrDefault('events', DEFAULT_EVENTS);
   const ev = all.find(e => e.id === id);
   if (!ev) return;
   document.getElementById('event-modal-title').textContent = 'Edit Event';
@@ -255,7 +259,7 @@ function clearFilters() {
 }
 
 function applyFilterLogic() {
-  const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+  const all = getDataOrDefault('events', DEFAULT_EVENTS);
   const filtered = all.filter(ev => {
     const statusMatch = !filterStatus || ev.status === filterStatus;
     const clientMatch = !filterClient || ev.client.toLowerCase().includes(filterClient);
@@ -267,7 +271,7 @@ function applyFilterLogic() {
 
 /* ── Export ───────────────────────────────────────────────── */
 function exportEvents() {
-  const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+  const all = getDataOrDefault('events', DEFAULT_EVENTS);
   const csv = [
     ['Name','Type','Client','Date','Venue','Status','Amount'],
     ...all.map(e => [e.name, e.type, e.client, e.date, e.venue, e.status, e.amount])
@@ -284,7 +288,7 @@ function exportEvents() {
 function handleSearch(e) {
   const q = e.target.value.trim().toLowerCase();
   if (!q) { loadEvents(); return; }
-  const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+  const all = getDataOrDefault('events', DEFAULT_EVENTS);
   const filtered = all.filter(ev =>
     ev.name.toLowerCase().includes(q) ||
     ev.client.toLowerCase().includes(q) ||
@@ -340,30 +344,30 @@ async function saveTask() {
 }
 
 /* ── Team ─────────────────────────────────────────────────── */
-async function loadTeam() {
-  const team = await DB.getTeam();
-  const el = document.getElementById('team-list');
-  const onlineCount = team.filter(m => m.online).length;
-  document.getElementById('team-active-count').textContent = onlineCount + ' Active';
-  el.innerHTML = team.map(m => `
-    <div class="team-duty-item">
-      <div class="team-duty-avatar">${m.initials}</div>
-      <div>
-        <div class="team-duty-name">${m.name}</div>
-        <div class="team-duty-role">${m.role}</div>
-      </div>
-      <div class="team-duty-dot ${m.online ? 'online' : 'offline'}" title="${m.online ? 'Online' : 'Offline'}"></div>
-      <button class="row-action-btn" onclick="toggleTeamOnline('${m.id}','${m.online}')" title="Toggle status" style="margin-left:4px;">
-        <i class="fa-solid ${m.online ? 'fa-toggle-on' : 'fa-toggle-off'}" style="color:${m.online ? 'var(--jazz-gold)' : 'var(--text-gray)'}"></i>
-      </button>
-    </div>
-  `).join('');
-}
+// async function loadTeam() {
+//   const team = await DB.getTeam();
+//   const el = document.getElementById('team-list');
+//   const onlineCount = team.filter(m => m.online).length;
+//   document.getElementById('team-active-count').textContent = onlineCount + ' Active';
+//   el.innerHTML = team.map(m => `
+//     <div class="team-duty-item">
+//       <div class="team-duty-avatar">${m.initials}</div>
+//       <div>
+//         <div class="team-duty-name">${m.name}</div>
+//         <div class="team-duty-role">${m.role}</div>
+//       </div>
+//       <div class="team-duty-dot ${m.online ? 'online' : 'offline'}" title="${m.online ? 'Online' : 'Offline'}"></div>
+//       <button class="row-action-btn" onclick="toggleTeamOnline('${m.id}','${m.online}')" title="Toggle status" style="margin-left:4px;">
+//         <i class="fa-solid ${m.online ? 'fa-toggle-on' : 'fa-toggle-off'}" style="color:${m.online ? 'var(--jazz-gold)' : 'var(--text-gray)'}"></i>
+//       </button>
+//     </div>
+//   `).join('');
+// }
 
-async function toggleTeamOnline(id, currentOnline) {
-  await DB.updateTeamMember(id, { online: currentOnline !== 'true' });
-  await loadTeam();
-}
+// async function toggleTeamOnline(id, currentOnline) {
+//   await DB.updateTeamMember(id, { online: currentOnline !== 'true' });
+//   await loadTeam();
+// }
 
 /* ── Calendar ─────────────────────────────────────────────── */
 function calNav(dir) {
@@ -373,12 +377,11 @@ function calNav(dir) {
   renderCalendar();
 }
 
-function renderCalendar() {
+async function renderCalendar() {
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
 
-  const events = getLocalOrDefault('je_events', DEFAULT_EVENTS);
   const eventDays = new Set(
     events
       .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
@@ -413,7 +416,6 @@ function renderCalendar() {
 
 /* ── Donut chart ──────────────────────────────────────────── */
 function renderDonut() {
-  const events = getLocalOrDefault('je_events', DEFAULT_EVENTS);
   const counts = {};
   events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
   const total = events.length;
@@ -538,7 +540,7 @@ window.clearFilters     = clearFilters;
 window.saveEvent        = saveEvent;
 window.saveTask         = saveTask;
 window.toggleTask       = toggleTask;
-window.toggleTeamOnline = toggleTeamOnline;
+// window.toggleTeamOnline = toggleTeamOnline;
 window.exportEvents     = exportEvents;
 window.openModal        = openModal;
 window.closeModal       = closeModal;

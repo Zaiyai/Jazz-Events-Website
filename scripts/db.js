@@ -42,9 +42,9 @@ const DB = {
 
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
-    // TODO: replace with GET /api/events?page=X&per_page=Y
     await delay(300);
-    const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
+    console.log(await getDataOrDefault('events', DEFAULT_EVENTS));
     const start = (page - 1) * perPage;
     return {
       data: all.slice(start, start + perPage),
@@ -57,7 +57,7 @@ const DB = {
   async createEvent(event) {
     // TODO: replace with POST /api/events
     await delay(400);
-    const all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+    const all = getDataOrDefault('events', DEFAULT_EVENTS);
     const newEvent = { ...event, id: uid(), createdAt: new Date().toISOString() };
     all.unshift(newEvent);
     localStorage.setItem('je_events', JSON.stringify(all));
@@ -67,7 +67,7 @@ const DB = {
   async updateEvent(id, updates) {
     // TODO: replace with PUT /api/events/:id
     await delay(300);
-    let all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+    let all = getDataOrDefault('events', DEFAULT_EVENTS);
     all = all.map(e => e.id === id ? { ...e, ...updates } : e);
     localStorage.setItem('je_events', JSON.stringify(all));
     return { ok: true };
@@ -76,7 +76,7 @@ const DB = {
   async deleteEvent(id) {
     // TODO: replace with DELETE /api/events/:id
     await delay(300);
-    let all = getLocalOrDefault('je_events', DEFAULT_EVENTS);
+    let all = getDataOrDefault('events', DEFAULT_EVENTS);
     all = all.filter(e => e.id !== id);
     localStorage.setItem('je_events', JSON.stringify(all));
     return { ok: true };
@@ -86,12 +86,12 @@ const DB = {
   async getTasks() {
     // TODO: replace with GET /api/tasks
     await delay(250);
-    return getLocalOrDefault('je_tasks', DEFAULT_TASKS);
+    return getDataOrDefault('tasks', DEFAULT_TASKS);
   },
 
   async createTask(task) {
     await delay(300);
-    const all = getLocalOrDefault('je_tasks', DEFAULT_TASKS);
+    const all = getDataOrDefault('tasks', DEFAULT_TASKS);
     const newTask = { ...task, id: uid(), done: false };
     all.push(newTask);
     localStorage.setItem('je_tasks', JSON.stringify(all));
@@ -100,7 +100,7 @@ const DB = {
 
   async toggleTask(id) {
     await delay(200);
-    let all = getLocalOrDefault('je_tasks', DEFAULT_TASKS);
+    let all = getDataOrDefault('tasks', DEFAULT_TASKS);
     all = all.map(t => t.id === id ? { ...t, done: !t.done } : t);
     localStorage.setItem('je_tasks', JSON.stringify(all));
     return { ok: true };
@@ -108,39 +108,39 @@ const DB = {
 
   async deleteTask(id) {
     await delay(200);
-    let all = getLocalOrDefault('je_tasks', DEFAULT_TASKS);
+    let all = getDataOrDefault('tasks', DEFAULT_TASKS);
     all = all.filter(t => t.id !== id);
     localStorage.setItem('je_tasks', JSON.stringify(all));
     return { ok: true };
   },
 
   /* ── TEAM ───────────────────────────────────────────────── */
-  async getTeam() {
+  // async getTeam() {
     // TODO: replace with GET /api/team
-    await delay(200);
-    return getLocalOrDefault('je_team', DEFAULT_TEAM);
-  },
+  //   await delay(200);
+  //   return getDataOrDefault('teams', DEFAULT_TEAM);
+  // },
 
-  async updateTeamMember(id, updates) {
-    await delay(300);
-    let all = getLocalOrDefault('je_team', DEFAULT_TEAM);
-    all = all.map(m => m.id === id ? { ...m, ...updates } : m);
-    localStorage.setItem('je_team', JSON.stringify(all));
-    return { ok: true };
-  },
+  // async updateTeamMember(id, updates) {
+  //   await delay(300);
+  //   let all = getDataOrDefault('teams', DEFAULT_TEAM);
+  //   all = all.map(m => m.id === id ? { ...m, ...updates } : m);
+  //   localStorage.setItem('je_team', JSON.stringify(all));
+  //   return { ok: true };
+  // },
 
   /* ── STATS ──────────────────────────────────────────────── */
   async getStats() {
     // TODO: replace with GET /api/stats
     await delay(250);
-    return getLocalOrDefault('je_stats', DEFAULT_STATS);
+    return getDataOrDefault('je_stats', DEFAULT_STATS);
   },
 
   /* ── BOOKINGS ───────────────────────────────────────────── */
   async submitBooking(formData) {
     // TODO: replace with POST /api/bookings
     await delay(700);
-    const all = getLocalOrDefault('je_bookings', []);
+    const all = getDataOrDefault('je_bookings', []);
     all.push({ ...formData, id: uid(), submittedAt: new Date().toISOString(), status: 'pending' });
     localStorage.setItem('je_bookings', JSON.stringify(all));
     return { ok: true };
@@ -150,11 +150,30 @@ const DB = {
 /* ── Helpers ─────────────────────────────────────────────── */
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 function uid() { return Math.random().toString(36).slice(2, 10); }
-function getLocalOrDefault(key, def) {
+
+async function getDataOrDefault(key, def) {
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(def));
-  } catch { return JSON.parse(JSON.stringify(def)); }
+    const response = await fetch("../scripts/" + key + ".php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (!response.ok) throw new Error("HTTP error: " + response.status);
+
+    const data = await response.json();
+
+    if (data.ok && !data.empty) {
+      return data.events[0]; 
+    } 
+
+    if (data.ok && data.empty) {
+      return JSON.parse(JSON.stringify(def));
+    }
+
+  } catch (error) {
+    console.warn("Fetch failed, using defaults. Error:", error);
+    return JSON.parse(JSON.stringify(def));
+  }
 }
 
 /* ── Seed data (used if localStorage is empty) ───────────── */
