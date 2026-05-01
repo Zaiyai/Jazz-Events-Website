@@ -198,6 +198,7 @@ async function saveEvent() {
     no_of_guests:   parseInt(document.getElementById('ev-guests').value) || 0,
     date:     document.getElementById('ev-date').value,
     venue:    document.getElementById('ev-venue').value.trim(),
+    theme:    document.getElementById('ev-theme').value.trim(),
     status:   document.getElementById('ev-status').value,
     amount:   parseFloat(document.getElementById('ev-amount').value) || 0,
   };

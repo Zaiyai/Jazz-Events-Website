@@ -56,7 +56,6 @@ const DB = {
     const all = await getDataOrDefault('events', DEFAULT_EVENTS);
     
     all.unshift(event);
-    console.log(event)
     
     fetch("../scripts/add_event.php", {
       method: "POST",
@@ -74,11 +73,22 @@ const DB = {
   },
 
   async updateEvent(id, updates) {
-    // TODO: replace with PUT /api/events/:id
-    await delay(300);
-    let all = getDataOrDefault('events', DEFAULT_EVENTS);
-    all = all.map(e => e.id === id ? { ...e, ...updates } : e);
-    localStorage.setItem('je_events', JSON.stringify(all));
+    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
+    
+    let event = { event_id: id, ...updates };
+    
+    fetch("../scripts/edit_event.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(event), 
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    });
+
     return { ok: true };
   },
 
