@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register — Jazz Events</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="register.css">
 </head>
@@ -80,7 +80,7 @@
         <label class="field-label" for="pass">Password <span class="req">*</span></label>
         <div class="pass-wrap">
           <input class="field-input" type="password" id="pass" placeholder="Enter password" autocomplete="new-password">
-          <button class="eye-btn" onclick="togglePass('pass')" type="button"><i class="fa-regular fa-eye"></i></button>
+          <button class="eye-btn" onclick="togglePass('pass', this)" type="button"><i class="fa-regular fa-eye"></i></button>
         </div>
         <div class="err-msg" id="pass-err">Password is required.</div>
       </div>
@@ -88,7 +88,7 @@
         <label class="field-label" for="pass2">Confirm Password <span class="req">*</span></label>
         <div class="pass-wrap">
           <input class="field-input" type="password" id="pass2" placeholder="Re-enter password" autocomplete="new-password">
-          <button class="eye-btn" onclick="togglePass('pass2')" type="button"><i class="fa-regular fa-eye"></i></button>
+          <button class="eye-btn" onclick="togglePass('pass2', this)" type="button"><i class="fa-regular fa-eye"></i></button>
         </div>
         <div class="err-msg" id="pass2-err">Passwords do not match.</div>
       </div>
@@ -178,6 +178,7 @@
 </footer>
 
 <div class="page-toast" id="toast"></div>
+<script src="../scripts/main.js"></script>
 <script src="../scripts/db.js"></script>
 <script src="register.js"></script>
 <script>

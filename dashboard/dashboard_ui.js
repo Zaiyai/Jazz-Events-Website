@@ -21,13 +21,6 @@ function showToast(message, type = 'success') {
   el._timer = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-/* ── Password toggle ─────────────────────────────────────── */
-function togglePass(inputId) {
-  const el = document.getElementById(inputId);
-  if (!el) return;
-  el.type = el.type === 'password' ? 'text' : 'password';
-}
-
 /* ── Format currency ─────────────────────────────────────── */
 function formatPeso(amount) {
   return '₱' + Number(amount).toLocaleString('en-PH');

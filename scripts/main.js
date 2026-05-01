@@ -64,3 +64,17 @@ function closeMenu() {
   document.body.classList.remove("menu-open");
   burger.setAttribute("aria-expanded", "false");
 }
+
+const eyeBtn = document.getElementsByClassName('eye-btn')[0];
+
+function togglePass(inputId, eyecon) {
+  const el = document.getElementById(inputId);
+  if (!el) return;
+  el.type = el.type === 'password' ? 'text' : 'password';
+
+  if (eyecon.innerHTML == '<i class="fa-regular fa-eye"></i>') {
+    eyecon.innerHTML = '<i class="fa-regular fa-eye-slash"></i>'
+  } else {
+    eyecon.innerHTML = '<i class="fa-regular fa-eye"></i>'
+  }
+}
