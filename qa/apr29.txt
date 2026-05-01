@@ -27,10 +27,10 @@ BRANCH BOOKING - - -
 
 2. Type of Event - Maybe add a dropdown for the Type of event with "others"
 
-3.  Event Dates - we should have restrictions (e.g. I can put 19999999 as the date)
-3.1 Event Dates - should add limits to how long an event can be set (e.g. from may 1 to may 31 can be selected)
+3.  Event Dates - we should have restrictions (e.g. I can put 19999999 as the date) ✅
+3.1 Event Dates - should add limits to how long an event can be set (e.g. from may 1 to may 31 can be selected) ✅
 
-4. Estimated number of guests - should have a minimum and maximum limit (e.g. I can put "e' and negative numbers)
+4. Estimated number of guests - should have a minimum and maximum limit (e.g. I can put "e' and negative numbers) ✅
 
 5. Venue Location - maybe we should have selections, right it's just whatever you want. also I thought we had a map (?)
 
@@ -38,7 +38,7 @@ BRANCH BOOKING - - -
 
 7. Services Needed - Checkboxes may appear with scroll bars in some browsers *refer to image 3
 
-8. Estimated Event Budget - Placeholder shouldn't be here. event budget is estimated by the system based on number of guests and services needed (insert some formula here)
+8. Estimated Event Budget - Placeholder shouldn't be here. event budget is estimated by the system based on number of guests and services needed (insert some formula here) ✅
 
 9. Email address - confirm email address (retype email so customer makes sure they use the right email)
 
