@@ -128,4 +128,8 @@ function validateForm(fields) {
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   initServiceChecks();
+
+  const sidebar = document.getElementsByClassName('sidebar')[0];
+  document.getElementById('sidebar-trigger').addEventListener('mouseenter', () => { sidebar.style.width = "250px"; });
+  sidebar.addEventListener('mouseleave', () => { sidebar.style.width = "0"; });
 });

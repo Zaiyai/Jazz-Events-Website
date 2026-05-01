@@ -17,7 +17,7 @@ create a design in figma as a guide
 	     -   fetch data from database to events tab
 delete team on duty tab
 fix calendar  tab
-make the side bar a pop up
+make the side bar a pop up ✅
 fix placements of recent events, event overview, and event types text (make it responsive for the desktop view)
 
 Figma

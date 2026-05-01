@@ -10,6 +10,8 @@
   border-right: 1px solid var(--border-dark);
   position: fixed; top: 0; left: 0;
   height: 100vh;
+  width: 0;
+  transition: 0.3s;
   overflow-y: auto;
   display: flex; flex-direction: column;
   z-index: 100;
@@ -33,6 +35,16 @@
   margin-top: 2px;
 }
 .sidebar-nav { padding: 10px 0; flex: 1; }
+
+#sidebar-trigger {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 30px;
+  z-index: 99;
+}
+
 .nav-group-label {
   font-size: 0.55rem;
   font-weight: 700;
