@@ -44,7 +44,6 @@ const DB = {
   async getEvents(page = 1, perPage = 4) {
     await delay(300);
     const all = await getDataOrDefault('events', DEFAULT_EVENTS);
-    console.log(await getDataOrDefault('events', DEFAULT_EVENTS));
     const start = (page - 1) * perPage;
     return {
       data: all.slice(start, start + perPage),
@@ -164,12 +163,9 @@ async function getDataOrDefault(key, def) {
 
     if (data.ok && !data.empty) {
       return data.events[0]; 
-    } 
-
-    if (data.ok && data.empty) {
-      return JSON.parse(JSON.stringify(def));
+    } else {
+      return [];
     }
-
   } catch (error) {
     console.warn("Fetch failed, using defaults. Error:", error);
     return JSON.parse(JSON.stringify(def));

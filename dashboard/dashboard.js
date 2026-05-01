@@ -5,6 +5,7 @@
 
 var events;
 let eventsPage = 1;
+let noEventStatement = "Wala po event...";
 const eventsPerPage = 4;
 let allEventsCache = [];
 let calYear, calMonth;
@@ -83,7 +84,6 @@ function statCard(icon, label, value, change, sub, badgeType) {
 /* ── Events Table ─────────────────────────────────────────── */
 async function loadEvents() {
   const result = await DB.getEvents(eventsPage, eventsPerPage);
-  console.log(await result)
   allEventsCache = result;
   renderEventsTable(result);
 }
@@ -94,7 +94,7 @@ function renderEventsTable(result) {
   const paginationEl = document.getElementById('events-pagination');
 
   if (!result.data.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-gray);">No events found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-gray);">${noEventStatement}</td></tr>`;
     countEl.textContent = 'No events';
     paginationEl.innerHTML = '';
     return;
