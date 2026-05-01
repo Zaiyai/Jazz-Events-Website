@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Successful</title>
+</head>
+<body>
 <?php
 
 $host = "localhost";
@@ -38,3 +46,7 @@ if (!isset($_POST['submit'])) {
 $conn->close();
 
 ?>
+<br><br>
+<a href="../home.html">Go back</a>
+</body>
+</html>

@@ -88,7 +88,7 @@
 
                     <div class="form-group">
                         <label for="no_of_guests">Estimated Number of Guests <span class="text-red">*</span></label>
-                        <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" min="1" required>
+                        <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" min="1" max="10000" required onchange="updateEstimatedBudget()">
                     </div>
                     
                     <div class="form-group">
@@ -107,7 +107,7 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label>Services Needed (Check all that apply) <span class="text-red">*</span></label>
-                        <div class="checkbox-group">
+                        <div class="checkbox-group" onclick="updateEstimatedBudget()">
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="catering">
                                 <div class="service">
@@ -174,7 +174,7 @@
                         <div class="budget-input-container">
                             <p class="currency-symbol">₱</p>
                             <div class="divider"></div>
-                            <input class="budget-input" type="number" id="event-budget" name="budget" placeholder="~XXX,XXX" required>
+                            <p id="event-budget"></p>
                         </div>
                     </div>
                 </div>
@@ -210,5 +210,6 @@
     </section>
 
     <script src="../scripts/main.js"></script>
+    <script src="booking.js"></script>
 </body>
 </html>
