@@ -20,7 +20,6 @@ $data = json_decode($json);
 $name = $conn->real_escape_string($data->name);
 $type = $conn->real_escape_string($data->type);
 $no_of_guests = $conn->real_escape_string($data->no_of_guests);
-$celebrant = $conn->real_escape_string($data->celebrant);
 $client_name = $conn->real_escape_string($data->client_name);
 $date = $conn->real_escape_string($data->date);
 $venue = $conn->real_escape_string($data->venue);
@@ -28,8 +27,8 @@ $theme = $conn->real_escape_string($data->theme);
 $status = $conn->real_escape_string($data->status);
 $amount = $conn->real_escape_string($data->amount);
 
-$insertSQL = "INSERT INTO events (name, type, no_of_guests, celebrant, client_name, date, venue, theme, status, amount)
-VALUES ('$name', '$type', '$no_of_guests', '$celebrant', '$client_name', '$date', '$venue', '$theme', '$status', '$amount')";
+$insertSQL = "INSERT INTO events (name, type, no_of_guests, client_name, date, venue, theme, status, amount)
+VALUES ('$name', '$type', '$no_of_guests', '$client_name', '$date', '$venue', '$theme', '$status', '$amount')";
 $result = $conn->query($insertSQL);
 
 if ($result) {

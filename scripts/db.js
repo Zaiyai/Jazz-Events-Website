@@ -73,8 +73,6 @@ const DB = {
   },
 
   async updateEvent(id, updates) {
-    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
-    
     let event = { event_id: id, ...updates };
     
     fetch("../scripts/edit_event.php", {
@@ -93,11 +91,18 @@ const DB = {
   },
 
   async deleteEvent(id) {
-    // TODO: replace with DELETE /api/events/:id
-    await delay(300);
-    let all = getDataOrDefault('events', DEFAULT_EVENTS);
-    all = all.filter(e => e.id !== id);
-    localStorage.setItem('je_events', JSON.stringify(all));
+    fetch("../scripts/remove_event.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ event_id: id }), 
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    });
+
     return { ok: true };
   },
 

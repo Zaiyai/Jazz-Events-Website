@@ -118,7 +118,7 @@ function renderEventsTable(result) {
       <td class="amount-cell">${formatPeso(ev.amount)}</td>
       <td>
         <button class="row-action-btn" onclick="editEvent('${ev.event_id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
-        <button class="row-action-btn" onclick="confirmDelete('event','${ev.id}','${ev.name}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+        <button class="row-action-btn" onclick="confirmDelete('event','${ev.event_id}','${ev.name}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
       </td>
     </tr>
   `).join('');
