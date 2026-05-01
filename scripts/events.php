@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$sql = "SELECT event_id, name, type, no_of_guests, client_name, date, venue, amount status FROM events";
+$sql = "SELECT event_id, name, type, no_of_guests, client_name, date, venue,  status, amount FROM events";
 $result = $conn->query($sql);
 
 if ($result) {

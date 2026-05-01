@@ -102,14 +102,14 @@ function renderEventsTable(result) {
           <div class="event-thumb">${ev.emoji || '🎉'}</div>
           <div>
             <div class="event-name">${ev.name}</div>
-            <div class="event-type">${ev.type} · ${ev.guests} Guests</div>
+            <div class="event-type">${ev.type} · ${ev.no_of_guests} Guests</div>
           </div>
         </div>
       </td>
       <td>
         <div class="client-cell">
-          <div class="client-mini-avatar">${ev.clientInitials}</div>
-          ${ev.client}
+          <div class="client-mini-avatar">${formatInitials(ev.client_name)}</div>
+          ${ev.client_name}
         </div>
       </td>
       <td>${formatDate(ev.date)}</td>
@@ -117,7 +117,7 @@ function renderEventsTable(result) {
       <td>${statusPill(ev.status)}</td>
       <td class="amount-cell">${formatPeso(ev.amount)}</td>
       <td>
-        <button class="row-action-btn" onclick="editEvent('${ev.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+        <button class="row-action-btn" onclick="editEvent('${ev.event_id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
         <button class="row-action-btn" onclick="confirmDelete('event','${ev.id}','${ev.name}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
       </td>
     </tr>
@@ -158,18 +158,18 @@ function openNewEventModal() {
 }
 
 async function editEvent(id) {
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
-  const ev = all.find(e => e.id === id);
+  const ev = events.find(e => e.event_id === id);
   if (!ev) return;
+  console.log("here")
   document.getElementById('event-modal-title').textContent = 'Edit Event';
   document.getElementById('event-edit-id').value = id;
   document.getElementById('ev-name').value   = ev.name || '';
   document.getElementById('ev-type').value   = ev.type || '';
-  document.getElementById('ev-client').value = ev.client || '';
-  document.getElementById('ev-guests').value = ev.guests || '';
+  document.getElementById('ev-client').value = ev.client_name || '';
+  document.getElementById('ev-guests').value = ev.no_of_guests || '';
   document.getElementById('ev-date').value   = ev.date || '';
   document.getElementById('ev-venue').value  = ev.venue || '';
-  document.getElementById('ev-status').value = ev.status || 'pending';
+  document.getElementById('ev-status').value = ev.status || 'PLANNING';
   document.getElementById('ev-amount').value = ev.amount || '';
   openModal('modal-new-event');
 }

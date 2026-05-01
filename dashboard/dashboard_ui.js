@@ -21,12 +21,15 @@ function showToast(message, type = 'success') {
   el._timer = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-/* ── Format currency ─────────────────────────────────────── */
 function formatPeso(amount) {
-  return '₱' + Number(amount).toLocaleString('en-PH');
+  return '₱' + Number(amount);
 }
 
-/* ── Format date ─────────────────────────────────────────── */
+function formatInitials(name) {
+  let initials = [ name[0], name.trim().split(' ').at(-1)[0] ];
+  return initials.join("");
+}
+
 function formatDate(isoStr) {
   if (!isoStr) return '';
   const d = new Date(isoStr);
@@ -36,12 +39,12 @@ function formatDate(isoStr) {
 /* ── Status pill HTML ─────────────────────────────────────── */
 function statusPill(status) {
   const map = {
-    confirmed:  'status-confirmed',
-    pending:    'status-pending',
     completed:  'status-completed',
-    cancelled:  'status-cancelled',
+    ongoing:    'status-ongoing',
+    planning:   'status-planning',
+    blocked:    'status-blocked',
   };
-  const cls = map[status] || 'status-pending';
+  const cls = map[status] || 'status-planning';
   return `<span class="status-pill ${cls}">${capitalize(status)}</span>`;
 }
 
@@ -59,28 +62,9 @@ function initMobileNav() {
   closeBtn?.addEventListener('click', () => { overlay.classList.remove('open'); document.body.classList.remove('menu-open'); });
 }
 
-/* ── Auth guard ──────────────────────────────────────────── */
-function requireAuth(redirectTo = 'login.html') {
-  const user = DB.getUser();
-  if (!user) { window.location.href = redirectTo; return null; }
-  return user;
-}
-
 function guestOnly(redirectTo = 'dashboard.html') {
   const user = DB.getUser();
   if (user) { window.location.href = redirectTo; }
-}
-
-/* ── Render nav user state ───────────────────────────────── */
-function renderNavUser(containerId) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  const user = DB.getUser();
-  if (user) {
-    el.innerHTML = `<div class="nav-avatar" title="${user.name}" onclick="window.location.href='dashboard.html'">${user.initials}</div>`;
-  } else {
-    el.innerHTML = `<button class="btn-nav-login" onclick="window.location.href='login.html'">LOG IN</button>`;
-  }
 }
 
 /* ── Modal helpers ───────────────────────────────────────── */
@@ -91,15 +75,6 @@ function openModal(id) {
 function closeModal(id) {
   const el = document.getElementById(id);
   if (el) el.classList.remove('open');
-}
-
-/* ── Service checkboxes ──────────────────────────────────── */
-function initServiceChecks() {
-  document.querySelectorAll('.service-check-label').forEach(label => {
-    const cb = label.querySelector('input[type=checkbox]');
-    if (!cb) return;
-    cb.addEventListener('change', () => label.classList.toggle('checked', cb.checked));
-  });
 }
 
 /* ── Simple form validator ───────────────────────────────── */
@@ -120,7 +95,6 @@ function validateForm(fields) {
 /* ── Run on page load ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
-  initServiceChecks();
 
   const sidebar = document.getElementsByClassName('sidebar')[0];
   document.getElementById('sidebar-trigger').addEventListener('mouseenter', () => { sidebar.style.width = "250px"; });
