@@ -1,6 +1,6 @@
 const DB = {
   currentUser: null,
-
+  
   logout() {
     DB.currentUser = null;
     localStorage.removeItem('je_user');
@@ -42,7 +42,6 @@ const DB = {
 
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
-    await delay(300);
     const all = await getDataOrDefault('events', DEFAULT_EVENTS);
     const start = (page - 1) * perPage;
     return {
@@ -54,13 +53,24 @@ const DB = {
   },
 
   async createEvent(event) {
-    // TODO: replace with POST /api/events
-    await delay(400);
-    const all = getDataOrDefault('events', DEFAULT_EVENTS);
-    const newEvent = { ...event, id: uid(), createdAt: new Date().toISOString() };
-    all.unshift(newEvent);
-    localStorage.setItem('je_events', JSON.stringify(all));
-    return { ok: true, data: newEvent };
+    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
+    
+    all.unshift(event);
+    console.log(event)
+    
+    fetch("../scripts/add_event.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(event), 
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      return response.json();
+    });
+
+    return { ok: true, data: event };
   },
 
   async updateEvent(id, updates) {

@@ -157,11 +157,17 @@ function openNewEventModal() {
   openModal('modal-new-event');
 }
 
+const eventModalTitle = document.getElementById('event-modal-title');
+
+async function addEvent() {
+  eventModalTitle.textContent = 'New Event';
+  openModal('modal-new-event');
+}
+
 async function editEvent(id) {
   const ev = events.find(e => e.event_id === id);
   if (!ev) return;
-  console.log("here")
-  document.getElementById('event-modal-title').textContent = 'Edit Event';
+  eventModalTitle.textContent = 'Edit Event';
   document.getElementById('event-edit-id').value = id;
   document.getElementById('ev-name').value   = ev.name || '';
   document.getElementById('ev-type').value   = ev.type || '';
@@ -188,16 +194,15 @@ async function saveEvent() {
   const data = {
     name,
     type:     document.getElementById('ev-type').value.trim()   || 'Event',
-    client:   document.getElementById('ev-client').value.trim(),
-    clientInitials: document.getElementById('ev-client').value.trim().slice(0,1).toUpperCase(),
-    guests:   parseInt(document.getElementById('ev-guests').value) || 0,
+    client_name:   document.getElementById('ev-client').value.trim(),
+    no_of_guests:   parseInt(document.getElementById('ev-guests').value) || 0,
     date:     document.getElementById('ev-date').value,
     venue:    document.getElementById('ev-venue').value.trim(),
     status:   document.getElementById('ev-status').value,
     amount:   parseFloat(document.getElementById('ev-amount').value) || 0,
-    emoji:    '🎉',
   };
 
+  // If edit, update event, else add new event
   if (id) {
     await DB.updateEvent(id, data);
     showToast(`"${name}" updated successfully.`);
