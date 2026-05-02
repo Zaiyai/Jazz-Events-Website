@@ -38,11 +38,12 @@ function formatDate(isoStr) {
 
 /* ── Status pill HTML ─────────────────────────────────────── */
 function statusPill(status) {
+  console.log(status)
   const map = {
-    completed:  'status-completed',
-    ongoing:    'status-ongoing',
-    planning:   'status-planning',
-    blocked:    'status-blocked',
+    COMPLETED:  'status-completed',
+    ONGOING:    'status-ongoing',
+    PLANNING:   'status-planning',
+    BLOCKED:    'status-blocked',
   };
   const cls = map[status] || 'status-planning';
   return `<span class="status-pill ${cls}">${capitalize(status)}</span>`;
