@@ -17,3 +17,8 @@ function updateEstimatedBudget() {
         eventBudget.innerHTML = totalBudget.toLocaleString();
     }
 }
+
+document.getElementById('booking-form').addEventListener('submit', function() {
+    const content = eventBudget.innerHTML;
+    document.getElementById('budget').value = content;
+});
