@@ -27,19 +27,17 @@ $theme = $conn->real_escape_string($data->theme);
 $status = $conn->real_escape_string($data->status);
 $amount = $conn->real_escape_string($data->amount);
 
-$insertSQL = "INSERT INTO events (name, type, no_of_guests, client_name, date, venue, theme, status, amount)
+$sql = "INSERT INTO events (name, type, no_of_guests, client_name, date, venue, theme, status, amount)
 VALUES ('$name', '$type', '$no_of_guests', '$client_name', '$date', '$venue', '$theme', '$status', '$amount')";
-$result = $conn->query($insertSQL);
+$result = $conn->query($sql);
 
 if ($result) {
     echo json_encode([
-        "status"   => "success",
-        "message"  => "Account successfully created!",
+        "status"   => "success"
     ]);
 } else {
     echo json_encode([
-        "status"  => "error",
-        "message" => "Something went wrong."
+        "status"  => "error"
     ]);
 }
 

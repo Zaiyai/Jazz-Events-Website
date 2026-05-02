@@ -50,7 +50,7 @@
         </div>
 
         <div class="hero-content">
-            <form id="booking-form" class="form-container" action="booking_registry.php" method="post">
+            <div id="booking-form" class="form-container">
                 <div class="services-header">
                     <div class="flourish">
                         <img class="gold_accent" src="../images/gold_accent.png" alt="">
@@ -68,12 +68,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event">Type of Event <span class="text-red">*</span></label>
-                        <input type="text" id="event" name="type" placeholder="e.g. Wedding Reception" required>
+                        <input type="text" id="type" name="type" placeholder="e.g. Wedding Reception" required>
                     </div>
 
                     <div class="form-group">
                         <label for="celebrant_name">Full Name of Celebrant/s <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="celebrant_name" placeholder="e.g. Dela Cruz, Maria B." required>
+                        <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B." required>
                     </div>
 
                     <div class="form-group">
@@ -93,13 +93,13 @@
                     
                     <div class="form-group">
                         <label for="venue">Venue Location <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="venue" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
+                        <input type="text" id="venue" name="venue" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="theme">Event Themed <span class="text-red">*</span></label>
+                        <label for="theme">Event Theme <span class="text-red">*</span></label>
                         <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
                     </div>
                 </div>
@@ -200,17 +200,18 @@
                 <br><br>
 
                 <h3 class="section-subtitle">Personal <span class="text-gold">Requests</span></h3>
-                <textarea id="message" name="message" placeholder="Tell us about your vision for this event..."></textarea>
+                <textarea id="personal_request" name="personal_request" placeholder="Tell us about your vision for this event..."></textarea>
                 
-                <button class="btn-gold" type="submit">
+                <button class="btn-gold" onclick="submitForm()">
                     <span>Submit Booking</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
-            </form>
+            </div>
         </div>
     </section>
 
     <script src="../scripts/main.js"></script>
+    <script src="../scripts/db.js"></script>
     <script src="booking.js"></script>
 </body>
 </html>

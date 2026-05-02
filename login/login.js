@@ -38,8 +38,7 @@ async function handleLogin() {
       if (data.status == "success") { 
         btn.disabled = true;
         btn.textContent = 'Logging in…';
-        COOKIES.setCookie(loginData.email, 30);
-        COOKIES.setUserType(data.user_type);
+        COOKIES.setCookie(loginData.email, data.user_type, 30);
         setTimeout(() => {
         if (data.user_type == 'ADMIN') {
             window.location.href = data.redirect;

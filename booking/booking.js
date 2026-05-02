@@ -18,7 +18,26 @@ function updateEstimatedBudget() {
     }
 }
 
-document.getElementById('booking-form').addEventListener('submit', function() {
+// On form submission
+function submitForm() {
     const content = eventBudget.innerHTML;
     document.getElementById('budget').value = content;
-});
+
+    let bookingInfo = {
+        email: document.getElementById('email').value.trim(),
+        name: document.getElementById('name').value.trim(),
+        type: document.getElementById('type').value.trim(),
+        date_from: document.getElementById('datefrom').value,
+        date_to: document.getElementById('dateto').value,
+        no_of_guests: document.getElementById('attendees').value.trim(),
+        venue: document.getElementById('venue').value.trim(),
+        theme: document.getElementById('theme').value.trim(),
+        status: 'PENDING',
+        budget: document.getElementById('budget').value.trim(),
+        personal_request: document.getElementById('personal_request').value.trim(),
+    };
+
+    DB.sendBookingConfirmation(bookingInfo);
+    DB.createBooking(bookingInfo);
+};
+

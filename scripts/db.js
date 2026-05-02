@@ -40,6 +40,39 @@ const DB = {
     return null;
   },
 
+  /* ── BOOKINGS ─────────────────────────────────────────────── */
+  async sendBookingConfirmation(event) {
+    fetch("../scripts/bookings/booking_confirmation.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(event), 
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      console.log(response.json);
+      return response.json();
+    });
+  },
+
+  async createBooking(event) {
+    fetch("../scripts/bookings/add_booking.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(event), 
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      window.location.href = 'booking_success.html';
+      return response.json();
+    });
+
+    return { ok: true, data: event };
+  },
+
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
     const all = await getDataOrDefault('events', DEFAULT_EVENTS);
@@ -57,7 +90,7 @@ const DB = {
     
     all.unshift(event);
     
-    fetch("../scripts/add_event.php", {
+    fetch("../scripts/events/add_event.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -75,7 +108,7 @@ const DB = {
   async updateEvent(id, updates) {
     let event = { event_id: id, ...updates };
     
-    fetch("../scripts/edit_event.php", {
+    fetch("../scripts/events/edit_event.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -91,7 +124,7 @@ const DB = {
   },
 
   async deleteEvent(id) {
-    fetch("../scripts/remove_event.php", {
+    fetch("../scripts/events/remove_event.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

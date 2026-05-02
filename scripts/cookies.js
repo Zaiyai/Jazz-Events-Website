@@ -1,13 +1,10 @@
 const COOKIES = {
-  setCookie(email, exdays) {
+  setCookie(email, user_type, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     let expires = "expires="+ d.toUTCString();
     document.cookie = "email=" + email + ";" + expires + ";path=/";
-  },
-
-  setUserType(user_type) {
-    document.cookie = "user_type=" + user_type + ";";
+    document.cookie = "user_type=" + user_type + ";" + expires + ";path=/";
   },
   
   getCookie(cname) {
