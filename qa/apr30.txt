@@ -1,7 +1,7 @@
 login-emailogin-err > login-emaillogin-err
 togglePass() and showToast() should also be implemented on home.html ✅
 Add <script src="scripts/ui.js"></script> before login/login.js in home.html.
-[update] deleted the get a quote feature (quote.hmlt, css, js and footer link)
+[update] deleted the get a quote feature (quote.hmlt, css, js and footer link) ✅
 
 Dashboard
 remove support quick link
