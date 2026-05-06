@@ -41,21 +41,6 @@ const DB = {
   },
 
   /* ── BOOKINGS ─────────────────────────────────────────────── */
-  async sendBookingConfirmation(event) {
-    fetch("../scripts/bookings/booking_confirmation.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(event), 
-    })
-    .then(response => {
-      if (!response.ok) throw new Error("HTTP error: " + response.status);
-      console.log(response.json);
-      return response.json();
-    });
-  },
-
   async createBooking(event) {
     fetch("../scripts/bookings/add_booking.php", {
       method: "POST",

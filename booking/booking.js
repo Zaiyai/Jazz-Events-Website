@@ -37,7 +37,6 @@ function submitForm() {
         personal_request: document.getElementById('personal_request').value.trim(),
     };
 
-    DB.sendBookingConfirmation(bookingInfo);
     DB.createBooking(bookingInfo);
 };
 
