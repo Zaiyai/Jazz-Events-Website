@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../register/register.css">
     <link rel="stylesheet" href="booking.css">
     
 </head>
@@ -53,13 +54,13 @@
             <div id="booking-form" class="form-container">
                 <div class="services-header">
                     <div class="flourish">
-                        <img class="gold_accent" src="../images/gold_accent.png" alt="">
+                        <img class="gold_accent" src="../assets/decor/gold_accent.png" alt="">
                     </div>
                     
                     <h2 class="section-title text-center">Event <span class="text-gold">Booking</span></h2>
 
                     <div class="flourish flourish-right">
-                        <img class="gold_accent" src="../images/gold_accent.png" alt="">
+                        <img class="gold_accent" src="../assets/decor/gold_accent.png" alt="">
                     </div>
                 </div>
                 
@@ -68,38 +69,44 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="event">Type of Event <span class="text-red">*</span></label>
-                        <input type="text" id="type" name="type" placeholder="e.g. Wedding Reception" required>
+                        <input type="text" id="type" name="type" placeholder="e.g. Wedding Reception">
+                        <div class="err-msg" id="type-err">Type of Event is required.</div>
                     </div>
 
                     <div class="form-group">
                         <label for="celebrant_name">Full Name of Celebrant/s <span class="text-red">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B." required>
+                        <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B.">
+                        <div class="err-msg" id="name-err">Name of Event is required.</div>
                     </div>
 
                     <div class="form-group">
                         <label for="event_date_from">Event Date From <span class="text-red">*</span></label>
-                        <input type="date" id="datefrom" name="event_date_from" max="9999-12-31" required>
+                        <input type="date" id="datefrom" name="event_date_from" max="9999-12-31" onchange="checkDateViability(this)">
+                        <div class="err-msg" id="datefrom-err">Event Date Start is required.</div>
                     </div>
 
                     <div class="form-group">
                         <label for="event_date_to">Event Date To <span class="text-red">*</span></label>
-                        <input type="date" id="dateto" name="event_date_to" max="9999-12-31" required>
+                        <input type="date" id="dateto" name="event_date_to" max="9999-12-31" onchange="checkDateViability(this)">
+                        <div class="err-msg" id="dateto-err">Event Date End is required.</div>
                     </div>
 
                     <div class="form-group">
                         <label for="no_of_guests">Estimated Number of Guests <span class="text-red">*</span></label>
-                        <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" step="1" min="1" max="99999" inputmode="numeric" required onchange="updateEstimatedBudget()">
+                        <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" step="1" min="1" max="99999" inputmode="numeric" onchange="updateEstimatedBudget()">
+                        <div class="err-msg" id="attendees-err">Number of Guests is required.</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="venue">Venue Location <span class="text-red">*</span></label>
                         <input type="text" id="venue" name="venue" placeholder="e.g. Imus, Cavite or Specific Venue Name" required>
+                        <div class="err-msg" id="venue-err">Venue is required.</div>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="theme">Event Theme <span class="text-red">*</span></label>
+                        <label for="theme">Event Theme</label>
                         <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
                     </div>
                 </div>
@@ -209,7 +216,7 @@
             </div>
         </div>
     </section>
-    
+
     <script src="../scripts/main.js"></script>
     <script src="../scripts/db.js"></script>
     <script src="booking.js"></script>

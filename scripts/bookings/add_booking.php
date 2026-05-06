@@ -87,14 +87,6 @@ try {
     // Recipients
     $mail->setFrom('test@test-q3enl6k3n5742vwr.mlsender.net', 'Jazz Events');
     $mail->addAddress($email);
-    // $mail->addAddress('ellen@example.com');
-    // $mail->addReplyTo('info@example.com', 'Information');
-    // $mail->addCC('cc@example.com');
-    // $mail->addBCC('bcc@example.com');
-
-    // Attachments
-    // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
     //Content
     $mail->isHTML(true);                                 
