@@ -38,7 +38,6 @@ function formatDate(isoStr) {
 
 /* ── Status pill HTML ─────────────────────────────────────── */
 function statusPill(status) {
-  console.log(status)
   const map = {
     COMPLETED:  'status-completed',
     ONGOING:    'status-ongoing',

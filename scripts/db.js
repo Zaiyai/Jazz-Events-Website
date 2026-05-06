@@ -210,7 +210,7 @@ function uid() { return Math.random().toString(36).slice(2, 10); }
 
 async function getDataOrDefault(key, def) {
   try {
-    const response = await fetch("../scripts/" + key + ".php", {
+    const response = await fetch("../scripts/events/" + key + ".php", {
       method: "POST",
       headers: { "Content-Type": "application/json" }
     });
