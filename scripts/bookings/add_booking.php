@@ -26,9 +26,11 @@ echo "Connected successfully</br>";
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$email = ($data->email);
 $name = $conn->real_escape_string($data->name);
+$email = $conn->real_escape_string($data->email);
 $type = $conn->real_escape_string($data->type);
+$client_id = $conn->real_escape_string($data->client_id);
+$client_name = $conn->real_escape_string($data->client_name);
 $date_from = $conn->real_escape_string($data->date_from);
 $date_to = $conn->real_escape_string($data->date_to);
 $no_of_guests = $conn->real_escape_string($data->no_of_guests);
@@ -56,8 +58,8 @@ $email_confirmation_body = "<h3>Confirm Jazz Event booking details:</h3><br>
 ";
 
 $sql = "INSERT INTO booking 
-(type, name, date_from, date_to, no_of_guests, venue, theme, budget, personal_request, user_confirmation_token) 
-VALUES ('$type', '$name', '$date_from', '$date_to', '$no_of_guests', '$venue', '$theme', '$budget', '$personal_request', '$user_confirmation_token')";
+(name, type, client_id, client_name, email, date_from, date_to, no_of_guests, venue, theme, budget, personal_request, user_confirmation_token) 
+VALUES ('$name', '$type', '$client_id', '$client_name', '$email', '$date_from', '$date_to', '$no_of_guests', '$venue', '$theme', '$budget', '$personal_request', '$user_confirmation_token')";
 
 $result = $conn->query($sql);
 

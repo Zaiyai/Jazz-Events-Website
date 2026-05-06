@@ -20,15 +20,16 @@ $data = json_decode($json);
 $email = $conn->real_escape_string($data->email);
 
 // Look up the user by email
-$sql = "SELECT email, name, initials FROM users WHERE email = '$email' LIMIT 1";
+$sql = "SELECT user_id, email, name, initials FROM users WHERE email = '$email' LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result) {
     $row = $result->fetch_assoc();
     echo json_encode([
         "status"   => "success",
-        "email" => $row["email"],
-        "name" => $row["name"],
+        "id"       => $row["user_id"],
+        "email"    => $row["email"],
+        "name"     => $row["name"],
         "initials" => $row["initials"]
     ]);
 } else {
