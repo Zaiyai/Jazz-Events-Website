@@ -225,8 +225,11 @@ input[type=number] {
     border: 1px solid var(--jazz-gold);
     border-radius: 12px;
     padding: 40px;
-    max-width: 900px;
+    max-width: 1100px;
+    width: 100%;
     margin: 0 auto;
+    text-align: left;
+    box-sizing: border-box;
 }
 
 .text-center { text-align: center; }
@@ -237,14 +240,22 @@ input[type=number] {
 }
 .date-input-wrap {
     position: relative;
+    width: 100%;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
 }
 
 .checkbox-item {
     display: flex;
     align-items: center;
     background-color: #111827;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 16px;
+    border-radius: 8px;
     border: 1px solid #1f2937;
     cursor: pointer;
     transition: all 0.2s;
@@ -262,11 +273,11 @@ input[type=number] {
     width: 0;
 }
 .chk-box {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border: 1px solid #fff;
-    border-radius: 2px;
-    margin-right: 12px;
+    border-radius: 4px;
+    margin-right: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,18 +287,32 @@ input[type=number] {
 .checkbox-item input:checked ~ .chk-box {
     background-color: #fff;
 }
+.chk-box::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.checkbox-item input:checked ~ .chk-box::after {
+    opacity: 1;
+}
 .chk-text {
     display: flex;
     flex-direction: column;
 }
 .chk-title {
     color: #fff;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 .chk-desc {
-    color: #6b7280;
-    font-size: 0.65rem;
+    color: #888;
+    font-size: 0.75rem;
     margin: 0;
 }
 
