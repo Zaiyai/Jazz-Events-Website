@@ -187,8 +187,8 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group full-width">
+                <div class="form-row" style="justify-content: center; display: flex;">
+                    <div class="form-group full-width" style="max-width: 500px; width: 100%;">
                         <label for="event-budget">Estimated Event Budget</label>
                         <div class="budget-input-container">
                             <p class="currency-symbol">₱</p>
@@ -204,8 +204,8 @@
 
                 <div class="line"></div>
 
-                <div class="form-row">
-                    <div class="form-group full-width" style="max-width: 500px;">
+                <div class="form-row" style="justify-content: center; display: flex;">
+                    <div class="form-group full-width" style="max-width: 500px; width: 100%;">
                         <label for="phone">Phone Number <span class="text-red">*</span></label>
                         <div class="phone-input-wrap">
                             <div class="flag-icon">
@@ -218,7 +218,7 @@
                     </div>
                 </div>
 
-                <div class="email-box">
+                <div class="email-box" style="margin: 0 auto;">
                     <label style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 16px; display: block;">Email Address <span class="text-red">*</span></label>
                     
                     <input type="radio" id="email-me" name="email_choice" value="me" class="email-toggle" checked style="display: none;">
@@ -243,10 +243,10 @@
                 </div>
                 
                 <div style="display: flex; justify-content: center; margin-top: 40px;">
-                    <button class="btn-gold confirm-btn" id="submit" onclick="submitForm()">
+                    <a href="booking_summary.html" class="btn-gold confirm-btn" id="submit" style="text-decoration: none;">
                         <span>Confirm Booking</span>
                         <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    </a>
                 </div>
                 
                 <!-- Hidden personal request textarea to avoid JS crash if expected -->
