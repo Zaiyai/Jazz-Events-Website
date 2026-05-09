@@ -6,6 +6,10 @@ const COOKIES = {
     document.cookie = "email=" + email + ";" + expires + ";path=/";
     document.cookie = "user_type=" + user_type + ";" + expires + ";path=/";
   },
+
+  removeCookie(cname) {
+     document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
+  },
   
   getCookie(cname) {
     let name = cname + "=";
@@ -33,9 +37,9 @@ const DB = {
   
   logout() {
     DB.currentUser = null;
-    // Works whether called from pages/ or root
-    const isInPages = window.location.pathname.includes('/pages/');
-    window.location.href = isInPages ? 'login.html' : 'jazz-events/pages/login.html';
+    removeCookie(email);
+    removeCookie(user_type);
+    window.location.href = 'jazz-events/home.html';
   },
   
   // Returns id, email, name, and initials of user as json
@@ -154,60 +158,13 @@ const DB = {
     return { ok: true };
   },
 
-  /* ── TASKS ──────────────────────────────────────────────── */
-  async getTasks() {
-    // TODO: replace with GET /api/tasks
-    await delay(250);
-    return getDataOrDefault('tasks', DEFAULT_TASKS);
-  },
-
-  async createTask(task) {
-    await delay(300);
-    const all = getDataOrDefault('tasks', DEFAULT_TASKS);
-    const newTask = { ...task, id: uid(), done: false };
-    all.push(newTask);
-    localStorage.setItem('je_tasks', JSON.stringify(all));
-    return { ok: true, data: newTask };
-  },
-
-  async toggleTask(id) {
-    await delay(200);
-    let all = getDataOrDefault('tasks', DEFAULT_TASKS);
-    all = all.map(t => t.id === id ? { ...t, done: !t.done } : t);
-    localStorage.setItem('je_tasks', JSON.stringify(all));
-    return { ok: true };
-  },
-
-  async deleteTask(id) {
-    await delay(200);
-    let all = getDataOrDefault('tasks', DEFAULT_TASKS);
-    all = all.filter(t => t.id !== id);
-    localStorage.setItem('je_tasks', JSON.stringify(all));
-    return { ok: true };
-  },
-
   /* ── STATS ──────────────────────────────────────────────── */
   async getStats() {
-    // TODO: replace with GET /api/stats
-    await delay(250);
     return getDataOrDefault('je_stats', DEFAULT_STATS);
-  },
-
-  /* ── BOOKINGS ───────────────────────────────────────────── */
-  async submitBooking(formData) {
-    // TODO: replace with POST /api/bookings
-    await delay(700);
-    const all = getDataOrDefault('je_bookings', []);
-    all.push({ ...formData, id: uid(), submittedAt: new Date().toISOString(), status: 'pending' });
-    localStorage.setItem('je_bookings', JSON.stringify(all));
-    return { ok: true };
   }
 };
 
 /* ── Helpers ─────────────────────────────────────────────── */
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-function uid() { return Math.random().toString(36).slice(2, 10); }
-
 async function getDataOrDefault(key, def) {
   try {
     const response = await fetch("../scripts/events/" + key + ".php", {
@@ -230,7 +187,6 @@ async function getDataOrDefault(key, def) {
   }
 }
 
-/* ── Seed data (used if localStorage is empty) ───────────── */
 const DEFAULT_EVENTS = [
   { id: '1', name: 'Golden Anniversary Gala',      type: 'Corporate Dinner',  guests: 120, client: 'Pat',     clientInitials: 'P', date: '2026-12-28', venue: 'Shang-ri La',         status: 'confirmed',  amount: 349000, emoji: '🎊' },
   { id: '2', name: 'Garden Wedding',                type: 'Wedding',           guests: 200, client: 'Emma',    clientInitials: 'E', date: '2026-07-15', venue: 'Fernwood Gardens',     status: 'pending',    amount: 599000, emoji: '💐' },
@@ -238,13 +194,6 @@ const DEFAULT_EVENTS = [
   { id: '4', name: '50th Birthday Celebration',     type: 'Private Party',     guests: 80,  client: 'Sarah',   clientInitials: 'S', date: '2026-11-20', venue: 'Rooftop Terrace',     status: 'confirmed',  amount: 289000, emoji: '🎂' },
   { id: '5', name: 'Silver Wedding Anniversary',    type: 'Wedding',           guests: 150, client: 'Jose',    clientInitials: 'J', date: '2026-09-10', venue: 'Crimson Hotel',        status: 'pending',    amount: 420000, emoji: '💍' },
   { id: '6', name: 'Debut Celebration',             type: 'Private Party',     guests: 100, client: 'Lea',     clientInitials: 'L', date: '2026-08-05', venue: 'Diamond Events Place', status: 'confirmed',  amount: 180000, emoji: '🌸' },
-];
-
-const DEFAULT_TASKS = [
-  { id: 't1', name: 'Confirm catering menu with Chef',          due: 'Dec 28, 2026',   location: 'Shang-ri La',      done: false },
-  { id: 't2', name: 'Arrange floral decorations delivery',      due: 'July 15, 2026',  location: 'Fernwood Gardens', done: false },
-  { id: 't3', name: 'Process payment for Corporate Retreat',    due: 'Oct 2, 2025',    location: '',                 done: true  },
-  { id: 't4', name: 'Send contract to Emma for Garden Wedding', due: 'June 1, 2026',   location: '',                 done: false },
 ];
 
 const DEFAULT_STATS = {

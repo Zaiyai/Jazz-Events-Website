@@ -5,7 +5,7 @@ const eventsPerPage = 4;
 let allEventsCache = [];
 let calYear, calMonth;
 let filterStatus = '', filterClient = '';
-let deletePending = null; // { type: 'event'|'task', id }
+let deletePending = null; 
 
 
 /* ── Init ─────────────────────────────────────────────────── */
@@ -26,10 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load everything in parallel
   await Promise.all([
-    // loadStats(),
-    loadEvents(),
-    // loadTasks(),
-    // loadTeam(),
+    loadEvents()
   ]);
   renderCalendar();
   renderDonut();
