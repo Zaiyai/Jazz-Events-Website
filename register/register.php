@@ -19,7 +19,8 @@ $data = json_decode($json);
 
 $name = $conn->real_escape_string($data->name);
 $email = $conn->real_escape_string($data->email);
-$password = $conn->real_escape_string($data->password);
+$raw_password = $conn->real_escape_string($data->password);
+$hashed_password = password_hash($raw_password, PASSWORD_DEFAULT);
 
 $validateEmailSQL = "SELECT email FROM users WHERE email = '$email'";
 $result = $conn->query($validateEmailSQL);
@@ -34,7 +35,7 @@ if ($result->num_rows > 0) {
 }
 
 $insertSQL = "INSERT INTO users (name, email, password, user_type)
-VALUES ('$name', '$email', '$password', 'CLIENT')";
+VALUES ('$name', '$email', '$hashed_password', 'CLIENT')";
 $result = $conn->query($insertSQL);
 
 if ($result) {
