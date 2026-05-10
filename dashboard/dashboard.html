@@ -166,125 +166,29 @@
           </div>
         </div>
       </div>
-
-      <!-- Recent Events Table -->
-      <div class="table-card">
-        <div class="table-header">
-          <div>
-            <h3>Recent Events</h3>
-            <p>Manage your upcoming celebrations</p>
-          </div>
-          <div class="table-actions">
-            <button class="btn-outline">
-              <i class="fa-solid fa-filter"></i> Filter
-            </button>
-            <button class="btn-outline">
-              <i class="fa-solid fa-upload"></i> Export
-            </button>
-          </div>
-        </div>
-
-        <table class="events-table">
+      
+      <!-- Events Table -->
+      <table class="events-table">
           <thead>
             <tr>
-              <th>EVENT DETAILS</th>
-              <th>CLIENT</th>
-              <th>DATE</th>
-              <th>VENUE</th>
-              <th>STATUS</th>
-              <th>AMOUNT</th>
-              <th>ACTIONS</th>
+              <th>Event Details</th>
+              <th>Client</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Status</th>
+              <th>Amount</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="events-tbody-static">
-            <tr>
-              <td class="event-cell">
-                <div class="event-thumb">🎊</div>
-                <div>
-                  <div class="event-name">Golden Anniversary Gala</div>
-                  <div class="event-type">Corporate Dinner - 120 Guests</div>
-                </div>
-              </td>
-              <td>
-                <div class="client-cell">
-                  <div class="client-mini-avatar">P</div>
-                  <span>Pat</span>
-                </div>
-              </td>
-              <td>Dec 28, 2026</td>
-              <td>Shang-ri La</td>
-              <td><span class="status-pill status-planning">Confirmed</span></td>
-              <td class="amount-cell">₱ 349,000</td>
-              <td><button class="row-action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-            </tr>
-            <tr>
-              <td class="event-cell">
-                <div class="event-thumb">💐</div>
-                <div>
-                  <div class="event-name">Garden Wedding</div>
-                  <div class="event-type">Wedding - 200 Guests</div>
-                </div>
-              </td>
-              <td>
-                <div class="client-cell">
-                  <div class="client-mini-avatar">E</div>
-                  <span>Emma</span>
-                </div>
-              </td>
-              <td>July 15, 2026</td>
-              <td>Fernwood Gardens</td>
-              <td><span class="status-pill status-planning">Pending</span></td>
-              <td class="amount-cell">₱ 599,000</td>
-              <td><button class="row-action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-            </tr>
-            <tr>
-              <td class="event-cell">
-                <div class="event-thumb">🏢</div>
-                <div>
-                  <div class="event-name">New Year's Executive Retreat</div>
-                  <div class="event-type">Corporate - 50 Guests</div>
-                </div>
-              </td>
-              <td>
-                <div class="client-cell">
-                  <div class="client-mini-avatar">M</div>
-                  <span>Michael</span>
-                </div>
-              </td>
-              <td>Oct 2, 2025</td>
-              <td>Mountain Lodge Resort</td>
-              <td><span class="status-pill status-completed">Completed</span></td>
-              <td class="amount-cell">₱ 109,000</td>
-              <td><button class="row-action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-            </tr>
-            <tr>
-              <td class="event-cell">
-                <div class="event-thumb">🎂</div>
-                <div>
-                  <div class="event-name">50th Birthday Celebration</div>
-                  <div class="event-type">Private Party - 80 Guests</div>
-                </div>
-              </td>
-              <td>
-                <div class="client-cell">
-                  <div class="client-mini-avatar">S</div>
-                  <span>Sarah</span>
-                </div>
-              </td>
-              <td>Nov 20, 2026</td>
-              <td>Rooftop Terrace</td>
-              <td><span class="status-pill status-planning">Confirmed</span></td>
-              <td class="amount-cell">₱ 289,000</td>
-              <td><button class="row-action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-            </tr>
+          <tbody id="events-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-gray);">
+              <i class="fa-solid fa-spinner fa-spin" style="color:var(--jazz-gold)"></i> Loading events...
+            </td></tr>
           </tbody>
         </table>
         <div class="table-footer">
-          <span>Showing 4 of 24 events</span>
-          <div class="pagination">
-            <button class="pg-btn">Previous</button>
-            <button class="pg-btn">Next</button>
-          </div>
+          <span id="events-count">—</span>
+          <div class="pagination" id="events-pagination"></div>
         </div>
       </div>
 
