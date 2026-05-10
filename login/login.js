@@ -12,7 +12,6 @@ function validate(id,errId){
 
 async function handleLogin() {
   const ok = [validate('login-email','login-emailogin-err'), validate('login-pass','login-pass-err')].every(Boolean);
-  
   if (!ok) return;
 
   const loginData = {
@@ -39,12 +38,7 @@ async function handleLogin() {
         btn.disabled = true;
         btn.textContent = 'Logging in…';
         COOKIES.setCookie(loginData.email, data.user_type, 30);
-        setTimeout(() => {
-        if (data.user_type == 'ADMIN') {
-            window.location.href = data.redirect;
-        } else {
-            location.reload();
-        }}, 1500)
+        window.location.href = data.redirect;
       } else { 
         btn.disabled = false;
         btn.textContent = 'LOG IN';

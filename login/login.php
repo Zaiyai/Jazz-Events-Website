@@ -29,12 +29,22 @@ if ($result && $result->num_rows === 1) {
     // Matching Password
     if (password_verify($raw_password, $hashed_password)) {
         $row = $result->fetch_assoc();
-        echo json_encode([
-            "status"   => "success",
-            "message"  => "Login successful!",
-            "user_type" => $row["user_type"],
-            "redirect" => "dashboard/dashboard.html"
-        ]);
+        $user_type = $row["user_type"];
+        if ($user_type == "CLIENT") {
+            echo json_encode([
+                "status"   => "success",
+                "message"  => "Login successful!",
+                "user_type"=> $user_type,
+                "redirect" => "/Jazz%20Events%20Website/booking/booking.html"
+                ]);
+        } else {
+            echo json_encode([
+                "status"   => "success",
+                "message"  => "Login successful!",
+                "user_type"=> $user_type,
+                "redirect" => "dashboard/dashboard.html"
+            ]);
+        }
     } else {
         echo json_encode([
             "status"  => "error",

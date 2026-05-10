@@ -37,16 +37,16 @@ const DB = {
   
   logout() {
     DB.currentUser = null;
-    removeCookie(email);
-    removeCookie(user_type);
-    window.location.href = 'jazz-events/home.html';
+    COOKIES.removeCookie("email");
+    COOKIES.removeCookie("user_type");
+    window.location.href = 'http://localhost/jazz%20events%20website/home.html';
   },
   
   // Returns id, email, name, and initials of user as json
   async getUser() {
     if (COOKIES.hasEmail()) {
       try {
-        const response = await fetch("../scripts/user.php", {
+        const response = await fetch("/jazz%20events%20website/scripts/user.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

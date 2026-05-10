@@ -191,27 +191,25 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Header -->
     <header>
         <div class="nav-container">
+            <!-- Mobile Menu Button -->
             <button id="burger" class="mobile-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
+            <!-- Navigation Links -->
             <nav class="nav-links desktop-nav">
-                <a href="../dashboard/dashboard.html">Admin Panel</a>
-                <a href="../home.html">Home</a>
-                <a href="../home.html#services-section">Services</a>
-                <a href="../home.html#team-section">Team</a>
-                <a href="../home.html#reviews-section">Reviews</a>
-                <a href="../home.html#about">About Us</a>
-                <a href="../home.html#cta-section">Contact</a>
+                <a href="#">Home</a>
+                <a href="#services-section">Services</a>
+                <a href="#team-section">Team</a>
+                <a href="#reviews-section">Reviews</a>
+                <a href="#about">About Us</a>
+                <a href="#cta-section">Contact</a>
             </nav>
-            
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="../images/team3.jpg" alt="User">
-                </div>
-            </div>
+
+            <div id="nav-auth-slot"></div>
         </div>
     </header>
 
@@ -356,7 +354,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <img src="../images/logo.png" alt="Jazz Events Logo" class="footer-logo">
+                <img src="../assets/logo.png" alt="Jazz Events Logo" class="footer-logo">
                 <p>Elevating moments with exquisite culinary experience.</p>
             </div>
             
@@ -404,5 +402,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="../scripts/db.js"></script>
+    <script src="client_dashboard.js"></script>
 </body>
 </html>
