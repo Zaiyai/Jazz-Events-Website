@@ -424,3 +424,92 @@ input[type=number] {
     width: auto !important;
 }
 .confirm-btn i { font-size: 1rem; }
+
+/* Booking Summary */
+.summary-val {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.form-group label {
+    color: #d4af37;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    margin-bottom: 2px;
+}
+
+.chk-readonly {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.chk-readonly .chk-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    margin: 0;
+    position: relative;
+    background: transparent;
+}
+.chk-readonly.checked .chk-box {
+    background: #fff;
+    border-color: #fff;
+}
+.chk-readonly.checked .chk-box::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 5px;
+}
+.chk-readonly span {
+    color: #6b7280;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.chk-readonly.checked span {
+    color: #fff;
+}
+
+.summary-actions {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.btn-red {
+    background-color: #dc2626 !important;
+    color: #fff !important;
+    border: none;
+    border-radius: 24px !important;
+    padding: 14px 40px !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-red:hover {
+    background-color: #b91c1c !important;
+}
+
+.phone-val-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.budget-val-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}

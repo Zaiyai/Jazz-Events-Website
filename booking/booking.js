@@ -1,16 +1,20 @@
+const dateFrom = document.getElementById('datefrom');
+const dateTo   = document.getElementById('dateto');
+const today = new Date().toISOString().split('T')[0];
 const eventBudget  = document.getElementById('event-budget');
 const attendees    = document.getElementById('attendees');
 const attendeesErr = document.getElementById('attendees-err')
 
-const today = new Date().toISOString().split('T')[0];
-const dateFrom = document.getElementById('datefrom');
-const dateTo   = document.getElementById('dateto');
-dateFrom.setAttribute('min', today);
-dateTo.setAttribute('min', today);
+if (dateFrom && dateTo) {
+    dateFrom.setAttribute('min', today);
+    dateTo.setAttribute('min', today);
+}
+
+var bookingInfo;
 
 // On date change
 function checkDateViability(date) {
-    const dateErr = date.nextElementSibling;
+    const dateErr = date.parentElement.nextElementSibling;
     
     const dateFromErr = document.getElementById('datefrom-err');
     const dateToErr   = document.getElementById('dateto-err');
@@ -64,30 +68,29 @@ function validate(id,errId) {
   return !empty;
 }
 
-// On form submission
-async function submitForm() {
+// Before checking of summary
+async function firstSubmit() {
     const ok = [
-    validate('name','name-err'),
-    validate('email','email-err'),
-    validate('type','type-err'), 
-    validate('datefrom','datefrom-err'),
-    validate('dateto','dateto-err'),
-    validate('attendees','attendees-err'),
-    validate('venue','venue-err'),
-    validate('theme','theme-err')].every(Boolean);
-
+        validate('name','name-err'),
+        validate('type','type-err'), 
+        validate('datefrom','datefrom-err'),
+        validate('dateto','dateto-err'),
+        validate('attendees','attendees-err'),
+        validate('venue','venue-err'),
+        validate('theme','theme-err')].every(Boolean);
+        
     if (!ok) return;
-
+    
     const submitBtn = document.getElementById('submit');
     submitBtn.innerHTML = "Sending...";
     submitBtn.disabled = true;
-
+    
     const content = eventBudget.innerHTML;
     document.getElementById('budget').value = content;
     
     const user = await DB.getUser();
-
-    let bookingInfo = {
+    
+    bookingInfo = {
         name:         document.getElementById('name').value.trim(),
         email:        document.getElementById('email').value.trim() || user.email,
         type:         document.getElementById('type').value.trim(),
@@ -100,8 +103,15 @@ async function submitForm() {
         theme:        document.getElementById('theme').value.trim(),
         status:       'PENDING',
         budget:       document.getElementById('budget').value.trim(),
-        personal_request: document.getElementById('personal_request').value.trim(),
+        phone_number: document.getElementById('phone').value.trim()
     };
+    
+    sessionStorage.setItem('bookingData', JSON.stringify(bookingInfo));
+    window.location.href = "booking_summary.html";
+}
 
-    DB.createBooking(bookingInfo);
+// On form actual submission
+function submitBooking() {
+    DB.createBooking(JSON.parse(sessionStorage.getItem('bookingData'))); 
+    sessionStorage.removeItem('bookingData');
 };

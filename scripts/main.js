@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (COOKIES.hasEmail()) {
     if (COOKIES.getCookie("user_type") == 'ADMIN') {
-      console.log("UHElo")
       const navLinks = document.getElementsByClassName('nav-links')[0];
       
       navLinks.innerHTML = 

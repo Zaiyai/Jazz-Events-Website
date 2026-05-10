@@ -76,7 +76,7 @@ const DB = {
 
   /* ── BOOKINGS ─────────────────────────────────────────────── */
   async createBooking(event) {
-    fetch("../scripts/bookings/add_booking.php", {
+    fetch("/Jazz%20Events%20Website/scripts/bookings/add_booking.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -85,7 +85,7 @@ const DB = {
     })
     .then(response => {
       if (!response.ok) throw new Error("HTTP error: " + response.status);
-      window.location.href = 'booking_success.html';
+      // window.location.href = 'booking_success.html';
       return response.json();
     });
 
