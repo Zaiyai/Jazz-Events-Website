@@ -25,6 +25,7 @@
   position: fixed; top: 0; left: 0;
   height: 100vh;
   overflow-y: auto;
+  transition: 0.3s;
   display: flex; flex-direction: column;
   z-index: 100;
 }
@@ -47,8 +48,9 @@
   margin-top: 2px;
 }
 .sidebar-nav { padding: 10px 0; flex: 1; }
-
-
+.not-main {
+  width: 0;
+}
 
 .nav-group-label {
   font-size: 0.55rem;
@@ -545,7 +547,7 @@
 }
 .btn-outline:hover { border-color: var(--jazz-gold); color: var(--jazz-gold); }
 
-.btn-ghost {
+.menu-btn, .btn-ghost {
   background: none; border: none;
   color: var(--text-gray);
   cursor: pointer;
@@ -556,7 +558,7 @@
   transition: color 0.2s;
   font-family: var(--font-sans);
 }
-.btn-ghost:hover { color: var(--jazz-gold); }
+.menu-btn:hover, .btn-ghost:hover { color: var(--jazz-gold); }
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .flex-row { display: flex; align-items: center; }

@@ -92,11 +92,15 @@ function validateForm(fields) {
   return valid;
 }
 
+const sidebar = document.getElementById('sidebar');
+
 /* ── Run on page load ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
 
-  const sidebar = document.getElementsByClassName('sidebar')[0];
-  document.getElementById('sidebar-trigger').addEventListener('mouseenter', () => { sidebar.style.width = "250px"; });
-  sidebar.addEventListener('mouseleave', () => { sidebar.style.width = "0"; });
+  if (sidebar.classList.contains('not-main')) {
+    sidebar.addEventListener('mouseleave', () => { sidebar.style.width = "0"; });
+  }
 });
+
+function openSidebar() { sidebar.style.width = "250px"; };
