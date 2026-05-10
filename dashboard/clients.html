@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients — Jazz Events Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../register/register.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background: #111;">
+
+<div class="dash-layout">
+  <main class="dash-main" style="margin-left: 0;">
+    <!-- Topbar -->
+    <div class="dash-topbar" style="padding-left: 32px; padding-right: 32px;">
+      <div class="topbar-left" style="gap: 24px;">
+        <button class="btn-ghost" style="font-size: 1.2rem; padding: 0;" onclick="window.location.href='dashboard.html'"><i class="fa-solid fa-bars"></i></button>
+        <div class="topbar-heading" style="color: var(--jazz-gold); font-family: var(--font-sans); font-size: 1.2rem; font-weight: 700;">Clients</div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-sub">Manage your clients</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;">
+          <i class="fa-solid fa-user-plus"></i> Add Client
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="dash-content" style="padding: 32px; max-width: 1400px; margin: 0 auto;">
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="page-stat-card">
+          <div class="page-stat-label">TOTAL CLIENTS</div>
+          <div class="page-stat-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="page-stat-value">284</div>
+          <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +18 new this month</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">ACTIVE CLIENTS</div>
+          <div class="page-stat-icon"><i class="fa-solid fa-user-check"></i></div>
+          <div class="page-stat-value">156</div>
+          <div class="page-stat-sub">With active bookings</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">VIP CLIENTS</div>
+          <div class="page-stat-icon"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="page-stat-value">42</div>
+          <div class="page-stat-sub warn">Premium Tier members</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">RETENTION RATE</div>
+          <div class="page-stat-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          <div class="page-stat-value">94.2%</div>
+          <div class="page-stat-sub up">-2.4 from last quarter</div>
+        </div>
+      </div>
+
+      <!-- Clients Directory Table -->
+      <div class="table-card" style="margin-top: 24px;">
+        <div class="table-header" style="flex-direction: column; align-items: flex-start; padding: 24px;">
+          <h3 style="font-family: var(--font-sans); font-size: 1.4rem; color: var(--text-white); margin-bottom: 4px;">Client Directory</h3>
+          <p style="color: var(--text-gray); font-size: 0.85rem;">All registered clients and their details</p>
+        </div>
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th style="padding-left: 24px;">CLIENT</th>
+              <th>EMAIL</th>
+              <th>PHONE</th>
+              <th>EVENTS</th>
+              <th>TOTAL SPENT</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">P</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Pat</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">mas.pat@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">8</td>
+              <td style="color: var(--text-gray);">₱900,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">E</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Emma</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">emma.watson@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">5</td>
+              <td style="color: var(--text-gray);">₱800,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">M</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Michael</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">michael.reeves@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">4</td>
+              <td style="color: var(--text-gray);">₱500,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">S</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Sarah</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">sarah.ramos@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">1</td>
+              <td style="color: var(--text-gray);">₱300,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">J</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Johnny</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">get.caged@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">1</td>
+              <td style="color: var(--text-gray);">₱300,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px;">
+                <div class="client-cell">
+                  <div class="client-mini-avatar">K</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Kano</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">kano.pisses@gmail.com</td>
+              <td style="color: var(--text-gray);">+6391203934</td>
+              <td style="color: var(--text-white);">1</td>
+              <td style="color: var(--text-gray);">₱300,000</td>
+              <td>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem; margin-right: 8px;"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="row-action-btn" style="color: var(--jazz-gold); font-size: 0.9rem;"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Footer -->
+        <div class="table-footer" style="border-top: 1px solid var(--border-dark);">
+          <span>Showing 6 of 120 clients</span>
+          <div class="pagination">
+            <button class="pg-btn">Previous</button>
+            <button class="pg-btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

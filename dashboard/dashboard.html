@@ -17,7 +17,6 @@
 <!-- ============================================================
      SIDEBAR
 ============================================================= -->
-<div id="sidebar-trigger"></div>
 <div class="dash-layout">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
@@ -28,16 +27,11 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="nav-item active"><i class="fa-solid fa-grip"></i> Dashboard</a>
-      <a class="nav-item"><i class="fa-regular fa-calendar"></i> Events</a>
-      <a class="nav-item"><i class="fa-solid fa-users"></i> Clients</a>
-      <a class="nav-item"><i class="fa-solid fa-utensils"></i> Catering</a>
-      <a class="nav-item"><i class="fa-solid fa-chart-line"></i> Analytics</a>
-      <a class="nav-item"><i class="fa-regular fa-credit-card"></i> Payments</a>
-      <a class="nav-item"><i class="fa-regular fa-comment"></i> Messages</a>
-      <div class="nav-group-label">Settings</div>
-      <a class="nav-item"><i class="fa-solid fa-sliders"></i> Options</a>
-      <a class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+      <a class="nav-item active" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+      <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
+      <a class="nav-item" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+      <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
     </nav>
 
     <div class="sidebar-footer">
@@ -63,17 +57,14 @@
     <div class="dash-topbar">
       <div class="topbar-left">
         <div class="topbar-heading">Extraordinary Celebrations</div>
-        <div class="topbar-sub" id="topbar-greeting">Welcome back!</div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-sub" id="topbar-greeting">Welcome back, Edrian</div>
       </div>
       <div class="topbar-right">
         <div class="dash-search-wrap">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="Search events, clients..." id="dash-search-input">
         </div>
-        <button class="notif-btn" title="Notifications">
-          <i class="fa-regular fa-bell"></i>
-          <div class="notif-dot"></div>
-        </button>
         <button class="btn-new-event" onclick="openModal('modal-new-event')">
           <i class="fa-solid fa-plus"></i> New Event
         </button>
@@ -84,12 +75,43 @@
     <div class="dash-content">
 
       <!-- Stats -->
-      <div class="stats-grid" id="stats-grid">
-        <!-- Populated by JS -->
-        <div class="stat-card"><div class="skeleton skeleton-row" style="width:60%;height:10px;margin-bottom:12px"></div><div class="skeleton skeleton-row" style="height:28px;width:80%"></div></div>
-        <div class="stat-card"><div class="skeleton skeleton-row" style="width:60%;height:10px;margin-bottom:12px"></div><div class="skeleton skeleton-row" style="height:28px;width:80%"></div></div>
-        <div class="stat-card"><div class="skeleton skeleton-row" style="width:60%;height:10px;margin-bottom:12px"></div><div class="skeleton skeleton-row" style="height:28px;width:80%"></div></div>
-        <div class="stat-card"><div class="skeleton skeleton-row" style="width:60%;height:10px;margin-bottom:12px"></div><div class="skeleton skeleton-row" style="height:28px;width:80%"></div></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 12.5%</div>
+          </div>
+          <div class="stat-label">TOTAL REVENUE</div>
+          <div class="stat-value">₱ 48,295</div>
+          <div class="stat-sub">vs. ₱ 42,950 last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 3</div>
+          </div>
+          <div class="stat-label">ACTIVE EVENTS</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">8 events this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="stat-badge warn"><i class="fa-solid fa-triangle-exclamation"></i> Action needed</div>
+          </div>
+          <div class="stat-label">PENDING PAYMENTS</div>
+          <div class="stat-value">₱ 12,450</div>
+          <div class="stat-sub">6 invoices awaiting</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-heart"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 2.1%</div>
+          </div>
+          <div class="stat-label">CLIENT SATISFACTION</div>
+          <div class="stat-value">98.5%</div>
+          <div class="stat-sub">Based on 142 reviews</div>
+        </div>
       </div>
 
       <!-- Charts -->
@@ -107,13 +129,18 @@
             </select>
           </div>
           <div class="chart-canvas-wrap">
-            <svg id="revenue-svg" width="100%" height="200" viewBox="0 0 580 200" preserveAspectRatio="block">
-              <defs>
-                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#d4af37" stop-opacity="0.3"/>
-                  <stop offset="100%" stop-color="#d4af37" stop-opacity="0.02"/>
-                </linearGradient>
-              </defs>
+            <svg width="100%" height="200" viewBox="0 0 580 200" preserveAspectRatio="block">
+              <line x1="0" y1="50" x2="580" y2="50" stroke="#2a2a2a" stroke-width="1"/>
+              <line x1="0" y1="100" x2="580" y2="100" stroke="#2a2a2a" stroke-width="1"/>
+              <line x1="0" y1="150" x2="580" y2="150" stroke="#2a2a2a" stroke-width="1"/>
+              <line x1="0" y1="200" x2="580" y2="200" stroke="#2a2a2a" stroke-width="1"/>
+              <polyline points="0,150 100,140 200,120 300,100 400,90 580,80" fill="none" stroke="#d4af37" stroke-width="2"/>
+              <circle cx="0" cy="150" r="4" fill="#d4af37"/>
+              <circle cx="100" cy="140" r="4" fill="#d4af37"/>
+              <circle cx="200" cy="120" r="4" fill="#d4af37"/>
+              <circle cx="300" cy="100" r="4" fill="#d4af37"/>
+              <circle cx="400" cy="90" r="4" fill="#d4af37"/>
+              <circle cx="580" cy="80" r="4" fill="#d4af37"/>
             </svg>
           </div>
         </div>
@@ -125,50 +152,23 @@
             </div>
           </div>
           <div class="donut-wrap">
-            <svg class="donut-svg" viewBox="0 0 160 160" id="donut-svg">
+            <svg class="donut-svg" viewBox="0 0 160 160">
               <circle cx="80" cy="80" r="55" fill="none" stroke="#1f2937" stroke-width="26"/>
-              <!-- Arcs drawn by JS -->
+              <circle cx="80" cy="80" r="55" fill="none" stroke="#d4af37" stroke-width="26" stroke-dasharray="155.5 345.5" stroke-dashoffset="0"/>
+              <circle cx="80" cy="80" r="55" fill="none" stroke="#e6cc80" stroke-width="26" stroke-dasharray="103.6 345.5" stroke-dashoffset="-155.5"/>
+              <circle cx="80" cy="80" r="55" fill="none" stroke="#332a10" stroke-width="26" stroke-dasharray="86.4 345.5" stroke-dashoffset="-259.1"/>
             </svg>
-            <div class="donut-legend" id="donut-legend"></div>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#d4af37"></div> Corporate</div><div class="legend-pct">45%</div></div>
+              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#e6cc80"></div> Weddings</div><div class="legend-pct">30%</div></div>
+              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#332a10"></div> Private</div><div class="legend-pct">25%</div></div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Recent Events Table -->
-      <div class="table-card">
-        <div class="table-header">
-          <div>
-            <h3>Recent Events</h3>
-            <p>Manage your upcoming celebrations</p>
-          </div>
-          <div class="table-actions">
-            <button class="btn-outline" id="btn-filter-events">
-              <i class="fa-solid fa-filter"></i> Filter
-            </button>
-            <button class="btn-outline" id="btn-export-events">
-              <i class="fa-solid fa-upload"></i> Export
-            </button>
-            <button class="btn-gold" style="padding:8px 16px;font-size:0.72rem;border-radius:6px;" onclick="addEvent()">
-              <i class="fa-solid fa-plus"></i> Add
-            </button>
-          </div>
-        </div>
-
-        <!-- Filter bar (hidden by default) -->
-        <div id="filter-bar" style="display:none;padding:10px 18px;background:var(--bg-input);border-bottom:1px solid var(--border-dark);gap:10px;flex-wrap:wrap;" class="flex-row">
-          <select class="chart-filter" id="filter-status" style="padding:6px 12px;">
-            <option value="">All Statuses</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-          <input type="text" class="book-input" id="filter-client" placeholder="Search client..." style="width:180px;padding:6px 12px;">
-          <button class="btn-ghost" onclick="applyFilters()"><i class="fa-solid fa-search"></i> Search</button>
-          <button class="btn-ghost" onclick="clearFilters()"><i class="fa-solid fa-xmark"></i> Clear</button>
-        </div>
-
-        <table class="events-table">
+      
+      <!-- Events Table -->
+      <table class="events-table">
           <thead>
             <tr>
               <th>Event Details</th>
@@ -194,33 +194,27 @@
 
       <!-- Bottom Row -->
       <div class="bottom-row">
-
-        <!-- Priority Tasks -->
-        <div class="bottom-card">
-          <div class="bottom-card-hdr">
-            <h4>Priority Tasks</h4>
-            <button class="btn-ghost" onclick="openModal('modal-new-task')" style="font-size:0.65rem;padding:4px 10px;">
-              <i class="fa-solid fa-plus"></i> Add
-            </button>
-          </div>
-          <div id="tasks-list">
-            <div class="skeleton skeleton-row"></div>
-            <div class="skeleton skeleton-row"></div>
-            <div class="skeleton skeleton-row"></div>
-          </div>
-        </div>
-
         <!-- Mini Calendar -->
-        <div class="bottom-card">
-          <div class="cal-nav">
-            <span class="cal-month" id="cal-month-label">—</span>
+        <div class="bottom-card" style="padding: 24px;">
+          <div class="cal-nav" style="margin-bottom: 24px;">
+            <span class="cal-month" style="font-size: 1rem;">March 2026</span>
             <div>
-              <button class="cal-nav-btn" onclick="calNav(-1)">&#8249;</button>
-              <button class="cal-nav-btn" onclick="calNav(1)">&#8250;</button>
+              <button class="cal-nav-btn" style="font-size: 1rem;">&lt;</button>
+              <button class="cal-nav-btn" style="font-size: 1rem;">&gt;</button>
             </div>
           </div>
-          <div class="cal-grid" id="cal-grid">
-            <!-- Built by JS -->
+          <div class="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;">
+            <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div><div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>
+            <!-- Row 1 -->
+            <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div>
+            <!-- Row 2 -->
+            <div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div>
+            <!-- Row 3 -->
+            <div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
+            <!-- Row 4 -->
+            <div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day today">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
+            <!-- Row 5 -->
+            <div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div><div class="cal-day other-month">1</div><div class="cal-day other-month">2</div><div class="cal-day other-month">3</div><div class="cal-day other-month">4</div>
           </div>
         </div>
       </div><!-- /bottom-row -->

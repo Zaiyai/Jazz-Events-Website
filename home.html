@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="login/login.css">
+        <link rel="stylesheet" href="login/login.css?v=3">
         <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
         
         <!-- FontAwesome 6 -->
@@ -84,37 +84,66 @@
         <!-- Hidden login -->
         <div class="auth-section">
             <div class="auth-card">
-                <div class="auth-title">Log In</div>
-                <div class="auth-subtitle">Log in to your account to track your events.</div>
-
-                <div class="field-group">
-                <label class="field-label" for="login-email">Email Address <span class="req">*</span></label>
-                <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
-                <div class="err-msg" id="login-emailogin-err">Email address is required.</div>
-                </div>
-
-                <div class="field-group">
-                <label class="field-label" for="login-code">Verification Code <span class="req">*</span></label>
-                <div class="field-row">
-                    <input class="field-input" type="text" id="login-code" placeholder="Enter the code from your email" autocomplete="one-time-code">
-                    <button class="btn-resend" id="login-resend-btn" onclick="sendCode('login-email','login-resend-btn')">Re-send</button>
-                </div>
-                <div class="err-msg" id="login-code-err">Verification code is required.</div>
-                </div>
-
-                <div class="field-group">
-                <label class="field-label" for="login-pass">Password <span class="req">*</span></label>
-                <div class="pass-wrap">
-                    <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
-                    <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-regular fa-eye"></i></button>
-                </div>
-                <div class="err-msg" id="login-pass-err">Password is required.</div>
+                
+                <div class="auth-left">
+                    <div class="logo-container" style="margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+                        <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-right: 40px;">Jazz</span>
+                        <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-left: 40px;">Events</span>
+                    </div>
+                    
+                    <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 40px;"></div>
+                    
+                    <div style="text-align: center; color: #ccc; font-size: 0.95rem; font-style: italic; line-height: 1.6; position: relative; padding: 20px;">
+                        <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; top: 0; right: 0; transform: rotate(45deg); opacity: 0.5;"></i>
+                        <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; bottom: 0; left: 0; transform: rotate(-135deg); opacity: 0.5;"></i>
+                        Make your events<br>possible with <span style="color: var(--jazz-gold); font-weight: 600;">Jazz</span><br><span style="color: var(--jazz-gold); font-weight: 600;">Events.</span>
+                    </div>
                 </div>
                 
-                <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
+                <div class="auth-right">
+                    <button class="auth-close" onclick="document.querySelector('.auth-section').style.display='none'">✕</button>
+                    
+                    <div class="auth-title">Log in</div>
+                    <div class="auth-subtitle">To view the status of your bookings</div>
 
-                <div class="auth-switch">
-                Don't have an account yet? <a href="register/register.html">REGISTER</a>
+                    <div class="field-group">
+                        <label class="field-label" for="login-email">Email*</label>
+                        <div class="field-input-wrapper">
+                            <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                            <div class="err-msg" id="login-email-err">Email address is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="field-group" style="display: none;">
+                        <label class="field-label" for="login-code">Verification Code*</label>
+                        <div class="field-input-wrapper">
+                            <input class="field-input" type="text" id="login-code" placeholder="Code">
+                            <button class="btn-resend" id="login-resend-btn" onclick="sendCode('login-email','login-resend-btn')" type="button">Re-send</button>
+                            <div class="err-msg" id="login-code-err">Verification code is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label" for="login-pass">Password*</label>
+                        <div class="field-input-wrapper pass-wrap">
+                            <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+                            <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
+                            <div class="err-msg" id="login-pass-err">Password is required.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding-left: 110px; display: flex; flex-direction: column; align-items: center; margin-top: 16px;">
+                        <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
+                        
+                        <div style="margin-top: 20px; color: #888; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 16px; height: 16px; border: 1px solid var(--jazz-gold); border-radius: 50%;"></div>
+                            Remember me
+                        </div>
+                        
+                        <div class="auth-switch">
+                            Don't have an account yet? <a href="register/register.html">REGISTER</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -492,13 +521,68 @@
                         '<a href="dashboard/dashboard.html" class="btn-nav-login" style="display:flex;align-items:center;gap:8px;">' +
                         '<i class="fa-solid fa-grip"></i>&nbsp;Admin Panel</a>';
                 } else {
-                    slot.innerHTML = '<i class="fa-regular fa-user"></i>';
+                    // Build profile avatar + dropdown for regular users
+                    slot.innerHTML =
+                        '<div class="profile-menu-wrap" id="profile-menu-wrap">' +
+                          '<button class="profile-avatar-btn" id="profile-avatar-btn" title="My Account">' +
+                            '<span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span>' +
+                          '</button>' +
+                          '<div class="profile-dropdown" id="profile-dropdown">' +
+                            '<div class="profile-dropdown-header">' +
+                              '<div class="profile-dropdown-avatar" id="profile-dropdown-avatar"><i class="fa-regular fa-user"></i></div>' +
+                              '<div class="profile-dropdown-name" id="profile-dropdown-name">My Account</div>' +
+                            '</div>' +
+                            '<div class="profile-dropdown-divider"></div>' +
+                            '<a href="booking/client_bookings.html" class="profile-dropdown-item">' +
+                              '<i class="fa-regular fa-calendar"></i> Bookings' +
+                            '</a>' +
+                            '<a href="settings/settings-profile.html" class="profile-dropdown-item">' +
+                              '<i class="fa-solid fa-sliders"></i> Settings' +
+                            '</a>' +
+                            '<div class="profile-dropdown-divider"></div>' +
+                            '<button class="profile-dropdown-logout" onclick="handleProfileLogout()">' +
+                              '<i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out' +
+                            '</button>' +
+                          '</div>' +
+                        '</div>';
+
+                    // Fetch user info and populate name + initials
+                    DB.getUser().then(function(user) {
+                        if (user && user.name) {
+                            var words = user.name.trim().split(/\s+/);
+                            var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
+                            document.getElementById('profile-avatar-initials').textContent = initials;
+                            document.getElementById('profile-dropdown-avatar').textContent = initials;
+                            document.getElementById('profile-dropdown-name').textContent = user.name;
+                        }
+                    });
+
+                    // Toggle dropdown on avatar click
+                    document.getElementById('profile-avatar-btn').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        document.getElementById('profile-dropdown').classList.toggle('open');
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        var dd = document.getElementById('profile-dropdown');
+                        if (dd && !document.getElementById('profile-menu-wrap').contains(e.target)) {
+                            dd.classList.remove('open');
+                        }
+                    });
                 }
             } else {
                 slot.innerHTML =
                     '<a onclick="displayLogin()" class="btn-nav-login">LOG IN</a>';
             }
         })();
+
+        function handleProfileLogout() {
+            // Clear cookies and redirect to home
+            document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user_type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "home.html";
+        }
 
         function bookingRedirect() {
             if (COOKIES.hasEmail()) {

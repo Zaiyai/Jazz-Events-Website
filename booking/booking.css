@@ -123,6 +123,7 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .budget-input-container {
@@ -217,3 +218,209 @@ input[type=number] {
         font-size: 1.5rem;
     }
 }
+
+/* --- New Form Styling --- */
+.summary-card {
+    background: #161616;
+    border: 1px solid var(--jazz-gold);
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.text-center { text-align: center; }
+
+.date-arrow {
+    color: var(--jazz-gold);
+    margin-top: 28px;
+}
+.date-input-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    background-color: #111827;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.checkbox-item:hover {
+    border-color: var(--jazz-gold);
+}
+.checkbox-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.chk-box {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.checkbox-item input:checked ~ .chk-box {
+    background-color: #fff;
+}
+.chk-box::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.checkbox-item input:checked ~ .chk-box::after {
+    opacity: 1;
+}
+.chk-text {
+    display: flex;
+    flex-direction: column;
+}
+.chk-title {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.chk-desc {
+    color: #888;
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.phone-input-wrap {
+    display: flex;
+    align-items: center;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 6px;
+    padding: 12px 16px;
+}
+.flag-icon {
+    width: 22px;
+    height: 16px;
+    background: linear-gradient(to right, #0038a8 50%, #ce1126 50%);
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.flag-white {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: #fff;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.flag-sun {
+    width: 4px; height: 4px;
+    background: #fcd116;
+    border-radius: 50%;
+    position: absolute;
+    left: 2px;
+    z-index: 10;
+}
+.phone-divider {
+    width: 1px;
+    height: 16px;
+    background: #374151;
+    margin: 0 12px;
+}
+
+.email-box {
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    background: #111827;
+    text-align: left;
+}
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+.radio-circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #888;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.email-toggle:checked + .radio-label .radio-circle {
+    border-color: var(--jazz-gold);
+}
+.email-toggle:checked + .radio-label .radio-circle::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--jazz-gold);
+}
+.radio-label span {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.other-email-input-wrap {
+    display: none;
+}
+#email-other:checked ~ .other-email-input-wrap {
+    display: block;
+}
+
+.confirm-btn {
+    background: #d4af37 !important;
+    color: #000 !important;
+    border: none;
+    border-radius: 24px !important;
+    padding: 14px 40px !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto !important;
+}
+.confirm-btn i { font-size: 1rem; }

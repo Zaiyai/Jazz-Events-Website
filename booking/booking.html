@@ -9,9 +9,9 @@
     <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="../register/register.css">
-    <link rel="stylesheet" href="booking.css">
+    <link rel="stylesheet" href="../styles.css?v=4">
+    <link rel="stylesheet" href="../register/register.css?v=4">
+    <link rel="stylesheet" href="booking.css?v=4">
     
 </head>
 <body>
@@ -51,48 +51,52 @@
         </div>
 
         <div class="hero-content">
-            <div id="booking-form" class="form-container">
-                <div class="services-header">
-                    <div class="flourish">
-                        <img class="gold_accent" src="../assets/decor/gold_accent.png" alt="">
-                    </div>
-                    
-                    <h2 class="section-title text-center">Event <span class="text-gold">Booking</span></h2>
+            <div class="services-header" style="justify-content: center; display: flex; align-items: center; gap: 16px; margin-bottom: 40px; margin-top: -40px;">
+                <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); transform: scaleX(-1); font-size: 1.5rem;"></i>
+                <h2 style="font-family: var(--font-sans); font-size: 2.2rem; font-weight: 800; letter-spacing: 0.05em; color: #fff; margin: 0; text-transform: uppercase;">EVENT <span style="color: var(--jazz-gold);">BOOKING</span></h2>
+                <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); font-size: 1.5rem;"></i>
+            </div>
 
-                    <div class="flourish flourish-right">
-                        <img class="gold_accent" src="../assets/decor/gold_accent.png" alt="">
-                    </div>
-                </div>
-                
-                <h3 class="section-subtitle">Your Event <span class="text-gold">Details</span></h3>
+            <div id="booking-form" class="form-container summary-card">
+                <h3 class="section-subtitle text-center">YOUR EVENT <span class="text-gold">DETAILS</span></h3>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="event">Type of Event <span class="text-red">*</span></label>
+                        <label for="type">Type of Event <span class="text-red">*</span></label>
                         <input type="text" id="type" name="type" placeholder="e.g. Wedding Reception">
                         <div class="err-msg" id="type-err">Type of Event is required.</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="celebrant_name">Full Name of Celebrant/s <span class="text-red">*</span></label>
+                        <label for="name">Name of Event <span class="text-red">*</span></label>
                         <input type="text" id="name" name="name" placeholder="e.g. Dela Cruz, Maria B.">
                         <div class="err-msg" id="name-err">Name of Event is required.</div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="event_date_from">Event Date From <span class="text-red">*</span></label>
-                        <input type="date" id="datefrom" name="event_date_from" max="9999-12-31" onchange="checkDateViability(this)">
+                <div class="form-row date-row" style="display: flex; align-items: center; gap: 16px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="datefrom">Event Date From <span class="text-red">*</span></label>
+                        <div class="date-input-wrap">
+                            <input type="date" id="datefrom" name="event_date_from" max="9999-12-31" onchange="checkDateViability(this)" placeholder="mm/dd/yyyy">
+                        </div>
                         <div class="err-msg" id="datefrom-err">Event Date Start is required.</div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="event_date_to">Event Date To <span class="text-red">*</span></label>
-                        <input type="date" id="dateto" name="event_date_to" max="9999-12-31" onchange="checkDateViability(this)">
+                    <i class="fa-solid fa-arrow-right date-arrow"></i>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label for="dateto">Event Date To <span class="text-red">*</span></label>
+                        <div class="date-input-wrap">
+                            <input type="date" id="dateto" name="event_date_to" max="9999-12-31" onchange="checkDateViability(this)" placeholder="mm/dd/yyyy">
+                        </div>
                         <div class="err-msg" id="dateto-err">Event Date End is required.</div>
                     </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="no_of_guests">Estimated Number of Guests <span class="text-red">*</span></label>
+                        <label for="attendees">Number of Guests <span class="text-red">*</span></label>
                         <input type="number" id="attendees" name="no_of_guests" placeholder="e.g. 100" step="1" min="1" max="99999" inputmode="numeric" onchange="updateEstimatedBudget()">
                         <div class="err-msg" id="attendees-err">Number of Guests is required.</div>
                     </div>
@@ -106,7 +110,7 @@
                 
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="theme">Event Theme</label>
+                        <label for="theme">Event Theme <span class="text-red">*</span></label>
                         <input name="theme" id="theme" type="text" placeholder="e.g. Barbie Theme">
                     </div>
                 </div>
@@ -117,6 +121,7 @@
                         <div class="checkbox-group" onclick="updateEstimatedBudget()">
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="catering">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Full Catering</span>
                                     <p class="service-detail">Food & Beverage</p>
@@ -124,6 +129,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="styling">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Event Styling</span>
                                     <p class="service-detail">Concept & Layout Design</p>
@@ -131,6 +137,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="decoration">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Decoration</span>
                                     <p class="service-detail">Floral, Table & Venue Decor</p>
@@ -138,6 +145,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="lights">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Lights</span>
                                     <p class="service-detail">Ambient & Stage Lighting</p>
@@ -145,6 +153,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="sounds">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Sounds</span>
                                     <p class="service-detail">PA System & Audio Setup</p>
@@ -152,6 +161,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="photography">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Photography</span>
                                     <p class="service-detail">Professional Photo Coverage</p>
@@ -159,6 +169,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="videography">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Videography</span>
                                     <p class="service-detail">Full Video Production</p>
@@ -166,6 +177,7 @@
                             </label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="service" value="coordination">
+                                <div class="chk-box"></div>
                                 <div class="service">
                                     <span>Guidance & Coordination</span>
                                     <p class="service-detail">Day-of Event Coordination</p>
@@ -175,8 +187,8 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group full-width">
+                <div class="form-row" style="justify-content: center; display: flex;">
+                    <div class="form-group full-width" style="max-width: 500px; width: 100%;">
                         <label for="event-budget">Estimated Event Budget</label>
                         <div class="budget-input-container">
                             <p class="currency-symbol">₱</p>
@@ -184,35 +196,61 @@
                             <p id="event-budget"></p>
                             <input type="hidden" name="budget" id="budget">
                         </div>
+                        <div class="additional-detail" style="margin-top: 8px;">
+                            <p>*Tentative budget bracket based on number of guests and services applied for</p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="additional-detail">
-                    <p>*Tentative budget bracket based on number of guests and services applied for</p>
                 </div>
 
                 <div class="line"></div>
 
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="email">Email Address <span class="text-red">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com">
+                <div class="form-row" style="justify-content: center; display: flex;">
+                    <div class="form-group full-width" style="max-width: 500px; width: 100%;">
+                        <label for="phone">Phone Number <span class="text-red">*</span></label>
+                        <div class="phone-input-wrap">
+                            <div class="flag-icon">
+                                <div class="flag-white"></div>
+                                <div class="flag-sun"></div>
+                            </div>
+                            <div class="phone-divider"></div>
+                            <input type="tel" id="phone" name="phone" placeholder="(+63) 9XX XXX XXXX">
+                        </div>
                     </div>
                 </div>
 
-                <div class="additional-detail">
-                    <p>(We will send a copy of your event details through this email)</p>
+                <div class="email-box" style="margin: 0 auto;">
+                    <label style="color: #fff; font-size: 0.8rem; font-weight: 600; margin-bottom: 16px; display: block;">Email Address <span class="text-red">*</span></label>
+                    
+                    <input type="radio" id="email-me" name="email_choice" value="me" class="email-toggle" checked style="display: none;">
+                    <label for="email-me" class="radio-label">
+                        <div class="radio-circle"></div>
+                        <span>Use my email address</span>
+                    </label>
+                    
+                    <input type="radio" id="email-other" name="email_choice" value="other" class="email-toggle" style="display: none;">
+                    <label for="email-other" class="radio-label" style="margin-bottom: 16px;">
+                        <div class="radio-circle"></div>
+                        <span>Use other email address</span>
+                    </label>
+
+                    <div class="other-email-input-wrap">
+                        <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com" style="width: 100%; background: #0f131a; border: 1px solid #1f2937; border-radius: 6px; padding: 12px 16px; color: #fff; font-size: 0.9rem; outline: none; box-sizing: border-box;">
+                    </div>
+
+                    <div class="additional-detail" style="margin-top: 16px;">
+                        <p style="color: #666; font-size: 0.75rem; margin: 0; font-style: italic;">*We will send a summary of your event details to this email</p>
+                    </div>
                 </div>
                 
-                <br><br>
-
-                <h3 class="section-subtitle">Personal <span class="text-gold">Requests</span></h3>
-                <textarea id="personal_request" name="personal_request" placeholder="Tell us about your vision for this event..."></textarea>
+                <div style="display: flex; justify-content: center; margin-top: 40px;">
+                    <a href="booking_summary.html" class="btn-gold confirm-btn" id="submit" style="text-decoration: none;">
+                        <span>Confirm Booking</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
                 
-                <button class="btn-gold" id="submit" onclick="submitForm()">
-                    <span>Submit Booking</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
+                <!-- Hidden personal request textarea to avoid JS crash if expected -->
+                <textarea id="personal_request" name="personal_request" style="display: none;"></textarea>
             </div>
         </div>
     </section>
