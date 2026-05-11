@@ -85,11 +85,31 @@ const DB = {
     })
     .then(response => {
       if (!response.ok) throw new Error("HTTP error: " + response.status);
-      // window.location.href = 'booking_success.html';
+      window.location.href = 'booking_success.html';
       return response.json();
     });
 
     return { ok: true, data: event };
+  },
+
+  async getUserBookings() {
+    let user = await DB.getUser();
+
+    const response = await fetch("../scripts/bookings/user_booking.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user)
+    });
+
+    if (!response.ok) throw new Error("HTTP error: " + response.status);
+
+    const data = await response.json();
+
+    if (data.ok && !data.empty) {
+      return data.bookings[0]; 
+    } else {
+      return [];
+    }
   },
 
   /* ── EVENTS ─────────────────────────────────────────────── */

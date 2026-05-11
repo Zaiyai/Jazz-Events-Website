@@ -27,7 +27,7 @@ if ($result) {
     $row = $result->fetch_assoc();
     echo json_encode([
         "status"   => "success",
-        "id"       => $row["user_id"],
+        "user_id"  => $row["user_id"],
         "email"    => $row["email"],
         "name"     => $row["name"],
         "initials" => $row["initials"]

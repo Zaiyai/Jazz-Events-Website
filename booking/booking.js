@@ -94,7 +94,7 @@ async function firstSubmit() {
         name:         document.getElementById('name').value.trim(),
         email:        document.getElementById('email').value.trim() || user.email,
         type:         document.getElementById('type').value.trim(),
-        client_id:    user.id,
+        client_id:    user.user_id,
         client_name:  user.name,
         date_from:    dateFrom.value,
         date_to:      dateTo.value,
@@ -112,6 +112,9 @@ async function firstSubmit() {
 
 // On form actual submission
 function submitBooking() {
+    const submitBtn = document.getElementsByClassName('confirm-btn')[0];
+    submitBtn.innerHTML = "Sending...";
+    submitBtn.disabled = true;
     DB.createBooking(JSON.parse(sessionStorage.getItem('bookingData'))); 
     sessionStorage.removeItem('bookingData');
 };

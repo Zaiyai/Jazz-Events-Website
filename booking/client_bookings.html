@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=6">
+    <link rel="stylesheet" href="booking.css">
     
     <style>
         body {
@@ -39,20 +40,7 @@
             background-color: #161616;
             padding: 40px;
             box-sizing: border-box;
-        }
-
-        .booking-card {
-            display: flex;
-            gap: 24px;
-            padding-bottom: 32px;
-            margin-bottom: 32px;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .booking-card:last-child {
-            padding-bottom: 0;
-            margin-bottom: 0;
-            border-bottom: none;
-        }
+        }   
 
         .booking-image {
             width: 120px;
@@ -217,79 +205,25 @@
         <h2 class="my-bookings-title">My Bookings</h2>
 
         <div class="bookings-container">
-            
-            <!-- Booking Card 1 -->
-            <div class="booking-card">
-                <div class="booking-image">
-                    <img src="../images/img1.jpg" alt="Golden Anniversary Gala">
-                </div>
-                <div class="booking-details">
-                    <div class="booking-top-row">
-                        <div class="info-grid">
-                            <span class="info-label">Event name:</span>
-                            <span class="info-value">Golden Anniversary Gala</span>
-                            
-                            <span class="info-label">Total Due:</span>
-                            <span class="info-value">₱ 390,000</span>
-                            
-                            <span class="info-label">Payment Plan:</span>
-                            <span class="info-value">12 months</span>
-                        </div>
-                        <div class="action-buttons">
-                            <a href="client_booking_details.html" class="btn-action">More Details</a>
-                            <a href="#" class="btn-action">Pay Now</a>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-section">
-                        <div class="progress-labels">
-                            <span class="progress-label-main">Completed Payments:</span>
-                            <span class="progress-status status-ontrack">On-track</span>
-                            <span class="progress-count">3 out of 12 months</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill fill-green" style="width: 25%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Booking Card 2 -->
-            <div class="booking-card">
-                <div class="booking-image">
-                    <img src="../images/img3.jpg" alt="RPG Fireworks Display">
-                </div>
-                <div class="booking-details">
-                    <div class="booking-top-row">
-                        <div class="info-grid">
-                            <span class="info-label">Event name:</span>
-                            <span class="info-value">RPG Fireworks Display</span>
-                            
-                            <span class="info-label">Total Due:</span>
-                            <span class="info-value">₱ 690,980</span>
-                            
-                            <span class="info-label">Payment Plan:</span>
-                            <span class="info-value">12 months</span>
-                        </div>
-                        <div class="action-buttons">
-                            <a href="client_booking_details.html" class="btn-action">More Details</a>
-                            <a href="javascript:void(0)" class="btn-action" onclick="showPaymentModal()">Pay Now</a>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-section">
-                        <div class="progress-labels">
-                            <span class="progress-label-main">Completed Payments:</span>
-                            <span class="progress-status status-overdue">OVERDUE</span>
-                            <span class="progress-count">3 out of 12 months</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill fill-red" style="width: 25%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <table class="bookings-table">
+                <thead>
+                    <tr>
+                    <th>Event</th>
+                    <th>Total Due</th>
+                    <th>Payment Plan</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-tbody">
+                    <tr>
+                    <td colspan="6" style="text-align:center;padding:28px;color:var(--text-gray);">
+                        <i class="fa-solid fa-spinner fa-spin" style="color:var(--jazz-gold)"></i> Loading bookings...
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
