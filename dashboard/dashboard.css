@@ -552,3 +552,6 @@
 }
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast.error { border-color: var(--service-red); }
+
+/* Staff Utilities */
+.staff-hide { display: none !important; }

@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
     <link rel="stylesheet" href="login/login.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     
@@ -21,22 +21,25 @@
     <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
         <div class="nav-container">
         <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
+
         <nav class="nav-links desktop-nav">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services-section">Services</a>
-            <a href="../home.html#team-section">Team</a>
-            <a href="../home.html#reviews-section">Reviews</a>
-            <a href="../home.html#about">About Us</a>
-            <a href="../home.html#cta-section">Contact</a>
+            <a href="home.html">Home</a>
+            <a href="home.html#services-section">Services</a>
+            <a href="home.html#team-section">Team</a>
+            <a href="home.html#reviews-section">Reviews</a>
+            <a href="home.html#about">About Us</a>
+            <a href="home.html#cta-section">Contact</a>
         </nav>
 
-        <div class="search-wrapper">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input id="search-input" type="text" placeholder="Search Jazz Events...">
-            <ul id="search-content"></ul>
+        <div class="nav-right-group">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input id="search-input" type="text" placeholder="Search Jazz Events...">
+                <ul id="search-content"></ul>
+            </div>
+            <div id="nav-auth-slot"></div>
         </div>
-
-        <div id="nav-auth-slot"></div>
     </div>
   </header>
 
@@ -483,7 +486,7 @@
 
 <div class="page-toast" id="toast"></div>
 
-<script src="scripts/main.js"></script>
+<script src="scripts/main.js?v=2"></script>
 <script src="scripts/search.js"></script>
 <script src="scripts/carousel.js"></script>
 <script src="scripts/db.js"></script>

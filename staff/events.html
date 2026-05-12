@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events — Jazz Events Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../register/register.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background: #111;">
+
+<div class="dash-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="../home.html" style="text-decoration:none;">
+        <div class="brand-script">Jazz Events</div>
+      </a>
+      <div class="brand-sub">Staff Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
+      <a class="nav-item active" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+      <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar">EA</div>
+        <div class="sidebar-user-info">
+          <div class="u-name" id="sidebar-name">Edrian Albero</div>
+          <div class="u-role" id="sidebar-role">Event Organizer</div>
+        </div>
+        <button class="sidebar-logout" title="Log out" onclick="DB.logout();">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div class="topbar-left">
+        <div class="topbar-heading">Events</div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-sub">Manage events</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-filters">
+          <span class="active">All Events</span>
+          <span>Corporate</span>
+          <span>Wedding</span>
+          <span>Private</span>
+        </div>
+        <button class="btn-outline">
+          <i class="fa-solid fa-filter"></i> Filter
+        </button>
+        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;" onclick="window.location.href='dashboard.html'">
+          <i class="fa-solid fa-plus"></i> New Event
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="dash-content">
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="page-stat-card">
+          <div class="page-stat-label">TOTAL EVENTS</div>
+          <div class="page-stat-icon"><i class="fa-regular fa-calendar"></i></div>
+          <div class="page-stat-value">156</div>
+          <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +12 this month</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">UPCOMING</div>
+          <div class="page-stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+          <div class="page-stat-value">24</div>
+          <div class="page-stat-sub">Next 30 days</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">IN PROGRESS</div>
+          <div class="page-stat-icon"><i class="fa-solid fa-sun"></i></div>
+          <div class="page-stat-value">8</div>
+          <div class="page-stat-sub warn">Requires attention</div>
+        </div>
+        <div class="page-stat-card">
+          <div class="page-stat-label">COMPLETED</div>
+          <div class="page-stat-icon"><i class="fa-regular fa-circle-check"></i></div>
+          <div class="page-stat-value">156</div>
+          <div class="page-stat-sub up">98.5% satisfaction</div>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid">
+        <!-- Event 1 -->
+        <div class="event-grid-card">
+          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 160px; object-fit: cover;" alt="Event">
+          <div style="padding: 20px;">
+            <h4 style="font-size: 1rem; color: var(--text-white); margin-bottom: 4px;">Golden Anniversary Gala</h4>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;">Corporate Dinner - 120 guests</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-regular fa-calendar" style="color: var(--jazz-gold); width: 16px;"></i> Dec 28, 2026</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;"><i class="fa-solid fa-location-dot" style="color: var(--jazz-gold); width: 16px;"></i> Shang-ri La</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dark); padding-top: 16px;">
+              <div class="client-cell">
+                <div class="client-mini-avatar">P</div>
+                <span style="font-size: 0.75rem; color: var(--text-white); font-weight: 600;">Pat</span>
+              </div>
+              <button class="btn-outline" style="font-size: 0.65rem; padding: 4px 12px; border-radius: 99px;">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../scripts/db.js"></script>
+<script src="../dashboard/dashboard_ui.js"></script>
+<script src="../dashboard/dashboard.js"></script>
+</body>
+</html>

@@ -99,18 +99,52 @@ document.addEventListener('DOMContentLoaded', async () => {
   var slot = document.getElementById('nav-auth-slot');
 
   if (COOKIES.hasEmail()) {
-    if (COOKIES.getCookie("user_type") == 'ADMIN') {
-      const navLinks = document.getElementsByClassName('nav-links')[0];
+    const userType = COOKIES.getCookie("user_type");
+    if (userType == 'ADMIN' || userType == 'STAFF') {
+      // 1. Update Desktop Nav
+      const navLinks = document.querySelector('.desktop-nav');
+      const adminStaffLinks = document.querySelector('#nav-admin-staff');
       
-      navLinks.innerHTML = 
-        '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>' +
-        '<span style="color: #333; margin: 0 10px;">|</span>' +
-        '<a href="../home.html">Home</a>' +
-        '<a href="../home.html#services-section">Services</a>' +
-        '<a href="../home.html#team-section">Team</a>' +
-        '<a href="../home.html#reviews-section">Reviews</a>' +
-        '<a href="../home.html#about">About Us</a>' +
-        '<a href="../home.html#cta-section">Contact</a>';
+      if (adminStaffLinks) {
+        let adminStaffHtml = '';
+        if (userType == 'ADMIN') {
+          adminStaffHtml += '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37; margin-right: 15px;">ADMIN PANEL</a>';
+          adminStaffHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
+        } else if (userType == 'STAFF') {
+          adminStaffHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
+        }
+        adminStaffLinks.innerHTML = adminStaffHtml;
+      }
+
+      if (navLinks) {
+        navLinks.innerHTML = 
+          '<a href="home.html">Home</a>' +
+          '<a href="home.html#services-section">Services</a>' +
+          '<a href="home.html#team-section">Team</a>' +
+          '<a href="home.html#reviews-section">Reviews</a>' +
+          '<a href="home.html#about">About Us</a>' +
+          '<a href="home.html#cta-section">Contact</a>';
+      }
+
+      // 2. Update Mobile Overlay Nav
+      const overlayLinks = document.querySelector('.overlay-links');
+      if (overlayLinks) {
+        let overlayHtml = '';
+        if (userType == 'ADMIN') {
+          overlayHtml += '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>';
+          overlayHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
+        } else if (userType == 'STAFF') {
+          overlayHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
+        }
+        overlayHtml += 
+          '<a href="home.html">Home</a>' +
+          '<a href="home.html#services-section">Services</a>' +
+          '<a href="home.html#team-section">Team</a>' +
+          '<a href="home.html#reviews-section">Reviews</a>' +
+          '<a href="home.html#about">About Us</a>' +
+          '<a href="home.html#cta-section">Contact</a>';
+        overlayLinks.innerHTML = overlayHtml;
+      }
     } 
     // Build profile avatar + dropdown for regular users
     slot.innerHTML =

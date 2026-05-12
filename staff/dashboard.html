@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard — Jazz Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../register/register.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================= -->
+<div class="dash-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="../home.html" style="text-decoration:none;">
+        <div class="brand-script">Jazz Events</div>
+      </a>
+      <div class="brand-sub">Staff Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
+      <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+      <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar">EA</div>
+        <div class="sidebar-user-info">
+          <div class="u-name" id="sidebar-name">Edrian Albero</div>
+          <div class="u-role" id="sidebar-role">Event Organizer</div>
+        </div>
+        <button class="sidebar-logout" title="Log out" onclick="DB.logout();">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================= -->
+  <main class="dash-main">
+
+    <!-- Topbar -->
+    <div class="dash-topbar">
+      <div class="topbar-left">
+        <div class="topbar-heading">Extraordinary Celebrations</div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-sub" id="topbar-greeting">Welcome back, Staff</div>
+      </div>
+      <div class="topbar-right">
+        <div class="dash-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search events..." id="dash-search-input">
+        </div>
+        <button class="btn-new-event" onclick="openModal('modal-new-event')">
+          <i class="fa-solid fa-plus"></i> New Event
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="dash-content">
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 12.5%</div>
+          </div>
+          <div class="stat-label">TOTAL REVENUE</div>
+          <div class="stat-value">₱ 48,295</div>
+          <div class="stat-sub">vs. ₱ 42,950 last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 3</div>
+          </div>
+          <div class="stat-label">ACTIVE EVENTS</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">8 events this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="stat-badge warn"><i class="fa-solid fa-triangle-exclamation"></i> Action needed</div>
+          </div>
+          <div class="stat-label">PENDING PAYMENTS</div>
+          <div class="stat-value">₱ 12,450</div>
+          <div class="stat-sub">6 invoices awaiting</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon"><i class="fa-regular fa-heart"></i></div>
+            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 2.1%</div>
+          </div>
+          <div class="stat-label">CLIENT SATISFACTION</div>
+          <div class="stat-value">98.5%</div>
+          <div class="stat-sub">Based on 142 reviews</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Revenue Overview</div>
+              <div class="chart-sub">Monthly revenue performance</div>
+            </div>
+            <select class="chart-filter" id="chart-range">
+              <option value="6">Last 6 Months</option>
+              <option value="12">Last 12 Months</option>
+              <option value="3">Last 3 Months</option>
+            </select>
+          </div>
+          <div class="chart-canvas-wrap">
+            <svg id="revenue-svg" width="100%" height="200" viewBox="0 0 580 200" preserveAspectRatio="block"></svg>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Event Types</div>
+              <div class="chart-sub">Distribution by category</div>
+            </div>
+          </div>
+          <div class="donut-wrap">
+            <svg id="donut-svg" class="donut-svg" viewBox="0 0 160 160"></svg>
+            <div id="donut-legend" class="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Events Table -->
+      <table class="events-table">
+          <thead>
+            <tr>
+              <th>Event Details</th>
+              <th>Client</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Status</th>
+              <th>Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="events-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-gray);">
+              <i class="fa-solid fa-spinner fa-spin" style="color:var(--jazz-gold)"></i> Loading events...
+            </td></tr>
+          </tbody>
+        </table>
+        <div class="table-footer">
+          <span id="events-count">—</span>
+          <div class="pagination" id="events-pagination"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="bottom-row">
+        <!-- Mini Calendar -->
+        <div class="bottom-card" style="padding: 24px;">
+          <div class="cal-nav" style="margin-bottom: 24px;">
+            <span class="cal-month" id="cal-month-label" style="font-size: 1rem;">March 2026</span>
+            <div>
+              <button class="cal-nav-btn" onclick="calNav(-1)" style="font-size: 1rem;">&lt;</button>
+              <button class="cal-nav-btn" onclick="calNav(1)" style="font-size: 1rem;">&gt;</button>
+            </div>
+          </div>
+          <div class="cal-grid" id="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;"></div>
+        </div>
+      </div><!-- /bottom-row -->
+    </div><!-- /dash-content -->
+  </main>
+</div><!-- /dash-layout -->
+
+<!-- ============================================================
+     MODALS
+============================================================= -->
+
+<!-- New/Edit Event Modal -->
+<div class="modal-overlay" id="modal-new-event">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="event-modal-title">New Event</span>
+      <button class="modal-close" onclick="closeModal('modal-new-event')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <input type="hidden" id="event-edit-id">
+    <div class="form-grid-2">
+      <div class="field-group">
+        <label class="field-label">Event Name <span class="req">*</span></label>
+        <input class="field-input" id="ev-name" placeholder="e.g. Golden Gala">
+        <div class="error-msg" id="ev-name-err"></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Type <span class="req">*</span></label>
+        <input class="field-input" id="ev-type" placeholder="e.g. Wedding">
+      </div>
+    </div>
+    <div class="form-grid-2">
+      <div class="field-group">
+        <label class="field-label">Client Name <span class="req">*</span></label>
+        <input class="field-input" id="ev-client" placeholder="e.g. Maria">
+      </div>
+      <div class="field-group">
+        <label class="field-label">No. of Guests</label>
+        <input class="field-input" id="ev-guests" type="number" placeholder="e.g. 100">
+      </div>
+    </div>
+    <div class="form-grid-2">
+      <div class="field-group">
+        <label class="field-label">Event Date <span class="req">*</span></label>
+        <input class="field-input" id="ev-date" type="date">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Venue <span class="req">*</span></label>
+        <input class="field-input" id="ev-venue" placeholder="e.g. Shang-ri La">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Theme <span class="req">*</span></label>
+        <input class="field-input" id="ev-theme" placeholder="e.g. Barbie Theme">
+      </div>
+    </div>
+    <div class="form-grid-2">
+      <div class="field-group">
+        <label class="field-label">Status</label>
+        <select class="field-input" id="ev-status">
+          <option value="PLANNING">PLANNING</option>
+          <option value="COMPLETED">COMPLETED</option>
+          <option value="ONGOING">ONGOING</option>
+          <option value="BLOCKED">BLOCKED</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Amount (₱)</label>
+        <input class="field-input" id="ev-amount" type="number" placeholder="e.g. 250000">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('modal-new-event')">Cancel</button>
+      <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:0.78rem;" onclick="saveEvent()">
+        <i class="fa-solid fa-floppy-disk"></i> Save Event
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm Modal -->
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-title">
+      Confirm Delete
+      <button class="modal-close" onclick="closeModal('modal-delete')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-gray);margin-bottom:6px;" id="delete-msg">Are you sure you want to delete this item?</p>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('modal-delete')">Cancel</button>
+      <button class="btn-danger" id="delete-confirm-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../scripts/db.js"></script>
+<script src="../dashboard/dashboard_ui.js"></script>
+<script src="../dashboard/dashboard.js"></script>
+</body>
+</html>

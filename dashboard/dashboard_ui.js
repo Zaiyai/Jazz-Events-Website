@@ -70,6 +70,29 @@ function guestOnly(redirectTo = 'dashboard.html') {
   if (user) { window.location.href = redirectTo; }
 }
 
+/* ── Role-based Permissions ─────────────────────────────── */
+function initPermissions() {
+  const userType = COOKIES.getCookie("user_type");
+  const path = window.location.pathname.toLowerCase();
+  
+  // Basic Auth Check: Only ADMIN and STAFF can access dashboard area
+  if (userType !== 'ADMIN' && userType !== 'STAFF') {
+    window.location.href = '../home.html';
+    return;
+  }
+
+  // Staff Restrictions
+  if (userType === 'STAFF') {
+    // 1. Page Access Control (Redirect to staff folder)
+    if (path.includes('clients.html') || path.includes('analytics.html') || (path.includes('dashboard.html') && !path.includes('/staff/'))) {
+      showToast("Access Denied: Redirecting to Staff Panel...", "error");
+      setTimeout(() => {
+        window.location.href = '../staff/dashboard.html';
+      }, 1500);
+    }
+  }
+}
+
 /* ── Modal helpers ───────────────────────────────────────── */
 function openModal(id) {
   const el = document.getElementById(id);
@@ -98,4 +121,5 @@ function validateForm(fields) {
 /* ── Run on page load ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
+  initPermissions();
 });
