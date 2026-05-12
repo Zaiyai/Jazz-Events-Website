@@ -1,8 +1,14 @@
-function validate(id,errId) {
-  const el = document.getElementById(id), err = document.getElementById(errId); 
-  const empty =! el ?.value.trim();
-  el ?.classList.toggle('has-error',empty);
-  err ?.classList.toggle('show',empty);
+function validate(id, errId) {
+  const el = document.getElementById(id), err = document.getElementById(errId);
+  const empty = !el?.value.trim();
+  if (el) {
+    if (empty) el.classList.add('has-error');
+    else el.classList.remove('has-error');
+  }
+  if (err) {
+    if (empty) err.classList.add('show');
+    else err.classList.remove('show');
+  }
   return !empty;
 }
 
