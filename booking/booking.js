@@ -1,47 +1,63 @@
-const dateFrom = document.getElementById('datefrom');
-const dateTo   = document.getElementById('dateto');
 const today = new Date().toISOString().split('T')[0];
 const eventBudget  = document.getElementById('event-budget');
 const attendees    = document.getElementById('attendees');
-const attendeesErr = document.getElementById('attendees-err')
+const attendeesErr = document.getElementById('attendees-err');
+const dateFrom     = document.getElementById('datefrom');
+const dateTo       = document.getElementById('dateto');
 
-if (dateFrom && dateTo) {
-    dateFrom.setAttribute('min', today);
-    dateTo.setAttribute('min', today);
-}
+var fp; // Global scope for accessibility
+
+document.addEventListener('DOMContentLoaded', function() {
+    const daterangeEl = document.getElementById('daterange');
+    if (!daterangeEl) {
+        console.error("Daterange element not found!");
+        return;
+    }
+
+    if (typeof flatpickr === 'undefined') {
+        console.error("Flatpickr library not loaded!");
+        return;
+    }
+
+    // Initialize Flatpickr
+    fp = flatpickr("#daterange", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "F j, Y",
+        onChange: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length === 2) {
+                dateFrom.value = instance.formatDate(selectedDates[0], "Y-m-d");
+                dateTo.value = instance.formatDate(selectedDates[1], "Y-m-d");
+                document.getElementById('daterange-err').classList.remove('show');
+            } else if (selectedDates.length === 1) {
+                dateFrom.value = instance.formatDate(selectedDates[0], "Y-m-d");
+                dateTo.value = instance.formatDate(selectedDates[0], "Y-m-d");
+            }
+        }
+    });
+
+    const openBtn = document.getElementById('open-calendar');
+    if (openBtn) {
+        openBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (fp) fp.open();
+        });
+    }
+
+    daterangeEl.addEventListener('click', () => {
+        if (fp) fp.open();
+    });
+    
+    console.log("Flatpickr initialized successfully");
+});
 
 var bookingInfo;
 
-// On date change
-function checkDateViability(date) {
-    const dateErr = date.parentElement.nextElementSibling;
-    
-    const dateFromErr = document.getElementById('datefrom-err');
-    const dateToErr   = document.getElementById('dateto-err');
-    
-    // If dateFrom is greater than dateTo
-    if (dateFrom.value > dateTo.value) {
-        dateFromErr.innerHTML = "Cannot be after event end";
-        dateToErr.innerHTML   = "Cannot be before event start";
-        dateFromErr.classList.add('show');
-        dateToErr.classList.add('show');
-        return;
-    } else {
-        dateFromErr.classList.remove('show');
-        dateToErr.classList.remove('show');
-    }
-    
-    if (date.value < today) {
-        dateErr.innerHTML = "Cannot be before today";
-        dateErr.classList.add('show');
-        return;
-    }
-
-    dateErr.classList.remove('show');
-}
-
 // On number of guests change
 function updateEstimatedBudget() {
+    if (!attendees.value) return;
+    
     if (attendees.value > 99999) {
         eventBudget.innerHTML  = "Too many guests";
         attendeesErr.innerHTML = "Too many guests";
@@ -73,8 +89,7 @@ async function firstSubmit() {
     const ok = [
         validate('name','name-err'),
         validate('type','type-err'), 
-        validate('datefrom','datefrom-err'),
-        validate('dateto','dateto-err'),
+        validate('daterange','daterange-err'),
         validate('attendees','attendees-err'),
         validate('venue','venue-err'),
         validate('theme','theme-err')].every(Boolean);
@@ -82,8 +97,9 @@ async function firstSubmit() {
     if (!ok) return;
     
     const submitBtn = document.getElementById('submit');
-    submitBtn.innerHTML = "Sending...";
-    submitBtn.disabled = true;
+    const originalContent = submitBtn.innerHTML;
+    submitBtn.innerHTML = "<span>Sending...</span>";
+    submitBtn.style.pointerEvents = "none";
     
     const content = eventBudget.innerHTML;
     document.getElementById('budget').value = content;
@@ -113,8 +129,8 @@ async function firstSubmit() {
 // On form actual submission
 function submitBooking() {
     const submitBtn = document.getElementsByClassName('confirm-btn')[0];
-    submitBtn.innerHTML = "Sending...";
+    submitBtn.innerHTML = "<span>Sending...</span>";
     submitBtn.disabled = true;
     DB.createBooking(JSON.parse(sessionStorage.getItem('bookingData'))); 
     sessionStorage.removeItem('bookingData');
-};
+};
