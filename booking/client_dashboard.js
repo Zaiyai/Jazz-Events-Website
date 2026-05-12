@@ -28,7 +28,7 @@ const closeBtn = document.getElementById("close-overlay");
 
 /* RESIZE SAFETY */
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) closeMenu();
+  if (window.innerWidth >= 768) closeMenu();
 });
 
 document.addEventListener('DOMContentLoaded', async () => {

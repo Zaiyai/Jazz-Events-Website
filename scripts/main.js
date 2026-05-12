@@ -56,7 +56,7 @@ const closeBtn = document.getElementById("close-overlay");
 
 /* OPEN */
 burger.addEventListener("click", () => {
-  if (window.innerWidth > 768) return;
+  if (window.innerWidth >= 768) return;
 
   overlay.classList.add("open");
   document.body.classList.add("menu-open");
@@ -78,7 +78,7 @@ document.addEventListener("keydown", e => {
 
 /* RESIZE SAFETY */
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) closeMenu();
+  if (window.innerWidth >= 768) closeMenu();
 });
 
 function closeMenu() {
