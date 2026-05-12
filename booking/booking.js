@@ -42,6 +42,8 @@ function checkDateViability(date) {
 
 // On number of guests change
 function updateEstimatedBudget() {
+    let totalBudget = 0;
+
     if (attendees.value > 99999) {
         eventBudget.innerHTML  = "Too many guests";
         attendeesErr.innerHTML = "Too many guests";
@@ -56,7 +58,7 @@ function updateEstimatedBudget() {
 
     attendeesErr.classList.remove('show');
     let servicesChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-    let totalBudget = 1000 * servicesChecked * attendees.value
+    totalBudget = 1000 * servicesChecked * attendees.value
     eventBudget.innerHTML = totalBudget.toLocaleString() + ".00";
 }
 
@@ -118,3 +120,7 @@ function submitBooking() {
     DB.createBooking(JSON.parse(sessionStorage.getItem('bookingData'))); 
     sessionStorage.removeItem('bookingData');
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateEstimatedBudget();
+});
