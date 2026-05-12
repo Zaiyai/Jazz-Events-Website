@@ -1,0 +1,153 @@
+/* bookings.css – page‑specific styles for the Admin Bookings page */
+/* Reuse existing design tokens from dashboard.css */
+
+/* Stats cards – same appearance as other stat cards */
+#booking-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Polishing the filters bar */
+.filters-bar {
+  margin: 0 0 20px 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 12px 16px;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.filters-bar select.field-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  color: var(--text-white);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.filters-bar select.field-input:hover {
+  border-color: var(--jazz-gold);
+}
+
+/* Table Enhancements */
+.events-table tr {
+  transition: background 0.2s ease;
+}
+
+.events-table tr:hover td {
+  background: rgba(212, 175, 55, 0.03) !important;
+}
+
+.client-info-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-name-text {
+  font-weight: 600;
+  color: var(--text-white);
+  font-size: 0.8rem;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.row-action-btn.danger:hover {
+  color: #f87171;
+}
+
+/* Status Pill Polish */
+.status-pill {
+  padding: 4px 12px;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.status-pending   { background: rgba(251,191,36,0.1); color:#fbbf24; border:1px solid rgba(251,191,36,0.2); }
+.status-confirmed{ background: rgba(212,175,55,0.1); color:#d4af37; border:1px solid rgba(212,175,55,0.2); }
+.status-completed{ background: rgba(74,222,128,0.1); color:#4ade80; border:1px solid rgba(74,222,128,0.2); }
+.status-cancelled{ background: rgba(248,113,113,0.1); color:#f87171; border:1px solid rgba(248,113,113,0.2); }
+
+/* View Detail Modal Styles */
+.view-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-item label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--jazz-gold);
+  letter-spacing: 0.05em;
+}
+
+.detail-item span {
+  font-size: 0.85rem;
+  color: var(--text-white);
+}
+
+.notes-box {
+  background: var(--bg-input);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-dark);
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  min-height: 60px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+  #booking-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  #booking-stats {
+    grid-template-columns: 1fr;
+  }
+  .view-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .events-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
