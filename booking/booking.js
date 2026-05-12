@@ -40,10 +40,16 @@ function checkDateViability(date) {
     dateErr.classList.remove('show');
 }
 
+/** Pesos amount for API / DB (never use locale commas — MySQL DECIMAL misreads "18,000.00" as 18). */
+function getEstimatedBudgetNumber() {
+    const guests = Number(String(attendees.value).trim());
+    if (!Number.isFinite(guests) || guests < 1 || guests > 99999) return null;
+    const servicesChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+    return 1000 * servicesChecked * guests;
+}
+
 // On number of guests change
 function updateEstimatedBudget() {
-    let totalBudget = 0;
-
     if (attendees.value > 99999) {
         eventBudget.innerHTML  = "Too many guests";
         attendeesErr.innerHTML = "Too many guests";
@@ -54,11 +60,11 @@ function updateEstimatedBudget() {
         attendeesErr.innerHTML = "Too little guests";
         attendeesErr.classList.add('show');
         return;
-    } 
+    }
 
     attendeesErr.classList.remove('show');
-    let servicesChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-    totalBudget = 1000 * servicesChecked * attendees.value
+    const totalBudget = getEstimatedBudgetNumber();
+    if (totalBudget === null) return;
     eventBudget.innerHTML = totalBudget.toLocaleString() + ".00";
 }
 
@@ -87,11 +93,11 @@ async function firstSubmit() {
     submitBtn.innerHTML = "Sending...";
     submitBtn.disabled = true;
     
-    const content = eventBudget.innerHTML;
-    document.getElementById('budget').value = content;
-    
+    const budgetAmount = getEstimatedBudgetNumber();
+    document.getElementById('budget').value = budgetAmount !== null ? String(budgetAmount) : '';
+
     const user = await DB.getUser();
-    
+
     bookingInfo = {
         name:         document.getElementById('name').value.trim(),
         email:        document.getElementById('email').value.trim() || user.email,
@@ -103,7 +109,7 @@ async function firstSubmit() {
         venue:        document.getElementById('venue').value.trim(),
         theme:        document.getElementById('theme').value.trim(),
         status:       'PENDING',
-        budget:       document.getElementById('budget').value.trim(),
+        budget:       budgetAmount !== null ? budgetAmount : 0,
         phone_number: document.getElementById('phone').value.trim()
     };
     

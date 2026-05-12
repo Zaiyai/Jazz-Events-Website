@@ -85,7 +85,7 @@ const DB = {
     })
     .then(response => {
       if (!response.ok) throw new Error("HTTP error: " + response.status);
-      // setTimeout(()=>{window.location.href = 'booking_success.html';}, 1500);
+      setTimeout(()=>{window.location.href = 'booking_success.html';}, 1500);
       return response.json();
     });
 

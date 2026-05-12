@@ -239,7 +239,13 @@
             document.getElementById('eventAttendees').innerHTML = bookingInfo.no_of_guests;
             document.getElementById('eventVenue').innerHTML = bookingInfo.venue;
             document.getElementById('eventTheme').innerHTML = bookingInfo.theme;
-            document.getElementById('eventBudget').innerHTML = bookingInfo.budget;
+            {
+                const b = bookingInfo.budget;
+                const n = typeof b === 'number' ? b : parseFloat(String(b).replace(/,/g, ''));
+                document.getElementById('eventBudget').innerHTML = Number.isFinite(n)
+                    ? n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                    : String(b);
+            }
             document.getElementById('eventPNum').innerHTML = bookingInfo.phone_number;
             document.getElementById('eventEmail').innerHTML = bookingInfo.email;
         })();

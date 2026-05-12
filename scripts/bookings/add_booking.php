@@ -48,7 +48,15 @@ $date_to = $conn->real_escape_string($data->date_to);
 $no_of_guests = $conn->real_escape_string($data->no_of_guests);
 $venue = $conn->real_escape_string($data->venue);
 $theme = $conn->real_escape_string($data->theme);
-$budget = $conn->real_escape_string($data->budget);
+$rawBudget = $data->budget ?? 0;
+if (is_numeric($rawBudget)) {
+    $budgetNum = (float) $rawBudget;
+} else {
+    $san = preg_replace('/[^0-9.,]/', '', (string) $rawBudget);
+    $san = str_replace(',', '', $san);
+    $budgetNum = (float) $san;
+}
+$budget = $conn->real_escape_string(number_format($budgetNum, 2, '.', ''));
 
 $sql = "INSERT INTO booking 
 (name, type, client_id, email, phone, date_from, date_to, no_of_guests, venue, theme, budget) 
