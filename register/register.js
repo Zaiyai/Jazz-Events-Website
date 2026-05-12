@@ -1,3 +1,35 @@
+var verified = false;
+
+async function sendCode() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("pass").value;
+
+  const response = await fetch("send_code.php", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          name,
+          email,
+          password
+      })
+  });
+
+  
+  const data = await response.json();
+  
+  if (data.message == "Email already taken.") {
+    let emailError = document.getElementById('email-err');
+    emailError.textContent = "Email already taken";
+    emailError.classList.toggle('show');
+    emailError.textContent = "Email is required";
+  }
+  
+  showToast(data.message);
+};
+
 function validate(id,errId) {
   const el = document.getElementById(id), err = document.getElementById(errId); 
   const empty =! el ?.value.trim();
@@ -13,6 +45,17 @@ async function handleRegister() {
     validate('code','code-err'),
     validate('pass','pass-err'),
     validate('pass2','pass2-err')].every(Boolean);
+
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('email-err');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (ok && !emailRegex.test(emailEl.value)) {
+    emailEl.classList.add('has-error');
+    emailErr.textContent = "Please enter a valid email address."; 
+    emailErr.classList.add('show');
+    return;
+  }
 
   const pass = document.getElementById('pass').value, pass2 = document.getElementById('pass2').value;
   const p2err = document.getElementById('pass2-err');
@@ -35,11 +78,12 @@ async function handleRegister() {
   if (!ok) return;
 
   const btn = document.getElementById('submit-btn');
-
+  
   const registerData = {
     name: document.getElementById('name').value.trim(),
     email: document.getElementById('email').value.trim(),
-    password: pass
+    password: pass,
+    code: document.getElementById("code").value
   }
 
   fetch("register.php", {
@@ -58,16 +102,17 @@ async function handleRegister() {
       if (data.status == "success") { 
         btn.disabled = true;
         btn.textContent = 'Creating account…';
-        window.location.href = data.redirect + "?showLogin=true";
+        console.log("HELLo")
+        setTimeout(()=>{ window.location.href = data.redirect + "?showLogin=true" }, 1500);
       } else { 
         btn.disabled = false;
         btn.textContent = 'REGISTER';
 
         if (data.message == "Email already taken.") {
-            let emailError = document.getElementById('email-err');
-            emailError.textContent = "Email already taken";
-            emailError.classList.toggle('show');
-            emailError.textContent = "Email is required";
+          let emailError = document.getElementById('email-err');
+          emailError.textContent = "Email already taken";
+          emailError.classList.toggle('show');
+          emailError.textContent = "Email is required";
         }
       }
     });
@@ -82,28 +127,27 @@ function showToast(msg,type){
   el._t=setTimeout(() => el.classList.remove('show'), 3800);
 }
 
-// let regResendTimer = null;
-// let regResendCooldown = 0;
+let regResendTimer = null;
+let regResendCooldown = 0;
 
-// function handleRegResend() {
-//   if (regResendCooldown > 0) return;
-//   const email = document.getElementById('reg-email').value.trim();
-//   if (!email) { showToast('Please enter your email first.', 'error'); return; }
+function handleRegResend() {
+  if (regResendCooldown > 0) return;
+  const email = document.getElementById('reg-email').value.trim();
+  if (!email) { showToast('Please enter your email first.', 'error'); return; }
 
-//   // TODO: call POST /api/auth/send-code
-//   showToast('Verification code sent to ' + email);
+  showToast('Verification code sent to ' + email);
 
-//   regResendCooldown = 60;
-//   const btn = document.getElementById('reg-resend-btn');
-//   regResendTimer = setInterval(() => {
-//     regResendCooldown--;
-//     btn.textContent = `Re-send (${regResendCooldown}s)`;
-//     if (regResendCooldown <= 0) {
-//       clearInterval(regResendTimer);
-//       btn.textContent = 'Re-send';
-//     }
-//   }, 1000);
-// }
+  regResendCooldown = 60;
+  const btn = document.getElementById('reg-resend-btn');
+  regResendTimer = setInterval(() => {
+    regResendCooldown--;
+    btn.textContent = `Re-send (${regResendCooldown}s)`;
+    if (regResendCooldown <= 0) {
+      clearInterval(regResendTimer);
+      btn.textContent = 'Re-send';
+    }
+  }, 1000);
+}
 
-// window.handleRegister  = handleRegister;
-// window.handleRegResend = handleRegResend;
+window.handleRegister  = handleRegister;
+window.handleRegResend = handleRegResend;
