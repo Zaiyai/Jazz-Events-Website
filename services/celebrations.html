@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrations & Parties - Jazz Events</title>
+    <meta name="description" content="Celebrate birthdays, anniversaries, reunions, and milestones with Jazz Events. Complete party planning with catering, décor, entertainment, and coordination services.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css?v=2">
+    <link rel="stylesheet" href="../login/login.css?v=3">
+    <link rel="stylesheet" href="services.css?v=1">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
+        <div class="nav-container">
+        <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
+
+        <nav class="nav-links desktop-nav">
+            <a href="../home.html">Home</a>
+            <a href="../home.html#services-section">Services</a>
+            <a href="../home.html#team-section">Team</a>
+            <a href="../home.html#reviews-section">Reviews</a>
+            <a href="../home.html#about">About Us</a>
+            <a href="../home.html#cta-section">Contact</a>
+        </nav>
+
+        <div class="nav-right-group">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input id="search-input" type="text" placeholder="Search Jazz Events...">
+                <ul id="search-content"></ul>
+            </div>
+            <div id="nav-auth-slot"></div>
+        </div>
+    </div>
+  </header>
+
+    <!-- Mobile nav overlay -->
+    <div id="nav-overlay" class="nav-overlay mobile-only">
+    <button id="close-overlay" class="close-btn">✕</button>
+        <nav class="nav-links overlay-links">
+            <a href="../home.html">Home</a>
+            <a href="../home.html#services-section">Services</a>
+            <a href="../home.html#team-section">Team</a>
+            <a href="../home.html#reviews-section">Reviews</a>
+            <a href="../home.html#about">About Us</a>
+            <a href="../home.html#cta-section">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Hidden Login Modal -->
+    <div class="auth-section">
+        <div class="auth-card">
+            <div class="auth-left">
+                <div class="logo-container" style="margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+                    <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-right: 40px;">Jazz</span>
+                    <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-left: 40px;">Events</span>
+                </div>
+                <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 40px;"></div>
+                <div style="text-align: center; color: #ccc; font-size: 0.95rem; font-style: italic; line-height: 1.6; position: relative; padding: 20px;">
+                    <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; top: 0; right: 0; transform: rotate(45deg); opacity: 0.5;"></i>
+                    <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; bottom: 0; left: 0; transform: rotate(-135deg); opacity: 0.5;"></i>
+                    Make your events<br>possible with <span style="color: var(--jazz-gold); font-weight: 600;">Jazz</span><br><span style="color: var(--jazz-gold); font-weight: 600;">Events.</span>
+                </div>
+            </div>
+            <div class="auth-right">
+                <button class="auth-close" onclick="document.querySelector('.auth-section').style.display='none'">✕</button>
+                <div class="auth-title">Log in</div>
+                <div class="auth-subtitle">To view the status of your bookings</div>
+                <div class="field-group">
+                    <label class="field-label" for="login-email">Email*</label>
+                    <div class="field-input-wrapper">
+                        <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                        <div class="err-msg" id="login-email-err">Email address is required.</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="login-pass">Password*</label>
+                    <div class="field-input-wrapper pass-wrap">
+                        <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+                        <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
+                        <div class="err-msg" id="login-pass-err">Password is required.</div>
+                    </div>
+                </div>
+                <div style="padding-left: 110px; display: flex; flex-direction: column; align-items: center; margin-top: 16px;">
+                    <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
+                    <div class="auth-switch">
+                        Don't have an account yet? <a href="../register/register.html">REGISTER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="svc-hero" id="celebrations-hero">
+        <div class="hero-bg">
+            <img src="../assets/people/people3.jpg" alt="Joyful party celebration">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="svc-hero-content">
+            <span class="svc-hero-badge">Jazz Events Services</span>
+            <h1 class="svc-hero-title">Parties & <span class="text-gold">Celebrations</span></h1>
+            <p class="svc-hero-subtitle">Every milestone deserves a grand celebration</p>
+            <a onclick="bookingRedirect()" class="btn-gold">
+                <span>Plan Your Party</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="svc-breadcrumb">
+        <nav>
+            <a href="../home.html">Home</a>
+            <span class="separator"><i class="fa-solid fa-chevron-right"></i></span>
+            <a href="../home.html#services-section">Services</a>
+            <span class="separator"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="current">Celebrations</span>
+        </nav>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="svc-section" id="celebrations-overview">
+        <div class="svc-container">
+            <div class="svc-overview">
+                <div class="svc-overview-body">
+                    <a href="../home.html#services-section" class="svc-back-link">
+                        <i class="fa-solid fa-arrow-left"></i> All Services
+                    </a>
+                    <span class="svc-section-label">Life's Best Moments</span>
+                    <h2 class="svc-section-heading">Celebrate The People <span class="text-gold">You Love</span></h2>
+                    <p class="svc-section-text">
+                        Life is full of moments worth celebrating — birthdays, anniversaries, reunions, promotions, graduations, and those just-because gatherings that mean the world. At Jazz Events, we believe no celebration is too big or too small. Every party we plan is infused with genuine care, creative energy, and the kind of attention to detail that makes your guests feel truly special.
+                    </p>
+                    <p class="svc-section-text">
+                        Whether you're throwing a surprise birthday bash for your best friend, hosting a milestone anniversary dinner, or organizing a family reunion with all the trimmings — we bring the vision, the team, and the experience to make it happen seamlessly.
+                    </p>
+                </div>
+                <img src="../assets/tables/birthdays.jpg" alt="Birthday celebration setup" class="svc-overview-img">
+            </div>
+
+            <!-- Stats -->
+            <div class="svc-stats-row">
+                <div class="svc-stat">
+                    <div class="svc-stat-number">150+</div>
+                    <div class="svc-stat-label">Parties Hosted</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">10-500</div>
+                    <div class="svc-stat-label">Guest Capacity</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">30+</div>
+                    <div class="svc-stat-label">Theme Options</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">5★</div>
+                    <div class="svc-stat-label">Client Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Included -->
+    <section class="svc-section" id="celebrations-included">
+        <div class="svc-container">
+            <span class="svc-section-label">Our Party Packages</span>
+            <h2 class="svc-section-heading">Everything You Need To <span class="text-gold">Celebrate</span></h2>
+
+            <div class="svc-includes-grid">
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-cake-candles svc-include-icon"></i>
+                    <h3 class="svc-include-title">Birthday Parties</h3>
+                    <p class="svc-include-text">From kiddie parties with balloon arches and mascots to elegant adult celebrations with themed décor and curated menus — we make every age feel truly celebrated.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-heart svc-include-icon"></i>
+                    <h3 class="svc-include-title">Anniversaries</h3>
+                    <p class="svc-include-text">Mark years of love, partnership, or achievement with an intimate dinner or a grand celebration — we handle the styling, food, and ambiance so you can focus on the people who matter.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-graduation-cap svc-include-icon"></i>
+                    <h3 class="svc-include-title">Graduations</h3>
+                    <p class="svc-include-text">Celebrate academic milestones with a party that honors the hard work and dedication behind every diploma. We create joyful setups complete with themed décor and celebration essentials.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-people-group svc-include-icon"></i>
+                    <h3 class="svc-include-title">Family Reunions</h3>
+                    <p class="svc-include-text">Bring the whole family together with a celebration built for connection — think interactive food stations, outdoor setups, lawn games, and shared meals that feel like home.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-gift svc-include-icon"></i>
+                    <h3 class="svc-include-title">Surprise Events</h3>
+                    <p class="svc-include-text">Planning a surprise party? We're experts at covert coordination. From discreet venue setup to perfectly timed reveals, we'll make sure the guest of honor never sees it coming.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-star svc-include-icon"></i>
+                    <h3 class="svc-include-title">Custom Themes</h3>
+                    <p class="svc-include-text">Got a wild theme idea? Bring it to us. Whether it's retro 90s, tropical luau, or elegant Gatsby — we'll bring your creative vision to life down to the last detail.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="svc-section" id="celebrations-process">
+        <div class="svc-container">
+            <div style="text-align: center;">
+                <span class="svc-section-label">How It Works</span>
+                <h2 class="svc-section-heading">Planning Made <span class="text-gold">Effortless</span></h2>
+            </div>
+
+            <div class="svc-process">
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-phone"></i></div>
+                    <h3 class="svc-process-title">Reach Out</h3>
+                    <p class="svc-process-text">Contact us with your celebration idea, guest count, and preferred date. We'll arrange a free consultation to discuss your vision.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-swatchbook"></i></div>
+                    <h3 class="svc-process-title">Theme & Menu</h3>
+                    <p class="svc-process-text">Together, we'll pick the perfect theme, finalize the menu, and select entertainment options that match the occasion.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-hammer"></i></div>
+                    <h3 class="svc-process-title">Setup Day</h3>
+                    <p class="svc-process-text">Our crew arrives early to transform your venue — décor, lighting, table settings, food stations — everything in place before the first guest walks in.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-party-horn fa-solid fa-face-laugh-beam"></i></div>
+                    <h3 class="svc-process-title">Party Time!</h3>
+                    <p class="svc-process-text">Enjoy every moment of the celebration while our team manages the flow, service, and cleanup behind the scenes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="svc-section" id="celebrations-gallery">
+        <div class="svc-container">
+            <span class="svc-section-label">Gallery</span>
+            <h2 class="svc-section-heading">Celebrations We've <span class="text-gold">Brought to Life</span></h2>
+
+            <div class="svc-gallery">
+                <div class="svc-gallery-item">
+                    <img src="../assets/people/people1.jpg" alt="Birthday celebration">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Birthday Celebration</span>
+                    </div>
+                </div>
+                <div class="svc-gallery-item">
+                    <img src="../assets/tables/table.jpg" alt="Party table setup">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Themed Table Setup</span>
+                    </div>
+                </div>
+                <div class="svc-gallery-item">
+                    <img src="../assets/people/people2.jpg" alt="Family gathering">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Family Reunion Dinner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="svc-section" id="celebrations-testimonial">
+        <div class="svc-container">
+            <div style="text-align: center;">
+                <span class="svc-section-label">What Our Clients Say</span>
+                <h2 class="svc-section-heading">Happy <span class="text-gold">Memories</span></h2>
+            </div>
+
+            <div class="svc-testimonial">
+                <p class="svc-testimonial-text">
+                    "Thank you and God Bless Jazz Events! Your effort and help were truly appreciated and super worth it. Guests raved about the delicious food, and your crew was very kind, attentive, and helpful. The owners were incredibly hands-on, focused on the event, and always there to assist with our needs. Praying your business continues to grow and flourish!"
+                </p>
+                <div class="svc-testimonial-author">
+                    <img src="../assets/reviewers/reviewer3.jpg" alt="Jhen Pama Aquino" class="svc-testimonial-avatar">
+                    <div>
+                        <div class="svc-testimonial-name">Jhen Pama Aquino</div>
+                        <div class="svc-testimonial-role">Celebration Client</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="svc-cta" id="celebrations-cta">
+        <div class="svc-cta-inner">
+            <h2 class="svc-cta-title">Let's Make It <span class="text-gold">Unforgettable</span></h2>
+            <p class="svc-cta-text">
+                Every celebration is a chance to create lasting memories. Let Jazz Events handle the details while you enjoy the moment with the people who matter most.
+            </p>
+            <a onclick="bookingRedirect()" class="btn-gold">
+                <span>Book Now</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-container">
+                    <span class="script-text" style="font-size: 4rem;">Jazz</span>
+                    <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                </div>
+                <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+                    Elevating moments with exquisite culinary experiences.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="../home.html#banner-section">Home</a></li>
+                    <li><a href="../home.html#services-section">Services</a></li>
+                    <li><a href="../home.html#team-section">Team</a></li>
+                    <li><a href="../home.html#reviews-section">Reviews</a></li>
+                    <li><a href="../home.html#about">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="debut.html">Debut</a></li>
+                    <li><a href="catering.html">Catering</a></li>
+                    <li><a href="celebrations.html">Celebrations</a></li>
+                    <li><a href="weddings.html">Weddings</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li class="contact-item">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <div>
+                            <div>0965 633 7494</div>
+                            <div>0997 425 7958</div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-brands fa-facebook-f contact-icon"></i>
+                        <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="../policies/privacyPolicy.html">Privacy Policy</a>
+                <a href="../policies/termsOfService.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+<div class="page-toast" id="toast"></div>
+
+<script src="../scripts/main.js?v=2"></script>
+<script src="../scripts/search.js"></script>
+<script src="../scripts/db.js"></script>
+<script src="../login/login.js"></script>
+</body>
+</html>

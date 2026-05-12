@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Services - Jazz Events</title>
+    <meta name="description" content="Premium event catering by Jazz Events. From buffet spreads to plated dinners, we deliver delicious Filipino and international cuisine for events of all sizes in Cavite and beyond.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css?v=2">
+    <link rel="stylesheet" href="../login/login.css?v=3">
+    <link rel="stylesheet" href="services.css?v=1">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
+        <div class="nav-container">
+        <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
+
+        <nav class="nav-links desktop-nav">
+            <a href="../home.html">Home</a>
+            <a href="../home.html#services-section">Services</a>
+            <a href="../home.html#team-section">Team</a>
+            <a href="../home.html#reviews-section">Reviews</a>
+            <a href="../home.html#about">About Us</a>
+            <a href="../home.html#cta-section">Contact</a>
+        </nav>
+
+        <div class="nav-right-group">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input id="search-input" type="text" placeholder="Search Jazz Events...">
+                <ul id="search-content"></ul>
+            </div>
+            <div id="nav-auth-slot"></div>
+        </div>
+    </div>
+  </header>
+
+    <!-- Mobile nav overlay -->
+    <div id="nav-overlay" class="nav-overlay mobile-only">
+    <button id="close-overlay" class="close-btn">✕</button>
+        <nav class="nav-links overlay-links">
+            <a href="../home.html">Home</a>
+            <a href="../home.html#services-section">Services</a>
+            <a href="../home.html#team-section">Team</a>
+            <a href="../home.html#reviews-section">Reviews</a>
+            <a href="../home.html#about">About Us</a>
+            <a href="../home.html#cta-section">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Hidden Login Modal -->
+    <div class="auth-section">
+        <div class="auth-card">
+            <div class="auth-left">
+                <div class="logo-container" style="margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
+                    <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-right: 40px;">Jazz</span>
+                    <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-left: 40px;">Events</span>
+                </div>
+                <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 40px;"></div>
+                <div style="text-align: center; color: #ccc; font-size: 0.95rem; font-style: italic; line-height: 1.6; position: relative; padding: 20px;">
+                    <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; top: 0; right: 0; transform: rotate(45deg); opacity: 0.5;"></i>
+                    <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; bottom: 0; left: 0; transform: rotate(-135deg); opacity: 0.5;"></i>
+                    Make your events<br>possible with <span style="color: var(--jazz-gold); font-weight: 600;">Jazz</span><br><span style="color: var(--jazz-gold); font-weight: 600;">Events.</span>
+                </div>
+            </div>
+            <div class="auth-right">
+                <button class="auth-close" onclick="document.querySelector('.auth-section').style.display='none'">✕</button>
+                <div class="auth-title">Log in</div>
+                <div class="auth-subtitle">To view the status of your bookings</div>
+                <div class="field-group">
+                    <label class="field-label" for="login-email">Email*</label>
+                    <div class="field-input-wrapper">
+                        <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                        <div class="err-msg" id="login-email-err">Email address is required.</div>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="login-pass">Password*</label>
+                    <div class="field-input-wrapper pass-wrap">
+                        <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+                        <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
+                        <div class="err-msg" id="login-pass-err">Password is required.</div>
+                    </div>
+                </div>
+                <div style="padding-left: 110px; display: flex; flex-direction: column; align-items: center; margin-top: 16px;">
+                    <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
+                    <div class="auth-switch">
+                        Don't have an account yet? <a href="../register/register.html">REGISTER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="svc-hero" id="catering-hero">
+        <div class="hero-bg">
+            <img src="../assets/hero backgrounds/catering.jpg" alt="Premium catering buffet setup">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="svc-hero-content">
+            <span class="svc-hero-badge">Jazz Events Services</span>
+            <h1 class="svc-hero-title">Premium <span class="text-gold">Catering</span></h1>
+            <p class="svc-hero-subtitle">Flavors that bring people together</p>
+            <a onclick="bookingRedirect()" class="btn-gold">
+                <span>Book Catering</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="svc-breadcrumb">
+        <nav>
+            <a href="../home.html">Home</a>
+            <span class="separator"><i class="fa-solid fa-chevron-right"></i></span>
+            <a href="../home.html#services-section">Services</a>
+            <span class="separator"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="current">Catering</span>
+        </nav>
+    </div>
+
+    <!-- Overview Section -->
+    <section class="svc-section" id="catering-overview">
+        <div class="svc-container">
+            <div class="svc-overview">
+                <div class="svc-overview-body">
+                    <a href="../home.html#services-section" class="svc-back-link">
+                        <i class="fa-solid fa-arrow-left"></i> All Services
+                    </a>
+                    <span class="svc-section-label">Culinary Excellence</span>
+                    <h2 class="svc-section-heading">Food That Tells <span class="text-gold">Your Story</span></h2>
+                    <p class="svc-section-text">
+                        Great food has a way of bringing people together, and at Jazz Events, we believe every dish should be a celebration in itself. Our catering service goes beyond simply feeding your guests — we create a dining experience that becomes one of the most talked-about highlights of your event.
+                    </p>
+                    <p class="svc-section-text">
+                        Whether you envision an elegant plated dinner for an intimate gathering or a grand buffet overflowing with Filipino favorites and international cuisine, our culinary team works hand-in-hand with you to design a menu that perfectly suits your taste, your theme, and your budget.
+                    </p>
+                </div>
+                <img src="../assets/food/catering.jpg" alt="Catering spread by Jazz Events" class="svc-overview-img">
+            </div>
+
+            <!-- Stats -->
+            <div class="svc-stats-row">
+                <div class="svc-stat">
+                    <div class="svc-stat-number">200+</div>
+                    <div class="svc-stat-label">Events Catered</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">50+</div>
+                    <div class="svc-stat-label">Menu Options</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">20-1000</div>
+                    <div class="svc-stat-label">Guest Range</div>
+                </div>
+                <div class="svc-stat">
+                    <div class="svc-stat-number">100%</div>
+                    <div class="svc-stat-label">Fresh Ingredients</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Included -->
+    <section class="svc-section" id="catering-included">
+        <div class="svc-container">
+            <span class="svc-section-label">Our Offerings</span>
+            <h2 class="svc-section-heading">A Feast For <span class="text-gold">Every Occasion</span></h2>
+
+            <div class="svc-includes-grid">
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-bowl-food svc-include-icon"></i>
+                    <h3 class="svc-include-title">Buffet Service</h3>
+                    <p class="svc-include-text">A lavish spread featuring multiple appetizers, entrées, sides, and desserts — all beautifully presented in elegant chafing dishes with professional serving staff standing by.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-plate-wheat svc-include-icon"></i>
+                    <h3 class="svc-include-title">Plated Dining</h3>
+                    <p class="svc-include-text">For a more refined experience, our plated service delivers multi-course meals directly to each guest's table with impeccable timing and restaurant-quality presentation.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-ice-cream svc-include-icon"></i>
+                    <h3 class="svc-include-title">Dessert Station</h3>
+                    <p class="svc-include-text">From custom cakes to pastry tables and chocolate fountains — our dessert stations add a sweet, Instagram-worthy touch that guests of all ages absolutely love.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-glass-water svc-include-icon"></i>
+                    <h3 class="svc-include-title">Beverage Bar</h3>
+                    <p class="svc-include-text">Refresh your guests with our curated beverage options: from fresh fruit juices and iced teas to coffee stations and mocktail bars — all tailored to your event's vibe.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-users svc-include-icon"></i>
+                    <h3 class="svc-include-title">Service Staff</h3>
+                    <p class="svc-include-text">Our professionally trained waitstaff, in proper attire, ensures smooth and courteous service throughout the event — from setup to cleanup, so you won't lift a finger.</p>
+                </div>
+
+                <div class="svc-include-card">
+                    <i class="fa-solid fa-clipboard-list svc-include-icon"></i>
+                    <h3 class="svc-include-title">Menu Consultation</h3>
+                    <p class="svc-include-text">Not sure what to serve? Our culinary consultants will guide you through our full menu catalog, offering free tastings and personalized recommendations based on your guest count and preferences.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="svc-section" id="catering-process">
+        <div class="svc-container">
+            <div style="text-align: center;">
+                <span class="svc-section-label">How It Works</span>
+                <h2 class="svc-section-heading">From Kitchen To <span class="text-gold">Your Table</span></h2>
+            </div>
+
+            <div class="svc-process">
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <h3 class="svc-process-title">Menu Selection</h3>
+                    <p class="svc-process-text">Choose from our curated menu packages or build a custom selection that matches your event theme and dietary needs.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-spoon"></i></div>
+                    <h3 class="svc-process-title">Free Tasting</h3>
+                    <p class="svc-process-text">Sample your chosen dishes before the big day to ensure every flavor is exactly what you envisioned.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-truck"></i></div>
+                    <h3 class="svc-process-title">Delivery & Setup</h3>
+                    <p class="svc-process-text">Our team arrives hours early to set up the buffet, table arrangements, and service stations with precision.</p>
+                </div>
+
+                <div class="svc-process-step">
+                    <div class="svc-process-icon"><i class="fa-solid fa-bell-concierge"></i></div>
+                    <h3 class="svc-process-title">Full Service</h3>
+                    <p class="svc-process-text">Professional staff serve your guests attentively from the first course through dessert and complete cleanup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="svc-section" id="catering-gallery">
+        <div class="svc-container">
+            <span class="svc-section-label">Gallery</span>
+            <h2 class="svc-section-heading">Our Culinary <span class="text-gold">Creations</span></h2>
+
+            <div class="svc-gallery">
+                <div class="svc-gallery-item">
+                    <img src="../assets/food/food1.jpg" alt="Gourmet dishes">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Gourmet Main Course</span>
+                    </div>
+                </div>
+                <div class="svc-gallery-item">
+                    <img src="../assets/food/cater4.jpg" alt="Buffet setup">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Grand Buffet Spread</span>
+                    </div>
+                </div>
+                <div class="svc-gallery-item">
+                    <img src="../assets/food/food2.jpg" alt="Dessert table">
+                    <div class="svc-gallery-overlay">
+                        <span class="svc-gallery-caption">Dessert & Pastry Display</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="svc-section" id="catering-testimonial">
+        <div class="svc-container">
+            <div style="text-align: center;">
+                <span class="svc-section-label">What Our Clients Say</span>
+                <h2 class="svc-section-heading">Taste The <span class="text-gold">Difference</span></h2>
+            </div>
+
+            <div class="svc-testimonial">
+                <p class="svc-testimonial-text">
+                    "Food-wise, everything was so delicious! Even with my last-minute requests, they managed to adjust right away. The staff and servers were very friendly and accommodating, and of course, the owners were incredibly kind! Thank you so much, Jazz Events! Wishing you more successful events to come!"
+                </p>
+                <div class="svc-testimonial-author">
+                    <img src="../assets/reviewers/reviewer2.jpg" alt="Leira Sumilang" class="svc-testimonial-avatar">
+                    <div>
+                        <div class="svc-testimonial-name">Leira Sumilang</div>
+                        <div class="svc-testimonial-role">Catering Client</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="svc-cta" id="catering-cta">
+        <div class="svc-cta-inner">
+            <h2 class="svc-cta-title">Let Us Handle <span class="text-gold">The Food</span></h2>
+            <p class="svc-cta-text">
+                From intimate dinners to grand celebrations, our catering team delivers unforgettable flavors every single time. Get started with a free menu consultation today.
+            </p>
+            <a onclick="bookingRedirect()" class="btn-gold">
+                <span>Book Now</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-container">
+                    <span class="script-text" style="font-size: 4rem;">Jazz</span>
+                    <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
+                </div>
+                <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+                    Elevating moments with exquisite culinary experiences.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="../home.html#banner-section">Home</a></li>
+                    <li><a href="../home.html#services-section">Services</a></li>
+                    <li><a href="../home.html#team-section">Team</a></li>
+                    <li><a href="../home.html#reviews-section">Reviews</a></li>
+                    <li><a href="../home.html#about">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="debut.html">Debut</a></li>
+                    <li><a href="catering.html">Catering</a></li>
+                    <li><a href="celebrations.html">Celebrations</a></li>
+                    <li><a href="weddings.html">Weddings</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li class="contact-item">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <div>
+                            <div>0965 633 7494</div>
+                            <div>0997 425 7958</div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-brands fa-facebook-f contact-icon"></i>
+                        <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Jazz Events. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="../policies/privacyPolicy.html">Privacy Policy</a>
+                <a href="../policies/termsOfService.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+<div class="page-toast" id="toast"></div>
+
+<script src="../scripts/main.js?v=2"></script>
+<script src="../scripts/search.js"></script>
+<script src="../scripts/db.js"></script>
+<script src="../login/login.js"></script>
+</body>
+</html>

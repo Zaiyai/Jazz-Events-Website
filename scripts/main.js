@@ -4,7 +4,13 @@ function handleProfileLogout() {
 
 function bookingRedirect() {
   if (COOKIES.hasEmail()) {
-    window.location.href = "booking/booking.html";
+    // Determine correct relative path to booking page based on current depth
+    var path = window.location.pathname;
+    if (path.indexOf('/services/') !== -1 || path.indexOf('/booking/') !== -1 || path.indexOf('/login/') !== -1 || path.indexOf('/register/') !== -1 || path.indexOf('/dashboard/') !== -1 || path.indexOf('/staff/') !== -1 || path.indexOf('/settings/') !== -1 || path.indexOf('/policies/') !== -1) {
+      window.location.href = "../booking/booking.html";
+    } else {
+      window.location.href = "booking/booking.html";
+    }
   } else {
     displayLogin();
   }
