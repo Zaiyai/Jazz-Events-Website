@@ -17,7 +17,7 @@
 </head>
 <body>
   <div class="dash-layout">
-    <aside class="sidebar not-main" id="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
         <a href="../home.html" style="text-decoration:none;">
           <div class="brand-script">Jazz Events</div>
@@ -26,11 +26,11 @@
       </div>
       <nav class="sidebar-nav">
         <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+        <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
         <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
         <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
         <a class="nav-item active" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
         <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
-        <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
@@ -44,10 +44,9 @@
       </div>
     </aside>
 
-    <main class="dash-main" style="margin-left:0;">
+    <main class="dash-main">
       <div class="dash-topbar">
         <div class="topbar-left">
-          <button class="menu-btn" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
           <div class="topbar-heading">Analytics</div>
           <div class="topbar-divider"></div>
           <div class="topbar-sub">Business insights & metrics</div>
@@ -64,41 +63,29 @@
       <div class="dash-content">
         <!-- Stats Row -->
         <div class="stats-grid-4">
-          <div class="stat-card-premium">
-            <div class="stat-card-top">
-              <div class="stat-card-icon"><i class="fa-solid fa-peso-sign"></i></div>
-              <span class="stat-card-trend up">+32.2%</span>
-            </div>
-            <div class="stat-card-label">TOTAL REVENUE</div>
-            <div class="stat-card-value">₱1,029,567</div>
-            <div class="stat-card-sub">vs. ₱780,240 last period</div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
+            <div class="page-stat-label">TOTAL REVENUE</div>
+            <div class="page-stat-value">₱1,029,567</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +32.2% <span style="color:#666; font-weight:400;">vs last period</span></div>
           </div>
-          <div class="stat-card-premium">
-            <div class="stat-card-top">
-              <div class="stat-card-icon"><i class="fa-solid fa-users"></i></div>
-              <span class="stat-card-trend up">+18.9%</span>
-            </div>
-            <div class="stat-card-label">NEW CLIENTS</div>
-            <div class="stat-card-value">167</div>
-            <div class="stat-card-sub">vs. 138 last period</div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="page-stat-label">NEW CLIENTS</div>
+            <div class="page-stat-value">167</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +18.9% <span style="color:#666; font-weight:400;">vs last period</span></div>
           </div>
-          <div class="stat-card-premium">
-            <div class="stat-card-top">
-              <div class="stat-card-icon"><i class="fa-regular fa-calendar"></i></div>
-              <span class="stat-card-trend up">+24.6%</span>
-            </div>
-            <div class="stat-card-label">AVG. EVENT VALUE</div>
-            <div class="stat-card-value">₱567,293</div>
-            <div class="stat-card-sub">vs. ₱455,180 last period</div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-regular fa-calendar"></i></div>
+            <div class="page-stat-label">AVG. EVENT VALUE</div>
+            <div class="page-stat-value">₱567,293</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +24.6% <span style="color:#666; font-weight:400;">vs last period</span></div>
           </div>
-          <div class="stat-card-premium">
-            <div class="stat-card-top">
-              <div class="stat-card-icon"><i class="fa-regular fa-star"></i></div>
-              <span class="stat-card-trend up">+9.0%</span>
-            </div>
-            <div class="stat-card-label">CLIENT SATISFACTION</div>
-            <div class="stat-card-value">98.5%</div>
-            <div class="stat-card-sub">vs. 89.5% last period</div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-regular fa-star"></i></div>
+            <div class="page-stat-label">CLIENT SATISFACTION</div>
+            <div class="page-stat-value">98.5%</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +9.0% <span style="color:#666; font-weight:400;">vs last period</span></div>
           </div>
         </div>
 

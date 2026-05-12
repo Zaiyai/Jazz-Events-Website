@@ -43,16 +43,19 @@ function statusPill(status) {
     ONGOING:    'status-ongoing',
     PLANNING:   'status-planning',
     BLOCKED:    'status-blocked',
+    PENDING:    'status-pending',
+    CONFIRMED:  'status-confirmed',
+    CANCELLED:  'status-cancelled'
   };
-  const cls = map[status] || 'status-planning';
+  const cls = map[status] || 'status-pending';
   return `<span class="status-pill ${cls}">${capitalize(status)}</span>`;
 }
 
 function capitalize(str) {
-  return str ? str[0].toUpperCase() + str.slice(1) : '';
+  return str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : '';
 }
 
-/* ── Mobile nav overlay ──────────────────────────────────── */
+/* ── Mobile nav overlay (Main Site Only) ────────────────── */
 function initMobileNav() {
   const openBtn  = document.getElementById('nav-open');
   const closeBtn = document.getElementById('nav-close');
@@ -92,15 +95,7 @@ function validateForm(fields) {
   return valid;
 }
 
-const sidebar = document.getElementById('sidebar');
-
 /* ── Run on page load ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
-
-  if (sidebar.classList.contains('not-main')) {
-    sidebar.addEventListener('mouseleave', () => { sidebar.style.width = "0"; });
-  }
 });
-
-function openSidebar() { sidebar.style.width = "250px"; };
