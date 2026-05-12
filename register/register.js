@@ -16,7 +16,6 @@ async function sendCode() {
           password
       })
   });
-
   
   const data = await response.json();
   
@@ -132,13 +131,10 @@ let regResendCooldown = 0;
 
 function handleRegResend() {
   if (regResendCooldown > 0) return;
-  const email = document.getElementById('reg-email').value.trim();
-  if (!email) { showToast('Please enter your email first.', 'error'); return; }
-
-  showToast('Verification code sent to ' + email);
+  sendCode();
 
   regResendCooldown = 60;
-  const btn = document.getElementById('reg-resend-btn');
+  const btn = document.getElementById('resend-btn');
   regResendTimer = setInterval(() => {
     regResendCooldown--;
     btn.textContent = `Re-send (${regResendCooldown}s)`;

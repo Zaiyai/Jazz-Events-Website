@@ -62,7 +62,7 @@
 
     <div class="field-group">
       <label class="field-label" for="email">Email Address <span class="req">*</span></label>
-      <input class="field-input" type="email" id="email" placeholder="maria@domain.com" autocomplete="email">
+      <input class="field-input" type="email" id="email" placeholder="maria@domain.com" autocomplete="email" onchange="handleRegResend()">
       <div class="err-msg" id="email-err">Email is required.</div>
     </div>
 
@@ -70,7 +70,7 @@
       <label class="field-label" for="code">Verification Code <span class="req">*</span></label>
       <div class="field-row">
         <input class="field-input" type="text" id="code" placeholder="Enter the code from your email" autocomplete="one-time-code">
-        <button class="btn-resend" id="resend-btn" onclick="sendCode()">Re-send</button>
+        <button class="btn-resend" id="resend-btn" onclick="handleRegResend()">Re-send</button>
       </div>
       <div class="err-msg" id="code-err">Verification code is required.</div>
     </div>
