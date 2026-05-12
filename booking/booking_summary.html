@@ -92,36 +92,36 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label>Services Applied for:</label>
-                        <div class="checkbox-group" style="margin-top: 16px;">
-                            <div class="chk-readonly checked">
+                        <div class="checkbox-group" id="summary-services" style="margin-top: 16px;">
+                            <div class="chk-readonly" data-service="catering">
                                 <div class="chk-box"></div>
                                 <span>Full Catering</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="styling">
                                 <div class="chk-box"></div>
                                 <span>Event Styling</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="decoration">
                                 <div class="chk-box"></div>
                                 <span>Decoration</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="lights">
                                 <div class="chk-box"></div>
                                 <span>Lights</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="sounds">
                                 <div class="chk-box"></div>
                                 <span>Sounds</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="photography">
                                 <div class="chk-box"></div>
                                 <span>Photography</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="videography">
                                 <div class="chk-box"></div>
                                 <span>Videography</span>
                             </div>
-                            <div class="chk-readonly">
+                            <div class="chk-readonly" data-service="coordination">
                                 <div class="chk-box"></div>
                                 <span>Guidance & Coordination</span>
                             </div>
@@ -248,6 +248,14 @@
             }
             document.getElementById('eventPNum').innerHTML = bookingInfo.phone_number;
             document.getElementById('eventEmail').innerHTML = bookingInfo.email;
+
+            const selected = new Set(
+                Array.isArray(bookingInfo.services) ? bookingInfo.services : []
+            );
+            document.querySelectorAll('#summary-services .chk-readonly[data-service]').forEach((row) => {
+                const key = row.getAttribute('data-service');
+                row.classList.toggle('checked', selected.has(key));
+            });
         })();
     </script>
 </body>

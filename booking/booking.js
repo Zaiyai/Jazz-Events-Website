@@ -12,6 +12,18 @@ if (dateFrom && dateTo) {
 
 var bookingInfo;
 
+/** Per-guest rate (pesos) for each `name="service"` checkbox `value` in booking.html */
+const SERVICE_BUDGET_RATES = {
+    catering: 800,
+    styling: 400,
+    decoration: 200,
+    lights: 200,
+    sounds: 400,
+    photography: 350,
+    videography: 400,
+    coordination: 500,
+};
+
 // On date change
 function checkDateViability(date) {
     const dateErr = date.parentElement.nextElementSibling;
@@ -40,17 +52,19 @@ function checkDateViability(date) {
     dateErr.classList.remove('show');
 }
 
-/** Pesos amount for API / DB (never use locale commas — MySQL DECIMAL misreads "18,000.00" as 18). */
 function getEstimatedBudgetNumber() {
     const guests = Number(String(attendees.value).trim());
     if (!Number.isFinite(guests) || guests < 1 || guests > 99999) return null;
-    const servicesChecked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-    return 1000 * servicesChecked * guests;
+    let rateSum = 0;
+    document.querySelectorAll('input[name="service"]:checked').forEach((el) => {
+        rateSum += SERVICE_BUDGET_RATES[el.value] ?? 0;
+    });
+    return rateSum * guests;
 }
 
 // On number of guests change
 function updateEstimatedBudget() {
-    if (attendees.value > 99999) {
+    if (attendees.value > 9999) {
         eventBudget.innerHTML  = "Too many guests";
         attendeesErr.innerHTML = "Too many guests";
         attendeesErr.classList.add('show');
@@ -90,13 +104,17 @@ async function firstSubmit() {
     if (!ok) return;
     
     const submitBtn = document.getElementById('submit');
-    submitBtn.innerHTML = "Sending...";
+    submitBtn.innerHTML = "Redirecting...";
     submitBtn.disabled = true;
     
     const budgetAmount = getEstimatedBudgetNumber();
-    document.getElementById('budget').value = budgetAmount !== null ? String(budgetAmount) : '';
+    eventBudget.innerHTML = budgetAmount !== null ? String(budgetAmount) : '';
 
     const user = await DB.getUser();
+
+    const services = [...document.querySelectorAll('input[name="service"]:checked')].map(
+        (el) => el.value
+    );
 
     bookingInfo = {
         name:         document.getElementById('name').value.trim(),
@@ -110,11 +128,12 @@ async function firstSubmit() {
         theme:        document.getElementById('theme').value.trim(),
         status:       'PENDING',
         budget:       budgetAmount !== null ? budgetAmount : 0,
-        phone_number: document.getElementById('phone').value.trim()
+        phone_number: document.getElementById('phone').value.trim(),
+        services,
     };
     
-    sessionStorage.setItem('bookingData', JSON.stringify(bookingInfo));
-    window.location.href = "booking_summary.html";
+    await sessionStorage.setItem('bookingData', JSON.stringify(bookingInfo));
+    setTimeout(()=>{window.location.href = "booking_summary.html";}, 1500);
 }
 
 // On form actual submission
