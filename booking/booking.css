@@ -665,6 +665,27 @@ input[type=number] {
     margin-top: 40px;
 }
 
+@media (max-width: 767px) {
+    .summary-actions {
+        flex-direction: column-reverse;
+        gap: 16px;
+    }
+    
+    .btn-red, .confirm-btn {
+        width: 100% !important;
+        text-align: center;
+    }
+
+    .summary-val {
+        font-size: 0.95rem;
+    }
+    
+    .chk-readonly span {
+        font-size: 0.85rem;
+    }
+}
+
+
 .btn-red {
     background-color: #dc2626 !important;
     color: #fff !important;
