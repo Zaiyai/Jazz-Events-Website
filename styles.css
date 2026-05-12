@@ -580,7 +580,7 @@ body.menu-open {
 
 .service-card {
     background-color: #1a1a1a;
-    border: 1px solid #393939;
+    border: none;
     border-radius: 12px;
     overflow: hidden;
     height: 400px;
@@ -593,9 +593,9 @@ body.menu-open {
 }
 
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(204, 0, 0, 0.5);
-    border-color: var(--service-red);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    border-color: transparent;
 }
 
 .service-img-box {
@@ -644,8 +644,7 @@ body.menu-open {
 }
 
 .service-card:hover .service-title {
-    color: #ff3333;
-    text-shadow: 0 0 10px rgba(204, 0, 0, 0.4);
+    color: var(--jazz-gold);
 }
 
 .service-text {
