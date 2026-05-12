@@ -1,18 +1,64 @@
 var events;
+let dashboardCurrentUser = null;
 let eventsPage = 1;
 let noEventStatement = "Wala po event...";
 const eventsPerPage = 4;
 let allEventsCache = [];
 let calYear, calMonth;
 let filterStatus = '', filterClient = '';
-let deletePending = null; 
+let deletePending = null;
+
+async function refreshEventsCache() {
+  events = await getData('events');
+}
+
+function paginateEvents(all, page) {
+  const start = (page - 1) * eventsPerPage;
+  return {
+    data: all.slice(start, start + eventsPerPage),
+    total: all.length,
+    page,
+    perPage: eventsPerPage,
+  };
+}
+
+async function populateClientSelect() {
+  const sel = document.getElementById('ev-client');
+  if (!sel) return;
+  const email = COOKIES.getCookie('email');
+  if (!email) return;
+  try {
+    const res = await fetch('../scripts/clients/list_clients.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    const keep = sel.value;
+    sel.innerHTML = '<option value="">Select a client</option>';
+    if (data.ok && Array.isArray(data.clients)) {
+      for (const c of data.clients) {
+        const opt = document.createElement('option');
+        opt.value = c.user_id;
+        opt.textContent = c.name;
+        sel.appendChild(opt);
+      }
+    }
+    if (keep) sel.value = keep;
+  } catch (e) {
+    console.warn('Could not load clients list', e);
+  }
+} 
 
 
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  events = await getDataOrDefault('events', DEFAULT_EVENTS);
   const user = await DB.getUser();
   if (!user) window.location.href = '../home.html';
+  dashboardCurrentUser = user;
+
+  await refreshEventsCache();
+  await populateClientSelect();
 
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;
@@ -33,16 +79,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderRevenueChart();
 
   // Search
-  document.getElementById('dash-search-input').addEventListener('input', debounce(handleSearch, 300));
+  document.getElementById('dash-search-input')?.addEventListener('input', debounce(handleSearch, 300));
 
   // Filter toggle
-  document.getElementById('btn-filter-events').addEventListener('click', () => {
+  document.getElementById('btn-filter-events')?.addEventListener('click', () => {
     const bar = document.getElementById('filter-bar');
     bar.style.display = bar.style.display === 'none' ? 'flex' : 'none';
   });
 
   // Export
-  document.getElementById('btn-export-events').addEventListener('click', exportEvents);
+  document.getElementById('btn-export-events')?.addEventListener('click', exportEvents);
 });
 
 /* ── Stats ────────────────────────────────────────────────── */
@@ -75,7 +121,10 @@ function statCard(icon, label, value, change, sub, badgeType) {
 
 /* ── Events Table ─────────────────────────────────────────── */
 async function loadEvents() {
-  const result = await DB.getEvents(eventsPage, eventsPerPage);
+  await refreshEventsCache();
+  const maxPage = Math.max(1, Math.ceil(events.length / eventsPerPage) || 1);
+  if (eventsPage > maxPage) eventsPage = maxPage;
+  const result = paginateEvents(events, eventsPage);
   allEventsCache = result;
   renderEventsTable(result);
 }
@@ -105,8 +154,8 @@ function renderEventsTable(result) {
       </td>
       <td>
         <div class="client-cell">
-          <div class="client-mini-avatar">${formatInitials(ev.client_name)}</div>
-          ${ev.client_name}
+          <div class="client-mini-avatar">${formatInitials(ev.client_name || '')}</div>
+          ${ev.client_name || '—'}
         </div>
       </td>
       <td>${formatDate(ev.date)}</td>
@@ -137,8 +186,10 @@ function renderEventsTable(result) {
 
 async function changePage(page) {
   if (page < 1) return;
+  const totalPages = Math.max(1, Math.ceil(events.length / eventsPerPage));
+  if (page > totalPages) return;
   eventsPage = page;
-  const result = await DB.getEvents(page, eventsPerPage);
+  const result = paginateEvents(events, page);
   renderEventsTable(result);
 }
 
@@ -146,11 +197,11 @@ async function changePage(page) {
 function openNewEventModal() {
   document.getElementById('event-modal-title').textContent = 'New Event';
   document.getElementById('event-edit-id').value = '';
-  ['ev-name','ev-type','ev-client','ev-guests','ev-date','ev-venue','ev-amount'].forEach(id => {
+  ['ev-name','ev-type','ev-client','ev-guests','ev-date','ev-venue','ev-theme','ev-amount'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  document.getElementById('ev-status').value = 'pending';
+  document.getElementById('ev-status').value = 'PLANNING';
   openModal('modal-new-event');
 }
 
@@ -162,16 +213,17 @@ async function addEvent() {
 }
 
 async function editEvent(id) {
-  const ev = events.find(e => e.event_id === id);
+  const ev = events.find(e => String(e.event_id) === String(id));
   if (!ev) return;
   eventModalTitle.textContent = 'Edit Event';
   document.getElementById('event-edit-id').value = id;
   document.getElementById('ev-name').value   = ev.name || '';
   document.getElementById('ev-type').value   = ev.type || '';
-  document.getElementById('ev-client').value = ev.client_name || '';
+  document.getElementById('ev-client').value = ev.client_id != null ? String(ev.client_id) : '';
   document.getElementById('ev-guests').value = ev.no_of_guests || '';
   document.getElementById('ev-date').value   = ev.date || '';
   document.getElementById('ev-venue').value  = ev.venue || '';
+  document.getElementById('ev-theme').value  = ev.theme || '';
   document.getElementById('ev-status').value = ev.status || 'PLANNING';
   document.getElementById('ev-amount').value = ev.amount || '';
   openModal('modal-new-event');
@@ -180,24 +232,32 @@ async function editEvent(id) {
 async function saveEvent() {
   const valid = validateForm([
     { id: 'ev-name',   msg: 'Event name is required.' },
-    { id: 'ev-client', msg: 'Client name is required.' },
+    { id: 'ev-client', msg: 'Please select a client.' },
     { id: 'ev-date',   msg: 'Date is required.' },
     { id: 'ev-venue',  msg: 'Venue is required.' },
   ]);
   if (!valid) return;
+  console.log("HEllo")
+
+  const clientId = parseInt(document.getElementById('ev-client').value, 10);
+  if (!clientId || Number.isNaN(clientId)) {
+    showToast('Please select a client.', 'error');
+    return;
+  }
 
   const id = document.getElementById('event-edit-id').value;
   const name = document.getElementById('ev-name').value.trim();
   const data = {
     name,
-    type:     document.getElementById('ev-type').value.trim()   || 'Event',
-    client_name:   document.getElementById('ev-client').value.trim(),
-    no_of_guests:   parseInt(document.getElementById('ev-guests').value) || 0,
-    date:     document.getElementById('ev-date').value,
-    venue:    document.getElementById('ev-venue').value.trim(),
-    theme:    document.getElementById('ev-theme').value.trim(),
-    status:   document.getElementById('ev-status').value,
-    amount:   parseFloat(document.getElementById('ev-amount').value) || 0,
+    type:         document.getElementById('ev-type').value.trim()        || 'Event',
+    client_id:    clientId,
+    no_of_guests: parseInt(document.getElementById('ev-guests').value)   || 0,
+    date:         document.getElementById('ev-date').value,
+    venue:        document.getElementById('ev-venue').value.trim(),
+    theme:        document.getElementById('ev-theme').value.trim(),
+    status:       document.getElementById('ev-status').value,
+    amount:       parseFloat(document.getElementById('ev-amount').value) || 0,
+    created_by:   dashboardCurrentUser && dashboardCurrentUser.name ? dashboardCurrentUser.name : 'Admin',
   };
 
   // If edit, update event, else add new event
@@ -211,6 +271,8 @@ async function saveEvent() {
   closeModal('modal-new-event');
   eventsPage = 1;
   await loadEvents();
+  renderCalendar();
+  renderDonut();
 }
 
 /* ── Delete ───────────────────────────────────────────────── */
@@ -228,6 +290,8 @@ async function executeDelete() {
     await DB.deleteEvent(id);
     showToast('Event deleted.');
     await loadEvents();
+    renderCalendar();
+    renderDonut();
   } else if (type === 'task') {
     await DB.deleteTask(id);
     showToast('Task deleted.');
@@ -243,24 +307,29 @@ function closeDelete() {
 
 /* ── Filters ──────────────────────────────────────────────── */
 function applyFilters() {
-  filterStatus = document.getElementById('filter-status').value;
-  filterClient = document.getElementById('filter-client').value.trim().toLowerCase();
+  const fs = document.getElementById('filter-status');
+  const fc = document.getElementById('filter-client');
+  filterStatus = fs ? fs.value : '';
+  filterClient = fc ? fc.value.trim().toLowerCase() : '';
   applyFilterLogic();
 }
 
 function clearFilters() {
-  document.getElementById('filter-status').value = '';
-  document.getElementById('filter-client').value = '';
+  const fs = document.getElementById('filter-status');
+  const fc = document.getElementById('filter-client');
+  if (fs) fs.value = '';
+  if (fc) fc.value = '';
   filterStatus = '';
   filterClient = '';
   loadEvents();
 }
 
 function applyFilterLogic() {
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  const all = Array.isArray(events) ? events : [];
+  const clientKey = (ev) => (ev.client_name || '').toLowerCase();
   const filtered = all.filter(ev => {
     const statusMatch = !filterStatus || ev.status === filterStatus;
-    const clientMatch = !filterClient || ev.client.toLowerCase().includes(filterClient);
+    const clientMatch = !filterClient || clientKey(ev).includes(filterClient);
     return statusMatch && clientMatch;
   });
   const sliced = filtered.slice(0, eventsPerPage);
@@ -269,11 +338,11 @@ function applyFilterLogic() {
 
 /* ── Export ───────────────────────────────────────────────── */
 function exportEvents() {
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  const all = Array.isArray(events) ? events : [];
   const csv = [
     ['Name','Type','Client','Date','Venue','Status','Amount'],
-    ...all.map(e => [e.name, e.type, e.client, e.date, e.venue, e.status, e.amount])
-  ].map(row => row.map(v => `"${v}"`).join(',')).join('\n');
+    ...all.map(e => [e.name, e.type, e.client_name || '', e.date, e.venue, e.status, e.amount])
+  ].map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -285,14 +354,18 @@ function exportEvents() {
 /* ── Search ───────────────────────────────────────────────── */
 function handleSearch(e) {
   const q = e.target.value.trim().toLowerCase();
-  if (!q) { loadEvents(); return; }
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  if (!q) {
+    eventsPage = 1;
+    loadEvents();
+    return;
+  }
+  const all = Array.isArray(events) ? events : [];
   const filtered = all.filter(ev =>
-    ev.name.toLowerCase().includes(q) ||
-    ev.client.toLowerCase().includes(q) ||
-    ev.venue.toLowerCase().includes(q)
+    (ev.name || '').toLowerCase().includes(q) ||
+    (ev.client_name || '').toLowerCase().includes(q) ||
+    (ev.venue || '').toLowerCase().includes(q)
   );
-  renderEventsTable({ data: filtered.slice(0,eventsPerPage), total: filtered.length, page:1, perPage:eventsPerPage });
+  renderEventsTable({ data: filtered.slice(0, eventsPerPage), total: filtered.length, page: 1, perPage: eventsPerPage });
 }
 
 /* ── Tasks ────────────────────────────────────────────────── */
@@ -512,7 +585,6 @@ window.clearFilters     = clearFilters;
 window.saveEvent        = saveEvent;
 window.saveTask         = saveTask;
 window.toggleTask       = toggleTask;
-// window.toggleTeamOnline = toggleTeamOnline;
 window.exportEvents     = exportEvents;
 window.openModal        = openModal;
 window.closeModal       = closeModal;

@@ -114,7 +114,8 @@ const DB = {
 
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
-    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
+    const all = await getData('events');
+    await console.log(all);
     const start = (page - 1) * perPage;
     return {
       data: all.slice(start, start + perPage),
@@ -125,7 +126,7 @@ const DB = {
   },
 
   async createEvent(event) {
-    const all = await getDataOrDefault('events', DEFAULT_EVENTS);
+    const all = await getData('events');
     
     all.unshift(event);
     
@@ -180,12 +181,12 @@ const DB = {
 
   /* ── STATS ──────────────────────────────────────────────── */
   async getStats() {
-    return getDataOrDefault('je_stats', DEFAULT_STATS);
+    return getData('je_stats');
   }
 };
 
 /* ── Helpers ─────────────────────────────────────────────── */
-async function getDataOrDefault(key, def) {
+async function getData(key) {
   try {
     const response = await fetch("../scripts/events/" + key + ".php", {
       method: "POST",
@@ -202,23 +203,7 @@ async function getDataOrDefault(key, def) {
       return [];
     }
   } catch (error) {
-    console.warn("Fetch failed, using defaults. Error:", error);
-    return JSON.parse(JSON.stringify(def));
+    console.warn(key + " fetch failed, Error:", error);
+    return [];
   }
 }
-
-const DEFAULT_EVENTS = [
-  { id: '1', name: 'Golden Anniversary Gala',      type: 'Corporate Dinner',  guests: 120, client: 'Pat',     clientInitials: 'P', date: '2026-12-28', venue: 'Shang-ri La',         status: 'confirmed',  amount: 349000, emoji: '🎊' },
-  { id: '2', name: 'Garden Wedding',                type: 'Wedding',           guests: 200, client: 'Emma',    clientInitials: 'E', date: '2026-07-15', venue: 'Fernwood Gardens',     status: 'pending',    amount: 599000, emoji: '💐' },
-  { id: '3', name: "New Year's Executive Retreat",  type: 'Corporate',         guests: 50,  client: 'Michael', clientInitials: 'M', date: '2025-10-02', venue: 'Mountain Lodge Resort',status: 'completed',  amount: 109000, emoji: '🏢' },
-  { id: '4', name: '50th Birthday Celebration',     type: 'Private Party',     guests: 80,  client: 'Sarah',   clientInitials: 'S', date: '2026-11-20', venue: 'Rooftop Terrace',     status: 'confirmed',  amount: 289000, emoji: '🎂' },
-  { id: '5', name: 'Silver Wedding Anniversary',    type: 'Wedding',           guests: 150, client: 'Jose',    clientInitials: 'J', date: '2026-09-10', venue: 'Crimson Hotel',        status: 'pending',    amount: 420000, emoji: '💍' },
-  { id: '6', name: 'Debut Celebration',             type: 'Private Party',     guests: 100, client: 'Lea',     clientInitials: 'L', date: '2026-08-05', venue: 'Diamond Events Place', status: 'confirmed',  amount: 180000, emoji: '🌸' },
-];
-
-const DEFAULT_STATS = {
-  totalRevenue:  { value: '48,295',  change: '+12.5%', sub: 'vs. 42,950 last month' },
-  activeEvents:  { value: '24',       change: '+3',      sub: '8 events this week'     },
-  pendingPayments:{ value: '12,450', change: null,      sub: '6 invoices awaiting'    },
-  satisfaction:  { value: '98.5%',    change: '+2.1%',   sub: 'Based on 142 reviews'   },
-};

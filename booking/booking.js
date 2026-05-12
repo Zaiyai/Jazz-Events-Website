@@ -97,7 +97,6 @@ async function firstSubmit() {
         email:        document.getElementById('email').value.trim() || user.email,
         type:         document.getElementById('type').value.trim(),
         client_id:    user.user_id,
-        client_name:  user.name,
         date_from:    dateFrom.value,
         date_to:      dateTo.value,
         no_of_guests: attendees.value.trim(),
