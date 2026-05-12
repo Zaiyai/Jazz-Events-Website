@@ -58,8 +58,7 @@ async function handleRegister() {
       if (data.status == "success") { 
         btn.disabled = true;
         btn.textContent = 'Creating account…';
-        setTimeout(() => 
-          window.location.href = data.redirect, 1500);
+        window.location.href = data.redirect + "?showLogin=true";
       } else { 
         btn.disabled = false;
         btn.textContent = 'REGISTER';

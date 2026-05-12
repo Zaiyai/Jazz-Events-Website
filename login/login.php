@@ -34,8 +34,7 @@ if ($result && $result->num_rows === 1) {
             echo json_encode([
                 "status"   => "success",
                 "message"  => "Login successful!",
-                "user_type"=> $user_type,
-                "redirect" => "/Jazz%20Events%20Website/booking/booking.html"
+                "user_type"=> $user_type
                 ]);
         } else {
             echo json_encode([

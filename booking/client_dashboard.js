@@ -3,7 +3,7 @@ function handleProfileLogout() {
 }
 
 function displayLogin() {
-document.getElementsByClassName('auth-section')[0].style.display = "block";
+  document.getElementsByClassName('auth-section')[0].style.display = "block";
 }
 
 const fullPath = window.location.pathname;

@@ -6,12 +6,17 @@ function bookingRedirect() {
   if (COOKIES.hasEmail()) {
     window.location.href = "booking/booking.html";
   } else {
-    displayLogin();
+    displayLogin(true);
   }
 }
 
-function displayLogin() {
-document.getElementsByClassName('auth-section')[0].style.display = "block";
+function displayLogin(bookingRedirect = false) {
+  let loginBtn = document.getElementById("login-submit-btn");
+  loginBtn.onclick = () => {
+    handleLogin(bookingRedirect ? true : false);
+  };
+
+  document.getElementsByClassName('auth-section')[0].style.display = "block";
 }
 
 // Read More functionality for reviews
@@ -96,6 +101,15 @@ function togglePass(inputId, eyecon) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+    
+  if (urlParams.get('showLogin') === 'true') {
+      displayLogin();
+      
+      // Optional: Clean the URL so the popup doesn't reappear if they refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   var slot = document.getElementById('nav-auth-slot');
 
   if (COOKIES.hasEmail()) {
@@ -105,12 +119,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       navLinks.innerHTML = 
         '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>' +
         '<span style="color: #333; margin: 0 10px;">|</span>' +
-        '<a href="../home.html">Home</a>' +
-        '<a href="../home.html#services-section">Services</a>' +
-        '<a href="../home.html#team-section">Team</a>' +
-        '<a href="../home.html#reviews-section">Reviews</a>' +
-        '<a href="../home.html#about">About Us</a>' +
-        '<a href="../home.html#cta-section">Contact</a>';
+        '<a href="/Jazz%20Events%20Website/home.html#">Home</a>' +
+        '<a href="/Jazz%20Events%20Website/home.html#services-section">Services</a>' +
+        '<a href="/Jazz%20Events%20Website/home.html#team-section">Team</a>' +
+        '<a href="/Jazz%20Events%20Website/home.html#reviews-section">Reviews</a>' +
+        '<a href="/Jazz%20Events%20Website/home.html#about">About Us</a>' +
+        '<a href="/Jazz%20Events%20Website/home.html#cta-section">Contact</a>';
     } 
     // Build profile avatar + dropdown for regular users
     slot.innerHTML =
