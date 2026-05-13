@@ -139,15 +139,6 @@ header {
     position: relative;
 }
 
-/* Three-column layout for desktop */
-@media (min-width: 1024px) {
-    .nav-container {
-        display: grid;
-        grid-template-columns: 300px 1fr 300px;
-        gap: 20px;
-    }
-}
-
 .mobile-btn {
     display: flex;
     align-items: center;
@@ -174,10 +165,9 @@ header {
 
 .nav-links {
     display: none;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    white-space: nowrap;
+    gap: 32px;
+    margin: 0 auto;
+    padding-left: 80px;
 }
 
 @media (min-width: 768px) {
@@ -186,42 +176,12 @@ header {
     }
 }
 
-@media (min-width: 1024px) {
-    .nav-links {
-        justify-self: center;
-    }
-}
-
 .nav-links a {
     color: #d1d5db;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     letter-spacing: 0.05em;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    white-space: nowrap;
-    transition: color 0.25s ease;
-}
-
-.nav-admin-staff a {
-    color: #d4af37;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: opacity 0.25s ease;
-}
-
-.nav-admin-staff a:hover {
-    opacity: 0.8;
-}
-
-.nav-right-group {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-self: end;
 }
 
 .nav-links a:hover { 
@@ -276,11 +236,11 @@ body.menu-open {
 /* Search */
 .search-wrapper {
     position: relative;
-    width: min(100%, 256px);
+    width: 256px;
     display: none;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .search-wrapper {
         display: flex;
         align-items: center;
@@ -1351,6 +1311,14 @@ footer {
 .btn-nav-login:hover {
     background: var(--jazz-gold);
     color: #000;
+}
+
+/* ── Auth Slot (Nav Right) ── */
+#nav-auth-slot {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
 }
 
 /* ── User Profile Dropdown Menu ── */
