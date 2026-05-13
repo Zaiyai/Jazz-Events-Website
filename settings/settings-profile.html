@@ -58,34 +58,7 @@
 </head>
 <body>
 
-  <!-- Navigation Header (from home.html) -->
-  <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-    <div class="nav-container">
-      <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-      <nav class="nav-links desktop-nav">
-        <a href="../dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>
-        <span style="color: #333; margin: 0 10px;">|</span>
-        <a href="../home.html">Home</a>
-        <a href="../home.html#services-section">Services</a>
-        <a href="../home.html#team-section">Team</a>
-        <a href="../home.html#reviews-section">Reviews</a>
-        <a href="../home.html#about">About Us</a>
-        <a href="../home.html#cta-section">Contact</a>
-      </nav>
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input id="search-input" type="text" placeholder="Search Jazz Events...">
-      </div>
-      <div id="nav-auth-slot">
-        <!-- Mocked Logged-in Avatar for design purposes -->
-        <div class="profile-menu-wrap">
-          <button class="profile-avatar-btn" style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d4af37; background: transparent; color: #d4af37; cursor: pointer;">
-            <i class="fa-regular fa-user"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+  <div id="topbar-root"></div>
 
   <div class="settings-container">
     <!-- Sidebar -->
@@ -214,5 +187,8 @@
     </div>
   </footer>
 
+  <script src="../scripts/topbar.js"></script>
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/db.js"></script>
 </body>
 </html>
