@@ -8,6 +8,10 @@
   --jazz-gold-dim: rgba(212, 175, 55, 0.12);
   --jazz-gold-border: rgba(212, 175, 55, 0.5);
   --shadow-gold: 0 4px 16px rgba(212, 175, 55, 0.2);
+  --completed: #4ade80;
+  --planning: #fbbf24; 
+  --ongoing: #60a5fa;
+  --blocked: #f87171;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -416,11 +420,17 @@
   margin: auto;
 }
 .cal-day.other-month { color: #374151; }
+
+[data-status="planning"]  { --bg: var(--planning); }
+[data-status="ongoing"]   { --bg: var(--ongoing); }
+[data-status="blocked"]   { --bg: var(--blocked); }
+[data-status="completed"] { --bg: var(--completed); }
+
 .cal-day.has-event {
-  border: 2px solid var(--jazz-gold);
+  background: var(--bg); color: #000;
 }
 .cal-day.has-event.today {
-  background: var(--jazz-gold); color: #000;
+  background: var(--bg); color: #000;
   font-weight: 700; border-radius: 4px;
   width: auto; height: auto;
   display: inline; margin: 0;

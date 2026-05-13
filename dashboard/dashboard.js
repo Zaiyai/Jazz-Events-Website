@@ -434,7 +434,7 @@ async function renderCalendar() {
     .forEach(e => {
       const day = new Date(e.date).getDate();
       if (!eventsByDay[day]) eventsByDay[day] = [];
-      eventsByDay[day].push(e.name);
+      eventsByDay[day].push(e.name, e.status);
     });
 
   const eventDays = new Set(Object.keys(eventsByDay).map(d => parseInt(d)));
@@ -454,9 +454,10 @@ async function renderCalendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
     const hasEvent = eventDays.has(d);
-    const eventNames = hasEvent ? eventsByDay[d].join(', ') : '';
-    const title = hasEvent ? `Events:\n${eventsByDay[d].join('\n')}` : '';
-    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" ${title ? `title="${title}"` : ''} data-events="${eventNames}">${d}</div>`;
+    const eventNames = hasEvent ? eventsByDay[d][0] : '';
+    const eventStatus = hasEvent ? eventsByDay[d][1] : '';
+    const title = hasEvent ? `Events:\n${eventNames}` : '';
+    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" ${title ? `title="${title}"` : ''} data-events="${eventNames}" data-status="${eventStatus.toLowerCase()}">${d}</div>`;
   }
   // Next month overflow
   const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
