@@ -110,13 +110,28 @@
           '</div>' +
         '</div>';
 
-        // Fetch user info and populate name + initials
+        // Fetch user info and populate name + initials + profile picture
         DB.getUser().then(function(user) {
           if (user && user.name) {
             var words = user.name.trim().split(/\s+/);
             var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
-            document.getElementById('profile-avatar-initials').textContent = initials;
-            document.getElementById('profile-dropdown-avatar').textContent = initials;
+            
+            var profileInitials = document.getElementById('profile-avatar-initials');
+            if (user.profile_picture) {
+              // Show profile picture
+              profileInitials.innerHTML = '<img src="' + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+            } else {
+              // Show initials
+              profileInitials.textContent = initials;
+            }
+            
+            var profileDropdownAvatar = document.getElementById('profile-dropdown-avatar');
+            if (user.profile_picture) {
+              profileDropdownAvatar.innerHTML = '<img src="' + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+            } else {
+              profileDropdownAvatar.textContent = initials;
+            }
+            
             document.getElementById('profile-dropdown-name').textContent = user.name;
           }
         });

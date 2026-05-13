@@ -1,0 +1,483 @@
+/* Settings Pages Stylesheet */
+/* Links to root colors from styles.css */
+
+:root {
+    --settings-bg-dark: #111;
+    --settings-border-light: #222;
+    --settings-text-label: #888;
+    --settings-text-disabled: #555;
+    --settings-bg-content: #161616;
+    --settings-bg-left: #0f0f0f;
+    --settings-bg-input: #121626;
+    --settings-text-light: #ccc;
+    --settings-inactive-text: #aaa;
+    --settings-border-radius: 6px;
+}
+
+body {
+    background-color: var(--settings-bg-dark);
+    color: var(--text-white);
+    padding-top: 80px;
+}
+
+/* Settings Container Layout */
+.settings-container {
+    display: flex;
+    min-height: 80vh;
+    max-width: 1200px;
+    margin: 40px auto 80px auto;
+    gap: 40px;
+    padding: 0 24px;
+}
+
+.settings-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+/* Sidebar Logo Container */
+.settings-logo-container {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.settings-logo-text {
+    font-size: 2.8rem;
+    color: var(--text-white);
+}
+
+.settings-logo-text:last-child {
+    margin-top: -12px;
+    margin-left: 12px;
+}
+
+/* Settings Label */
+.settings-label {
+    font-size: 0.95rem;
+    color: var(--jazz-gold);
+    margin-bottom: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Navigation Styling */
+.settings-nav a {
+    display: block;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: background 0.2s, color 0.2s;
+    color: inherit;
+}
+
+.settings-nav a:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.settings-nav a.active {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-white);
+}
+
+.settings-nav a.inactive {
+    color: var(--settings-inactive-text);
+}
+
+/* Content Area */
+.settings-content {
+    flex: 1;
+    display: flex;
+    background: var(--settings-bg-content);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    overflow: hidden;
+}
+
+.settings-content-left {
+    width: 300px;
+    background: var(--settings-bg-left);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    border-right: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.settings-content-right {
+    flex: 1;
+    padding: 40px;
+}
+
+/* Profile Image */
+.settings-profile-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 24px;
+    border: 2px solid var(--jazz-gold);
+    padding: 4px;
+    background: #000;
+}
+
+/* User Name */
+.settings-user-name {
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+/* Upload Button */
+.settings-upload-btn {
+    margin-top: 16px;
+    padding: 10px 20px;
+    background: var(--jazz-gold);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.settings-upload-btn:hover {
+    background: var(--jazz-gold-hover);
+}
+
+/* Content Heading */
+.settings-heading {
+    font-size: 1.6rem;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-heading-gold {
+    color: var(--jazz-gold);
+}
+
+.settings-heading-white {
+    color: var(--text-white);
+}
+
+/* Info Box Container */
+.settings-info-box {
+    border: 1px solid var(--jazz-gold);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Info Box Padding */
+.settings-info-box-padded {
+    border: 1px solid var(--jazz-gold);
+    border-radius: 8px;
+    padding: 32px;
+}
+
+/* Info Row */
+.settings-info-row {
+    display: flex;
+    min-height: 48px;
+}
+
+.settings-info-row:not(:last-child) {
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.settings-info-row-label {
+    width: 140px;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: var(--settings-inactive-text);
+    font-size: 0.9rem;
+}
+
+.settings-info-row-value {
+    flex: 1;
+    background: var(--settings-bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: var(--text-white);
+    font-size: 0.9rem;
+}
+
+/* Edit Button */
+.settings-edit-btn {
+    background: none;
+    border: none;
+    color: var(--jazz-gold);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-size: 1rem;
+}
+
+.settings-edit-btn:hover {
+    opacity: 0.7;
+}
+
+/* Info Rows */
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: #1a1a1a;
+}
+
+.info-row:not(:last-child) {
+    border-bottom: 1px solid var(--settings-border-light);
+}
+
+.info-label {
+    color: var(--settings-text-label);
+    font-size: 0.9rem;
+    width: 140px;
+}
+
+.info-val {
+    color: var(--text-white);
+    font-size: 0.9rem;
+    flex: 1;
+    text-align: right;
+    line-height: 1.6;
+}
+
+/* Info Edit Button */
+.info-edit-btn {
+    background: none;
+    border: none;
+    color: var(--jazz-gold);
+    margin-left: 20px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-size: 1rem;
+}
+
+.info-edit-btn:hover {
+    opacity: 0.7;
+}
+
+/* Bio Container */
+.settings-bio-row {
+    display: flex;
+    min-height: 120px;
+    border-top: 1px solid #1a1a1a;
+}
+
+.settings-bio-label {
+    width: 140px;
+    background: #0a0a0a;
+    padding: 16px 20px;
+    color: var(--settings-inactive-text);
+    font-size: 0.9rem;
+}
+
+.settings-bio-value {
+    flex: 1;
+    background: var(--settings-bg-input);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 20px;
+    color: var(--text-white);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Billing Styles */
+.settings-billing-section {
+    margin-bottom: 32px;
+}
+
+.settings-billing-label {
+    color: var(--settings-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.settings-billing-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.settings-card-display {
+    display: flex;
+    align-items: center;
+    background: var(--settings-bg-input);
+    border-radius: 6px;
+    padding: 0 20px;
+    height: 48px;
+    min-width: 280px;
+}
+
+.settings-card-number {
+    flex: 1;
+    color: var(--jazz-gold);
+    font-family: monospace;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.settings-verified-badge {
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.settings-verified-icon {
+    font-size: 1.2rem;
+}
+
+/* Payment Methods Grid */
+.settings-payment-grid {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.settings-payment-logo {
+    background: var(--text-white);
+    border-radius: 6px;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 4px;
+}
+
+.settings-payment-logo img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.settings-payment-cash {
+    background: var(--text-white);
+    border-radius: 6px;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: 800;
+    font-size: 0.8rem;
+    border: 2px solid var(--settings-text-light);
+}
+
+/* Security Form Styles */
+.settings-form-group {
+    margin-bottom: 24px;
+}
+
+.settings-form-label {
+    color: var(--settings-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.settings-form-input {
+    background: var(--settings-bg-input);
+    border-radius: 6px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.settings-form-input-text {
+    flex: 1;
+    color: var(--text-white);
+    text-align: right;
+    margin-right: 12px;
+}
+
+.settings-form-divider {
+    color: #444;
+    margin-right: 12px;
+}
+
+.settings-form-input-disabled {
+    color: var(--settings-text-disabled);
+}
+
+.settings-form-button {
+    background: var(--jazz-gold);
+    color: #000;
+    border: none;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.settings-form-button:hover {
+    background: var(--jazz-gold-hover);
+}
+
+.settings-form-center {
+    text-align: center;
+}
+
+/* Footer Styles */
+.settings-footer-margin {
+    margin-top: 40px;
+}
+
+.settings-footer-description {
+    font-size: 0.875rem;
+    margin-top: 32px;
+    line-height: 1.6;
+    max-width: 300px;
+    color: #888;
+}
+
+.settings-footer-logo {
+    font-size: 3rem;
+}
+
+.settings-footer-logo:last-child {
+    margin-top: -18px;
+    margin-left: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .settings-container {
+        flex-direction: column;
+    }
+
+    .settings-sidebar {
+        width: 100%;
+    }
+
+    .settings-content {
+        flex-direction: column;
+    }
+
+    .settings-content-left {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+}
