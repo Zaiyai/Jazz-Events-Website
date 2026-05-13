@@ -8,48 +8,59 @@ $db_name = "jazz_events";
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 
-if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "message" => "Database connection failed."]);
-    exit;
-}
-
-// Read and decode JSON from JavaScript
-$json = file_get_contents('php://input');
+$json = file_get_contents("php://input");
 $data = json_decode($json);
 
-$name = $conn->real_escape_string($data->name);
 $email = $conn->real_escape_string($data->email);
-$raw_password = $conn->real_escape_string($data->password);
-$hashed_password = password_hash($raw_password, PASSWORD_DEFAULT);
+$code = $conn->real_escape_string($data->code);
+$password = $conn->real_escape_string($data->password);
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$validateEmailSQL = "SELECT email FROM users WHERE email = '$email'";
-$result = $conn->query($validateEmailSQL);
+$checkSQL = "
+    SELECT email
+    FROM users
+    WHERE email = '$email' AND is_verified = 1
+";
 
-// If email already registered
+$result = $conn->query($checkSQL);
+
 if ($result->num_rows > 0) {
     echo json_encode([
-        "status"  => "error",
+        "status" => "error",
         "message" => "Email already taken."
     ]);
     exit;
 }
 
-$insertSQL = "INSERT INTO users (name, email, password, user_type)
-VALUES ('$name', '$email', '$hashed_password', 'CLIENT')";
-$result = $conn->query($insertSQL);
+$sql = "
+    SELECT *
+    FROM users
+    WHERE email = '$email'
+    AND verification_code = '$code'
+";
 
-if ($result) {
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+
+    $updateSQL = "
+        UPDATE users
+        SET is_verified = 1, password = '$hashed_password'
+        WHERE email = '$email'
+    ";
+
+    $conn->query($updateSQL);
+
     echo json_encode([
-        "status"   => "success",
+        "status" => "success",
         "message"  => "Account successfully created!",
         "redirect" => "../home.html"
     ]);
+
 } else {
     echo json_encode([
-        "status"  => "error",
-        "message" => "Something went wrong."
+        "status" => "error",
+        "message" => "Mismatched verification code."
     ]);
 }
-
-$conn->close();
 ?>

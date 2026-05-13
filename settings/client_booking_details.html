@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=7">
-    <link rel="stylesheet" href="booking.css?v=7">
+    <link rel="stylesheet" href="client_bookings.css">
     
     <style>
         body {
@@ -123,33 +123,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="nav-container">
-            <button id="burger" class="mobile-btn">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
-
-            <nav class="nav-links desktop-nav">
-                <a href="../dashboard/dashboard.html">Admin Panel</a>
-                <a href="../home.html">Home</a>
-                <a href="../home.html#services-section">Services</a>
-                <a href="../home.html#team-section">Team</a>
-                <a href="../home.html#reviews-section">Reviews</a>
-                <a href="../home.html#about">About Us</a>
-                <a href="../home.html#cta-section">Contact</a>
-            </nav>
-
-            <div class="nav-right-group">
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <img src="../images/team3.jpg" alt="User">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div id="topbar-root"></div>
 
     <section class="details-section">
         <div class="services-header" style="justify-content: center; display: flex; align-items: center; gap: 16px; margin-bottom: 40px; margin-top: -40px;">
@@ -395,5 +369,8 @@
             </div>
         </div>
     </footer>
+    <script src="../scripts/topbar.js"></script>
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/db.js"></script>
 </body>
 </html>

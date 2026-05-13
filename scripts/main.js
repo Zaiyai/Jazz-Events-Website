@@ -12,12 +12,17 @@ function bookingRedirect() {
       window.location.href = "booking/booking.html";
     }
   } else {
-    displayLogin();
+    displayLogin(true);
   }
 }
 
-function displayLogin() {
-document.getElementsByClassName('auth-section')[0].style.display = "block";
+function displayLogin(bookingRedirect = false) {
+  let loginBtn = document.getElementById("login-submit-btn");
+  loginBtn.onclick = () => {
+    handleLogin(bookingRedirect ? true : false);
+  };
+
+  document.getElementsByClassName('auth-section')[0].style.display = "block";
 }
 
 // Read More functionality for reviews
@@ -102,108 +107,12 @@ function togglePass(inputId, eyecon) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  var slot = document.getElementById('nav-auth-slot');
-
-  if (COOKIES.hasEmail()) {
-    const userType = COOKIES.getCookie("user_type");
-    if (userType == 'ADMIN' || userType == 'STAFF') {
-      // 1. Update Desktop Nav
-      const navLinks = document.querySelector('.desktop-nav');
-      const adminStaffLinks = document.querySelector('#nav-admin-staff');
+  const urlParams = new URLSearchParams(window.location.search);
+    
+  if (urlParams.get('showLogin') === 'true') {
+      displayLogin();
       
-      if (adminStaffLinks) {
-        let adminStaffHtml = '';
-        if (userType == 'ADMIN') {
-          adminStaffHtml += '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37; margin-right: 15px;">ADMIN PANEL</a>';
-          adminStaffHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
-        } else if (userType == 'STAFF') {
-          adminStaffHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
-        }
-        adminStaffLinks.innerHTML = adminStaffHtml;
-      }
-
-      if (navLinks) {
-        navLinks.innerHTML = 
-          '<a href="home.html">Home</a>' +
-          '<a href="home.html#services-section">Services</a>' +
-          '<a href="home.html#team-section">Team</a>' +
-          '<a href="home.html#reviews-section">Reviews</a>' +
-          '<a href="home.html#about">About Us</a>' +
-          '<a href="home.html#cta-section">Contact</a>';
-      }
-
-      // 2. Update Mobile Overlay Nav
-      const overlayLinks = document.querySelector('.overlay-links');
-      if (overlayLinks) {
-        let overlayHtml = '';
-        if (userType == 'ADMIN') {
-          overlayHtml += '<a href="/Jazz%20Events%20Website/dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>';
-          overlayHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
-        } else if (userType == 'STAFF') {
-          overlayHtml += '<a href="/Jazz%20Events%20Website/staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>';
-        }
-        overlayHtml += 
-          '<a href="home.html">Home</a>' +
-          '<a href="home.html#services-section">Services</a>' +
-          '<a href="home.html#team-section">Team</a>' +
-          '<a href="home.html#reviews-section">Reviews</a>' +
-          '<a href="home.html#about">About Us</a>' +
-          '<a href="home.html#cta-section">Contact</a>';
-        overlayLinks.innerHTML = overlayHtml;
-      }
-    } 
-    // Build profile avatar + dropdown for regular users
-    slot.innerHTML =
-      '<div class="profile-menu-wrap" id="profile-menu-wrap">' +
-        '<button class="profile-avatar-btn" id="profile-avatar-btn" title="My Account">' +
-          '<span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span>' +
-        '</button>' +
-        '<div class="profile-dropdown" id="profile-dropdown">' +
-          '<div class="profile-dropdown-header">' +
-            '<div class="profile-dropdown-avatar" id="profile-dropdown-avatar"><i class="fa-regular fa-user"></i></div>' +
-            '<div class="profile-dropdown-name" id="profile-dropdown-name">My Account</div>' +
-          '</div>' +
-          '<div class="profile-dropdown-divider"></div>' +
-          '<a href="booking/client_bookings.html" class="profile-dropdown-item">' +
-            '<i class="fa-regular fa-calendar"></i> Bookings' +
-          '</a>' +
-          '<a href="settings/settings-profile.html" class="profile-dropdown-item">' +
-            '<i class="fa-solid fa-sliders"></i> Settings' +
-          '</a>' +
-          '<div class="profile-dropdown-divider"></div>' +
-          '<button class="profile-dropdown-logout" onclick="handleProfileLogout()">' +
-            '<i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out' +
-          '</button>' +
-        '</div>' +
-      '</div>';
-
-      // Fetch user info and populate name + initials
-      DB.getUser().then(function(user) {
-        if (user && user.name) {
-          var words = user.name.trim().split(/\s+/);
-          var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
-          document.getElementById('profile-avatar-initials').textContent = initials;
-          document.getElementById('profile-dropdown-avatar').textContent = initials;
-          document.getElementById('profile-dropdown-name').textContent = user.name;
-        }
-      });
-
-      // Toggle dropdown on avatar click
-      document.getElementById('profile-avatar-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.getElementById('profile-dropdown').classList.toggle('open');
-      });
-
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        var dd = document.getElementById('profile-dropdown');
-        if (dd && !document.getElementById('profile-menu-wrap').contains(e.target)) {
-            dd.classList.remove('open');
-        }
-    });
-
-  // No Accounts Registered
-  } else {
-      slot.innerHTML ='<a onclick="displayLogin()" class="btn-nav-login">LOG IN</a>';
+      // Clean the URL so the popup doesn't reappear if they refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
   }
 });

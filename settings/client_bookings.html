@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css?v=6">
-    <link rel="stylesheet" href="booking.css">
+    <link rel="stylesheet" href="client_bookings.css">
     
     <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -182,44 +182,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <header>
-        <div class="nav-container">
-            <!-- Mobile Menu Button -->
-            <button id="burger" class="mobile-btn">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
-
-            <!-- Navigation Links -->
-            <nav class="nav-links desktop-nav">
-                <a href="../home.html">Home</a>
-                <a href="../home.html#services-section">Services</a>
-                <a href="../home.html#team-section">Team</a>
-                <a href="../home.html#reviews-section">Reviews</a>
-                <a href="../home.html#about">About Us</a>
-                <a href="../home.html#cta-section">Contact</a>
-            </nav>
-
-            <div class="nav-right-group">
-                <div id="nav-auth-slot"></div>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Mobile nav overlay -->
-    <div id="nav-overlay" class="nav-overlay mobile-only">
-        <button id="close-overlay" class="close-btn">✕</button>
-        <nav class="nav-links overlay-links">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services-section">Services</a>
-            <a href="../home.html#team-section">Team</a>
-            <a href="../home.html#reviews-section">Reviews</a>
-            <a href="../home.html#about">About Us</a>
-            <a href="../home.html#cta-section">Contact</a>
-        </nav>
-    </div>
+    <div id="topbar-root"></div>
 
     <section class="my-bookings-section">
         <h2 class="my-bookings-title">My Bookings</h2>
@@ -374,7 +337,9 @@
         </div>
     </footer>
 
+    <script src="../scripts/topbar.js"></script>
+    <script src="../scripts/main.js"></script>
     <script src="../scripts/db.js"></script>
-    <script src="client_dashboard.js"></script>
+    <script src="client_bookings.js"></script>
 </body>
 </html>

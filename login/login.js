@@ -10,8 +10,8 @@ function validate(id,errId){
   return !empty;
 }
 
-async function handleLogin() {
-  const ok = [validate('login-email','login-email-err'), validate('login-pass','login-pass-err')].every(Boolean);
+async function handleLogin(bookingRedirection = false) {
+  const ok = [validate('login-email','login-emailogin-err'), validate('login-pass','login-pass-err')].every(Boolean);
   if (!ok) return;
 
   const loginData = {
@@ -47,7 +47,9 @@ async function handleLogin() {
         btn.disabled = true;
         btn.textContent = 'Logging in…';
         COOKIES.setCookie(loginData.email, data.user_type, 30);
-        window.location.href = data.redirect;
+        if (data.redirect) { window.location.href = data.redirect; }
+        if (bookingRedirection) { window.location.href = "/Jazz%20Events%20Website/booking/booking.html"; } 
+        else { window.location.href = "/Jazz%20Events%20Website/home.html" }
       } else { 
         // Display backend error message in the UI
         authErr.textContent = data.message;

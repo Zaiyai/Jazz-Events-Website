@@ -14,88 +14,7 @@
 </head>
 <body>
 
-<!-- ====== HEADER (mirrored from home.html) ====== -->
-<header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-  <div class="nav-container">
-    <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-    <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
-
-    <nav class="nav-links desktop-nav">
-      <a href="../home.html">Home</a>
-      <a href="../home.html#services-section">Services</a>
-      <a href="../home.html#team-section">Team</a>
-      <a href="../home.html#reviews-section">Reviews</a>
-      <a href="../home.html#about">About Us</a>
-      <a href="../home.html#cta-section">Contact</a>
-    </nav>
-
-    <div class="nav-right-group">
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input id="search-input" type="text" placeholder="Search Jazz Events...">
-        <ul id="search-content"></ul>
-      </div>
-      <div id="nav-auth-slot"></div>
-    </div>
-  </div>
-</header>
-
-<!-- ====== LOGIN MODAL (mirrored from home.html) ====== -->
-<div class="auth-section">
-  <div class="auth-card">
-    <div class="auth-left">
-      <div class="logo-container" style="margin-bottom: 24px; display: flex; flex-direction: column; align-items: center;">
-        <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-right: 40px;">Jazz</span>
-        <span class="script-text" style="font-size: 3.5rem; color: #fff; line-height: 0.8; margin-left: 40px;">Events</span>
-      </div>
-      <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 40px;"></div>
-      <div style="text-align: center; color: #ccc; font-size: 0.95rem; font-style: italic; line-height: 1.6; position: relative; padding: 20px;">
-        <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; top: 0; right: 0; transform: rotate(45deg); opacity: 0.5;"></i>
-        <i class="fa-solid fa-leaf" style="color: var(--jazz-gold); position: absolute; bottom: 0; left: 0; transform: rotate(-135deg); opacity: 0.5;"></i>
-        Make your events<br>possible with <span style="color: var(--jazz-gold); font-weight: 600;">Jazz</span><br><span style="color: var(--jazz-gold); font-weight: 600;">Events.</span>
-      </div>
-    </div>
-    <div class="auth-right">
-      <button class="auth-close" onclick="document.querySelector('.auth-section').style.display='none'">✕</button>
-      <div class="auth-title">Log in</div>
-      <div class="auth-subtitle">To view the status of your bookings</div>
-      <div class="field-group">
-        <label class="field-label" for="login-email">Email*</label>
-        <div class="field-input-wrapper">
-          <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
-          <div class="err-msg" id="login-email-err">Email address is required.</div>
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="login-pass">Password*</label>
-        <div class="field-input-wrapper pass-wrap">
-          <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
-          <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
-          <div class="err-msg" id="login-pass-err">Password is required.</div>
-        </div>
-      </div>
-      <div style="padding-left: 110px; display: flex; flex-direction: column; align-items: center; margin-top: 16px;">
-        <button class="btn-auth-submit" id="login-submit-btn" onclick="handleLogin()">LOG IN</button>
-        <div class="auth-switch">
-          Don't have an account yet? <a href="register.html">REGISTER</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ====== MOBILE NAV OVERLAY ====== -->
-<div id="nav-overlay" class="nav-overlay mobile-only">
-  <button id="close-overlay" class="close-btn">✕</button>
-  <nav class="nav-links overlay-links">
-    <a href="../home.html">Home</a>
-    <a href="../home.html#services-section">Services</a>
-    <a href="../home.html#team-section">Team</a>
-    <a href="../home.html#reviews-section">Reviews</a>
-    <a href="../home.html#about">About Us</a>
-    <a href="../home.html#cta-section">Contact</a>
-  </nav>
-</div>
+<div id="topbar-root"></div>
 
 <!-- ====== HERO BANNER with catering image ====== -->
 <section class="reg-hero">
@@ -122,17 +41,17 @@
       <div class="reg-err" id="name-err">Full name is required.</div>
     </div>
 
-    <div class="reg-field">
-      <label class="reg-label" for="email">EMAIL ADDRESS <span class="reg-req">*</span></label>
-      <input class="reg-input" type="email" id="email" placeholder="maria@domain.com" autocomplete="email">
-      <div class="reg-err" id="email-err">Email is required.</div>
+    <div class="field-group">
+      <label class="field-label" for="email">Email Address <span class="req">*</span></label>
+      <input class="field-input" type="email" id="email" placeholder="maria@domain.com" autocomplete="email" onchange="handleRegResend()">
+      <div class="err-msg" id="email-err">Email is required.</div>
     </div>
 
-    <div class="reg-field">
-      <label class="reg-label" for="code">VERIFICATION CODE <span class="reg-req">*</span></label>
-      <div class="reg-code-row">
-        <input class="reg-input" type="text" id="code" placeholder="Enter the code from your email" autocomplete="one-time-code">
-        <button type="button" class="reg-resend-btn" id="resend-btn" onclick="sendCode('email','resend-btn')">Re-send</button>
+    <div class="field-group">
+      <label class="field-label" for="code">Verification Code <span class="req">*</span></label>
+      <div class="field-row">
+        <input class="field-input" type="text" id="code" placeholder="Enter the code from your email" autocomplete="one-time-code">
+        <button class="btn-resend" id="resend-btn" onclick="handleRegResend()">Re-send</button>
       </div>
       <div class="reg-err" id="code-err">Verification code is required.</div>
     </div>
@@ -230,14 +149,11 @@
 </footer>
 
 <div class="page-toast" id="toast"></div>
+<script src="../scripts/topbar.js"></script>
 <script src="../scripts/main.js"></script>
 <script src="../scripts/search.js"></script>
 <script src="../scripts/db.js"></script>
 <script src="../login/login.js"></script>
 <script src="register.js"></script>
-<script>
-  document.getElementById('burger')?.addEventListener('click', () => document.getElementById('nav-overlay').classList.add('open'));
-  document.getElementById('close-overlay')?.addEventListener('click', () => document.getElementById('nav-overlay').classList.remove('open'));
-</script>
 </body>
 </html>

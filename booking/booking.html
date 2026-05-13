@@ -19,37 +19,7 @@
     
 </head>
 <body>
-   <!-- Navigation Header -->
-    <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-        <div class="nav-container">
-        <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-        <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
-        <nav class="nav-links desktop-nav">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services-section">Services</a>
-            <a href="../home.html#team-section">Team</a>
-            <a href="../home.html#reviews-section">Reviews</a>
-            <a href="../home.html#about">About Us</a>
-            <a href="../home.html#cta-section">Contact</a>
-        </nav>
-
-        <div class="nav-right-group">
-            <div id="nav-auth-slot"></div>
-        </div>
-    </div>
-  </header>
-
-    <div id="nav-overlay" class="nav-overlay mobile-only">
-        <button id="close-overlay" class="close-btn">✕</button>
-        <nav class="nav-links overlay-links">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services-section">Services</a>
-            <a href="../home.html#team-section">Team</a>
-            <a href="../home.html#reviews-section">Reviews</a>
-            <a href="../home.html#about">About Us</a>
-            <a href="../home.html#cta-section">Contact</a>
-        </nav>
-    </div>
+    <div id="topbar-root"></div>
 
     <section id="banner-section" class="hero">
         <div class="hero-bg">
@@ -205,7 +175,6 @@
                             <p class="currency-symbol">₱</p>
                             <div class="divider"></div>
                             <p id="event-budget"></p>
-                            <input type="hidden" name="budget" id="budget">
                         </div>
                         <div class="additional-detail" style="margin-top: 8px;">
                             <p>*Tentative budget bracket based on number of guests and services applied for</p>
@@ -271,8 +240,9 @@
         </div>
     </section>
 
-    <script src="../scripts/main.js?v=5"></script>
-    <script src="../scripts/db.js?v=5"></script>
-    <script src="booking.js?v=5"></script>
+    <script src="../scripts/topbar.js"></script>
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/db.js"></script>
+    <script src="booking.js"></script>
 </body>
 </html>

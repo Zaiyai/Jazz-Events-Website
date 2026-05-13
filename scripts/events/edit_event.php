@@ -17,18 +17,18 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$event_id = $data->event_id;
+$event_id = (int)$data->event_id;
 $name = $conn->real_escape_string($data->name);
 $type = $conn->real_escape_string($data->type);
-$no_of_guests = $conn->real_escape_string($data->no_of_guests);
-$client_name = $conn->real_escape_string($data->client_name);
+$no_of_guests = (int)$data->no_of_guests;
+$client_id = (int)$data->client_id;
 $date = $conn->real_escape_string($data->date);
 $venue = $conn->real_escape_string($data->venue);
 $theme = $conn->real_escape_string($data->theme);
 $status = $conn->real_escape_string($data->status);
-$amount = $conn->real_escape_string($data->amount);
+$amount = (int)$data->amount;
 
-$sql = "UPDATE events SET name = '$name', type = '$type', no_of_guests = '$no_of_guests', client_name = '$client_name', date = '$date', venue = '$venue', theme = '$theme', status = '$status', amount = '$amount' WHERE event_id = '$event_id'";
+$sql = "UPDATE events SET name = '$name', type = '$type', no_of_guests = $no_of_guests, client_id = $client_id, date = '$date', venue = '$venue', theme = '$theme', status = '$status', amount = $amount WHERE event_id = $event_id";
 $result = $conn->query($sql);
 
 if ($result) {

@@ -26,8 +26,11 @@ function formatPeso(amount) {
 }
 
 function formatInitials(name) {
-  let initials = [ name[0], name.trim().split(' ').at(-1)[0] ];
-  return initials.join("");
+  if (!name || !String(name).trim()) return '?';
+  const parts = String(name).trim().split(/\s+/);
+  const first = parts[0][0];
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : first;
+  return (first + last).toUpperCase();
 }
 
 function formatDate(isoStr) {

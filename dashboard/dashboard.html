@@ -248,8 +248,11 @@
     </div>
     <div class="form-grid-2">
       <div class="field-group">
-        <label class="field-label">Client Name <span class="req">*</span></label>
-        <input class="field-input" id="ev-client" placeholder="e.g. Maria">
+        <label class="field-label">Client <span class="req">*</span></label>
+        <select class="field-input" id="ev-client">
+          <option value="">Select a client</option>
+        </select>
+        <div class="error-msg" id="ev-client-err"></div>
       </div>
       <div class="field-group">
         <label class="field-label">No. of Guests</label>
