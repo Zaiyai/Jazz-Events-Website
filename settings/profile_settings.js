@@ -75,28 +75,13 @@ profileFileInput.addEventListener('change', async (e) => {
     }
 });
 
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 16px 24px;
-        background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
-        color: white;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        font-weight: 500;
-        animation: slideIn 0.3s ease;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+function showToast(msg,type){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'page-toast' + (type ? ' ' + type : '');
+  requestAnimationFrame(() => requestAnimationFrame ( () => el.classList.add('show')));
+  clearTimeout(el._t); 
+  el._t=setTimeout(() => el.classList.remove('show'), 3800);
 }
 
 // Add CSS animations

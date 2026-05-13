@@ -461,6 +461,27 @@ body {
     margin-left: 18px;
 }
 
+.page-toast {
+    position:fixed;
+    bottom:24px;right:24px;
+    background:#1a1a1a;
+    border:1px solid var(--jazz-gold);
+    border-radius:10px;
+    padding:13px 18px;
+    font-size:.8rem;
+    font-family:var(--font-sans);
+    color:#fff;
+    z-index:9999;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+    transform:translateY(80px);
+    opacity:0;
+    transition:all .3s ease;
+    max-width:320px;
+    pointer-events:none;
+}
+
+.page-toast.show { transform:translateY(0);opacity:1; }
+
 /* Responsive Design */
 @media (max-width: 900px) {
     .settings-container {
