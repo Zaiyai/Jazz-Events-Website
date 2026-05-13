@@ -426,11 +426,7 @@
 [data-status="blocked"]   { --bg: var(--blocked); }
 [data-status="completed"] { --bg: var(--completed); }
 
-.cal-day.has-event {
-  background: var(--bg); color: #000;
-}
 .cal-day.has-event.today {
-  background: var(--bg); color: #000;
   font-weight: 700; border-radius: 4px;
   width: auto; height: auto;
   display: inline; margin: 0;
@@ -439,7 +435,7 @@
   content: '';
   position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%);
   width: 4px; height: 4px; border-radius: 50%;
-  background: var(--jazz-gold);
+  background: var(--bg);
 }
 .cal-day.has-event:hover::before {
   content: attr(data-events);
