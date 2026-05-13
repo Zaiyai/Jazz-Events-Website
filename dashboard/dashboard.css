@@ -405,6 +405,7 @@
   font-size: 0.66rem; padding: 4px 2px;
   border-radius: 4px; cursor: pointer; color: var(--text-gray);
   transition: all 0.15s; position: relative;
+  border: 1px solid transparent;
 }
 .cal-day:hover { background: var(--jazz-gold-dim); color: var(--jazz-gold); }
 .cal-day.today {
@@ -413,8 +414,12 @@
   width: 22px; height: 22px;
   display: flex; align-items: center; justify-content: center;
   margin: auto;
+  border: none;
 }
 .cal-day.other-month { color: #374151; }
+.cal-day.has-event {
+  border: 2px solid var(--jazz-gold);
+}
 .cal-day.has-event::after {
   content: '';
   position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%);
