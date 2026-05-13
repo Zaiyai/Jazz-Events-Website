@@ -414,11 +414,16 @@
   width: 22px; height: 22px;
   display: flex; align-items: center; justify-content: center;
   margin: auto;
-  border: none;
 }
 .cal-day.other-month { color: #374151; }
 .cal-day.has-event {
   border: 2px solid var(--jazz-gold);
+}
+.cal-day.has-event.today {
+  background: var(--jazz-gold); color: #000;
+  font-weight: 700; border-radius: 4px;
+  width: auto; height: auto;
+  display: inline; margin: 0;
 }
 .cal-day.has-event::after {
   content: '';
