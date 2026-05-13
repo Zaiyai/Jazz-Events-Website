@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (urlParams.get('showLogin') === 'true') {
       displayLogin();
       
-      // Optional: Clean the URL so the popup doesn't reappear if they refresh
+      // Clean the URL so the popup doesn't reappear if they refresh
       window.history.replaceState({}, document.title, window.location.pathname);
   }
 });

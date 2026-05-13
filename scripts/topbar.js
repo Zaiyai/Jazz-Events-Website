@@ -97,7 +97,7 @@
               '<div class="profile-dropdown-name" id="profile-dropdown-name">My Account</div>' +
             '</div>' +
             '<div class="profile-dropdown-divider"></div>' +
-            '<a href="' + prefix + 'booking/client_bookings.html" class="profile-dropdown-item">' +
+            '<a href="' + prefix + 'settings/client_bookings.html" class="profile-dropdown-item">' +
               '<i class="fa-regular fa-calendar"></i> Bookings' +
             '</a>' +
             '<a href="' + prefix + 'settings/settings-profile.html" class="profile-dropdown-item">' +
