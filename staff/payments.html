@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments — Jazz Events Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../register/register.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background: #111;">
+
+<div class="dash-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="../home.html" style="text-decoration:none;">
+        <div class="brand-script">Jazz Events</div>
+      </a>
+      <div class="brand-sub">Staff Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
+      <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+      <a class="nav-item active" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar">EA</div>
+        <div class="sidebar-user-info">
+          <div class="u-name" id="sidebar-name">Edrian Albero</div>
+          <div class="u-role" id="sidebar-role">Event Organizer</div>
+        </div>
+        <button class="sidebar-logout" title="Log out" onclick="DB.logout();">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div class="topbar-left">
+        <div class="topbar-heading">Payments</div>
+        <div class="topbar-divider"></div>
+        <div class="topbar-sub">Track transactions & invoices</div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;">
+          <i class="fa-solid fa-plus"></i> Record Payment
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="dash-content">
+      
+      <!-- Stats -->
+      <!-- Financial stats removed -->
+
+      <!-- Recent Transaction -->
+      <div class="table-card" style="margin-top: 24px;">
+        <div class="table-header" style="padding: 24px;">
+          <h3 style="font-size: 1.2rem; color: var(--text-white);">Recent Transactions</h3>
+        </div>
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th style="padding-left: 24px;">INVOICE</th>
+              <th>CLIENT</th>
+              <th>EVENT</th>
+              <th>AMOUNT</th>
+              <th>DATE</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-4578</td>
+              <td>
+                <div class="client-cell">
+                  <div class="client-mini-avatar">P</div>
+                  <span style="font-weight: 600; color: var(--text-white);">Pat</span>
+                </div>
+              </td>
+              <td style="color: var(--text-gray);">Golden Anniversary Gala</td>
+              <td style="color: var(--text-white);">₱ 380,000</td>
+              <td style="color: var(--text-gray);">Dec 28, 2026</td>
+              <td><span class="status-pill outline-green">Paid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../scripts/db.js"></script>
+<script src="../dashboard/dashboard_ui.js"></script>
+<script src="../dashboard/dashboard.js"></script>
+
+</body>
+</html>

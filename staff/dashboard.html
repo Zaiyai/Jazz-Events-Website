@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Jazz Events Admin</title>
+  <title>Staff Dashboard — Jazz Events</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="../register/register.css">
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -23,15 +23,13 @@
       <a href="../home.html" style="text-decoration:none;">
         <div class="brand-script">Jazz Events</div>
       </a>
-      <div class="brand-sub">Admin Panel</div>
+      <div class="brand-sub">Staff Panel</div>
     </div>
 
     <nav class="sidebar-nav">
       <a class="nav-item active" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
       <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
       <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
-      <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
-      <a class="nav-item" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
       <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
     </nav>
 
@@ -59,12 +57,12 @@
       <div class="topbar-left">
         <div class="topbar-heading">Extraordinary Celebrations</div>
         <div class="topbar-divider"></div>
-        <div class="topbar-sub" id="topbar-greeting">Welcome back, Edrian</div>
+        <div class="topbar-sub" id="topbar-greeting">Welcome back, Staff</div>
       </div>
       <div class="topbar-right">
         <div class="dash-search-wrap">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search events, clients..." id="dash-search-input">
+          <input type="text" placeholder="Search events..." id="dash-search-input">
         </div>
         <button class="btn-new-event" onclick="openModal('modal-new-event')">
           <i class="fa-solid fa-plus"></i> New Event
@@ -75,98 +73,8 @@
     <!-- Content -->
     <div class="dash-content">
 
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
-            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 12.5%</div>
-          </div>
-          <div class="stat-label">TOTAL REVENUE</div>
-          <div class="stat-value">₱ 48,295</div>
-          <div class="stat-sub">vs. ₱ 42,950 last month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
-            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 3</div>
-          </div>
-          <div class="stat-label">ACTIVE EVENTS</div>
-          <div class="stat-value">24</div>
-          <div class="stat-sub">8 events this week</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="stat-badge warn"><i class="fa-solid fa-triangle-exclamation"></i> Action needed</div>
-          </div>
-          <div class="stat-label">PENDING PAYMENTS</div>
-          <div class="stat-value">₱ 12,450</div>
-          <div class="stat-sub">6 invoices awaiting</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon"><i class="fa-regular fa-heart"></i></div>
-            <div class="stat-badge up"><i class="fa-solid fa-arrow-up"></i> 2.1%</div>
-          </div>
-          <div class="stat-label">CLIENT SATISFACTION</div>
-          <div class="stat-value">98.5%</div>
-          <div class="stat-sub">Based on 142 reviews</div>
-        </div>
-      </div>
+      <!-- Operational Data -->
 
-      <!-- Charts -->
-      <div class="charts-row">
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Revenue Overview</div>
-              <div class="chart-sub">Monthly revenue performance</div>
-            </div>
-            <select class="chart-filter" id="chart-range">
-              <option value="6">Last 6 Months</option>
-              <option value="12">Last 12 Months</option>
-              <option value="3">Last 3 Months</option>
-            </select>
-          </div>
-          <div class="chart-canvas-wrap">
-            <svg width="100%" height="200" viewBox="0 0 580 200" preserveAspectRatio="block">
-              <line x1="0" y1="50" x2="580" y2="50" stroke="#2a2a2a" stroke-width="1"/>
-              <line x1="0" y1="100" x2="580" y2="100" stroke="#2a2a2a" stroke-width="1"/>
-              <line x1="0" y1="150" x2="580" y2="150" stroke="#2a2a2a" stroke-width="1"/>
-              <line x1="0" y1="200" x2="580" y2="200" stroke="#2a2a2a" stroke-width="1"/>
-              <polyline points="0,150 100,140 200,120 300,100 400,90 580,80" fill="none" stroke="#d4af37" stroke-width="2"/>
-              <circle cx="0" cy="150" r="4" fill="#d4af37"/>
-              <circle cx="100" cy="140" r="4" fill="#d4af37"/>
-              <circle cx="200" cy="120" r="4" fill="#d4af37"/>
-              <circle cx="300" cy="100" r="4" fill="#d4af37"/>
-              <circle cx="400" cy="90" r="4" fill="#d4af37"/>
-              <circle cx="580" cy="80" r="4" fill="#d4af37"/>
-            </svg>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Event Types</div>
-              <div class="chart-sub">Distribution by category</div>
-            </div>
-          </div>
-          <div class="donut-wrap">
-            <svg class="donut-svg" viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="55" fill="none" stroke="#1f2937" stroke-width="26"/>
-              <circle cx="80" cy="80" r="55" fill="none" stroke="#d4af37" stroke-width="26" stroke-dasharray="155.5 345.5" stroke-dashoffset="0"/>
-              <circle cx="80" cy="80" r="55" fill="none" stroke="#e6cc80" stroke-width="26" stroke-dasharray="103.6 345.5" stroke-dashoffset="-155.5"/>
-              <circle cx="80" cy="80" r="55" fill="none" stroke="#332a10" stroke-width="26" stroke-dasharray="86.4 345.5" stroke-dashoffset="-259.1"/>
-            </svg>
-            <div class="donut-legend">
-              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#d4af37"></div> Corporate</div><div class="legend-pct">45%</div></div>
-              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#e6cc80"></div> Weddings</div><div class="legend-pct">30%</div></div>
-              <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#332a10"></div> Private</div><div class="legend-pct">25%</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
       
       <!-- Events Table -->
       <table class="events-table">
@@ -200,13 +108,11 @@
           <div class="cal-nav" style="margin-bottom: 24px;">
             <span class="cal-month" id="cal-month-label" style="font-size: 1rem;">March 2026</span>
             <div>
-              <button class="cal-nav-btn" style="font-size: 1rem;" onclick="calNav(-1)">&lt;</button>
-              <button class="cal-nav-btn" style="font-size: 1rem;" onclick="calNav(1)">&gt;</button>
+              <button class="cal-nav-btn" onclick="calNav(-1)" style="font-size: 1rem;">&lt;</button>
+              <button class="cal-nav-btn" onclick="calNav(1)" style="font-size: 1rem;">&gt;</button>
             </div>
           </div>
-          <div class="cal-grid" id="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;">
-            <!-- Calendar will be rendered by JavaScript -->
-          </div>
+          <div class="cal-grid" id="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;"></div>
         </div>
       </div><!-- /bottom-row -->
     </div><!-- /dash-content -->
@@ -238,11 +144,8 @@
     </div>
     <div class="form-grid-2">
       <div class="field-group">
-        <label class="field-label">Client <span class="req">*</span></label>
-        <select class="field-input" id="ev-client">
-          <option value="">Select a client</option>
-        </select>
-        <div class="error-msg" id="ev-client-err"></div>
+        <label class="field-label">Client Name <span class="req">*</span></label>
+        <input class="field-input" id="ev-client" placeholder="e.g. Maria">
       </div>
       <div class="field-group">
         <label class="field-label">No. of Guests</label>
@@ -287,37 +190,6 @@
   </div>
 </div>
 
-<!-- New Task Modal -->
-<div class="modal-overlay" id="modal-new-task">
-  <div class="modal-box">
-    <div class="modal-title">
-      New Task
-      <button class="modal-close" onclick="closeModal('modal-new-task')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="field-group">
-      <label class="field-label">Task Name <span class="req">*</span></label>
-      <input class="field-input" id="task-name" placeholder="e.g. Confirm catering menu">
-      <div class="error-msg" id="task-name-err"></div>
-    </div>
-    <div class="form-grid-2">
-      <div class="field-group">
-        <label class="field-label">Due Date</label>
-        <input class="field-input" id="task-due" type="date">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Location</label>
-        <input class="field-input" id="task-location" placeholder="e.g. Shang-ri La">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-ghost" onclick="closeModal('modal-new-task')">Cancel</button>
-      <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:0.78rem;" onclick="saveTask()">
-        <i class="fa-solid fa-floppy-disk"></i> Add Task
-      </button>
-    </div>
-  </div>
-</div>
-
 <!-- Delete confirm Modal -->
 <div class="modal-overlay" id="modal-delete">
   <div class="modal-box" style="max-width:400px;">
@@ -336,7 +208,7 @@
 <div id="toast" class="toast"></div>
 
 <script src="../scripts/db.js"></script>
-<script src="dashboard_ui.js"></script>
-<script src="dashboard.js"></script>
+<script src="../dashboard/dashboard_ui.js"></script>
+<script src="../dashboard/dashboard.js"></script>
 </body>
 </html>

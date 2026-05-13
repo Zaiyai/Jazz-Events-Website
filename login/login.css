@@ -15,32 +15,57 @@
     background: #111;
     border: none;
     border-radius: 12px;
-    width: 90%; max-width: 800px;
-    min-height: 450px;
+    width: 92%;
+    max-width: 440px;
+    min-height: 0;
+    max-height: 92vh;
     box-shadow: 0 20px 60px rgba(0,0,0,0.8);
     display: flex;
-    overflow: hidden;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .auth-left {
-    width: 40%;
+    width: 100%;
     background: #1a1a1a;
-    padding: 40px;
+    padding: 28px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    border-right: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .auth-right {
-    width: 60%;
-    padding: 60px 50px;
+    width: 100%;
+    padding: 32px 24px 40px;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .auth-card {
+        flex-direction: row;
+        width: 90%;
+        max-width: 800px;
+        min-height: 450px;
+        max-height: none;
+        overflow: hidden;
+    }
+    .auth-left {
+        width: 40%;
+        padding: 40px;
+        border-bottom: none;
+        border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .auth-right {
+        width: 60%;
+        padding: 60px 50px;
+    }
 }
 
 .auth-close {
@@ -57,11 +82,17 @@
 
 .auth-title {
     font-family: var(--font-sans);
-    font-size: 2.2rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #fff;
     margin-bottom: 6px;
     text-align: left;
+}
+
+@media (min-width: 768px) {
+    .auth-title {
+        font-size: 2.2rem;
+    }
 }
 
 .auth-subtitle {
@@ -74,11 +105,13 @@
 
 .field-group {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
     margin-bottom: 24px;
 }
 .field-label {
-    width: 110px;
+    width: 100%;
     color: #888;
     font-size: 0.85rem;
     font-weight: 400;
@@ -86,8 +119,24 @@
     letter-spacing: normal;
     margin-bottom: 0;
 }
-.field-input-wrapper {
+
+@media (min-width: 768px) {
+    .field-group {
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+    }
+    .field-label {
+        width: 110px;
+    }
+}
+.field-control {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.field-input-wrapper {
+    width: 100%;
     position: relative;
 }
 .field-input {
@@ -122,17 +171,16 @@
 .eye-btn:hover { color: var(--jazz-gold); }
 
 .err-msg {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #f87171;
-    position: absolute;
-    bottom: -18px;
-    left: 0;
+    margin-top: 5px;
     display: none;
+    text-align: left;
 }
 .err-msg.show { display: block; }
 
 .btn-auth-submit {
-    width: 200px;
+    width: 100%;
     background: #d4af37;
     color: #000;
     font-family: var(--font-sans);
@@ -144,6 +192,12 @@
     border-radius: 6px;
     cursor: pointer;
     transition: opacity 0.2s;
+}
+
+@media (min-width: 768px) {
+    .btn-auth-submit {
+        width: 200px;
+    }
 }
 .btn-auth-submit:hover { opacity: 0.8; }
 .btn-auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -162,22 +216,32 @@
 
 
 .page-toast {
-    position:fixed;
-    bottom:24px;right:24px;
-    background:#1a1a1a;
-    border:1px solid var(--jazz-gold);
-    border-radius:10px;
-    padding:13px 18px;
-    font-size:.8rem;
-    font-family:var(--font-sans);
-    color:#fff;
-    z-index:9999;
-    box-shadow:0 8px 30px rgba(0,0,0,.5);
-    transform:translateY(80px);
-    opacity:0;
-    transition:all .3s ease;
-    max-width:320px;
-    pointer-events:none;
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    background: #1a1a1a;
+    border: 1px solid var(--jazz-gold);
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    color: #fff;
+    z-index: 9999;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: none;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .page-toast {
+        left: auto;
+        right: 24px;
+        max-width: 320px;
+    }
 }
 
 .page-toast.show { transform:translateY(0);opacity:1; }

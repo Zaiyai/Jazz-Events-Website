@@ -15,7 +15,7 @@
 <body style="background: #111;">
 
 <div class="dash-layout">
-  <aside class="sidebar not-main" id="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <a href="../home.html" style="text-decoration:none;">
         <div class="brand-script">Jazz Events</div>
@@ -25,6 +25,7 @@
 
     <nav class="sidebar-nav">
       <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
       <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
       <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
       <a class="nav-item" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
@@ -45,12 +46,11 @@
     </div>
   </aside>
 
-  <main class="dash-main" style="margin-left: 0;">
+  <main class="dash-main">
     <!-- Topbar -->
-    <div class="dash-topbar" style="padding-left: 32px; padding-right: 32px;">
-      <div class="topbar-left" style="gap: 24px;">
-        <button class="btn-ghost" style="font-size: 1.2rem; padding: 0;" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
-        <div class="topbar-heading" style="color: var(--jazz-gold); font-family: var(--font-sans); font-size: 1.2rem; font-weight: 700;">Payments</div>
+    <div class="dash-topbar">
+      <div class="topbar-left">
+        <div class="topbar-heading">Payments</div>
         <div class="topbar-divider"></div>
         <div class="topbar-sub">Track transactions & invoices</div>
       </div>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- Content -->
-    <div class="dash-content" style="padding: 32px; max-width: 1400px; margin: 0 auto;">
+    <div class="dash-content">
       
       <!-- Stats -->
       <div class="stats-grid">

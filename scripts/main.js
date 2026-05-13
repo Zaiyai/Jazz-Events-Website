@@ -4,7 +4,13 @@ function handleProfileLogout() {
 
 function bookingRedirect() {
   if (COOKIES.hasEmail()) {
-    window.location.href = "booking/booking.html";
+    // Determine correct relative path to booking page based on current depth
+    var path = window.location.pathname;
+    if (path.indexOf('/services/') !== -1 || path.indexOf('/booking/') !== -1 || path.indexOf('/login/') !== -1 || path.indexOf('/register/') !== -1 || path.indexOf('/dashboard/') !== -1 || path.indexOf('/staff/') !== -1 || path.indexOf('/settings/') !== -1 || path.indexOf('/policies/') !== -1) {
+      window.location.href = "../booking/booking.html";
+    } else {
+      window.location.href = "booking/booking.html";
+    }
   } else {
     displayLogin(true);
   }
@@ -55,7 +61,7 @@ const closeBtn = document.getElementById("close-overlay");
 
 /* OPEN */
 burger.addEventListener("click", () => {
-  if (window.innerWidth > 768) return;
+  if (window.innerWidth >= 768) return;
 
   overlay.classList.add("open");
   document.body.classList.add("menu-open");
@@ -77,7 +83,7 @@ document.addEventListener("keydown", e => {
 
 /* RESIZE SAFETY */
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) closeMenu();
+  if (window.innerWidth >= 768) closeMenu();
 });
 
 function closeMenu() {

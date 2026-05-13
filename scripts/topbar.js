@@ -41,7 +41,7 @@
     var linkMarkup = renderLinks(links);
 
     root.innerHTML =
-      '<header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">' +
+      '<header>' +
       '  <div class="nav-container">' +
       '    <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>' +
       '    <nav class="nav-links desktop-nav">' +
