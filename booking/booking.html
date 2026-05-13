@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
     <link rel="stylesheet" href="../styles.css?v=5">
+    <link rel="stylesheet" href="../login/login.css">
     <link rel="stylesheet" href="../register/register.css?v=5">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -22,6 +23,7 @@
     <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
         <div class="nav-container">
         <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div id="nav-admin-staff" class="nav-admin-staff desktop-nav-left"></div>
         <nav class="nav-links desktop-nav">
             <a href="../home.html">Home</a>
             <a href="../home.html#services-section">Services</a>
@@ -31,7 +33,9 @@
             <a href="../home.html#cta-section">Contact</a>
         </nav>
 
-        <div id="nav-auth-slot"></div>
+        <div class="nav-right-group">
+            <div id="nav-auth-slot"></div>
+        </div>
     </div>
   </header>
 
