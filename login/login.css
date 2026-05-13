@@ -130,8 +130,13 @@
         width: 110px;
     }
 }
-.field-input-wrapper {
+.field-control {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.field-input-wrapper {
+    width: 100%;
     position: relative;
 }
 .field-input {
@@ -166,12 +171,11 @@
 .eye-btn:hover { color: var(--jazz-gold); }
 
 .err-msg {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #f87171;
-    position: absolute;
-    bottom: -18px;
-    left: 0;
+    margin-top: 5px;
     display: none;
+    text-align: left;
 }
 .err-msg.show { display: block; }
 

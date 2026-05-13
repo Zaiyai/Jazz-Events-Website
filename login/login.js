@@ -11,7 +11,7 @@ function validate(id,errId){
 }
 
 async function handleLogin() {
-  const ok = [validate('login-email','login-emailogin-err'), validate('login-pass','login-pass-err')].every(Boolean);
+  const ok = [validate('login-email','login-email-err'), validate('login-pass','login-pass-err')].every(Boolean);
   if (!ok) return;
 
   const loginData = {
@@ -20,6 +20,15 @@ async function handleLogin() {
   }
 
   const btn = document.getElementById('login-submit-btn');
+  const authErr = document.getElementById('login-auth-err');
+  const emailInput = document.getElementById('login-email');
+  const passInput = document.getElementById('login-pass');
+
+  // Clear previous backend errors
+  authErr.textContent = '';
+  authErr.classList.remove('show');
+  emailInput.classList.remove('has-error');
+  passInput.classList.remove('has-error');
 
   fetch("login/login.php", {
     method: "POST",
@@ -33,15 +42,26 @@ async function handleLogin() {
       return response.json();
     })
     .then(data => {
-      showToast(data.message);
       if (data.status == "success") { 
+        showToast(data.message);
         btn.disabled = true;
         btn.textContent = 'Logging in…';
         COOKIES.setCookie(loginData.email, data.user_type, 30);
         window.location.href = data.redirect;
       } else { 
+        // Display backend error message in the UI
+        authErr.textContent = data.message;
+        authErr.classList.add('show');
+        
+        // Highlight inputs
+        emailInput.classList.add('has-error');
+        passInput.classList.add('has-error');
+        
         btn.disabled = false;
         btn.textContent = 'LOG IN';
+        
+        // Optional: still show toast if desired, but UI error is primary now
+        showToast(data.message, 'error');
       }
     });
 }
