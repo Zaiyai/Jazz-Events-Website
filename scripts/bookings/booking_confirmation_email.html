@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation - Jazz Events</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        table { border-collapse: collapse !important; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #111111; font-family: 'Montserrat', Helvetica, Arial, sans-serif; }
+
+        /* Custom Styles */
+        .email-container {
+            max-width: 600px !important;
+            margin: 0 auto !important;
+            background-color: #121212;
+        }
+        .header {
+            padding: 40px 20px;
+            text-align: left;
+        }
+        .card {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 40px 30px;
+            margin: 0 20px;
+            text-align: center;
+        }
+        .greeting-container {
+            display: inline-block;
+            margin-bottom: 20px;
+            vertical-align: middle;
+        }
+        .flourish {
+            width: 50px;
+            height: auto;
+            vertical-align: middle;
+        }
+        .flourish-right {
+            transform: scaleX(-1);
+        }
+        .greeting-text {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 400;
+            margin: 0 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .text-gold {
+            color: #d4af37;
+            font-weight: 700;
+        }
+        .message-title {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        .message-body {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn-gold {
+            background-color: #d4af37;
+            color: #000000 !important;
+            padding: 12px 35px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .notes-section {
+            padding: 40px 40px;
+            text-align: left;
+        }
+        .note-item {
+            color: #9ca3af;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 15px;
+        }
+        .note-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #9ca3af;
+        }
+        .footer {
+            padding: 40px 20px;
+            border-top: 1px solid #222;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin: 0 15px;
+            text-transform: uppercase;
+        }
+        .footer-links a:hover {
+            color: #d4af37;
+        }
+
+        /* Mobile Adjustments */
+        @media screen and (max-width: 600px) {
+            .email-container { width: 100% !important; }
+            .card { padding: 30px 20px !important; }
+            .greeting-text { font-size: 18px !important; }
+            .footer-links a { display: block; margin: 10px 0 !important; }
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#111111">
+        <tr>
+            <td align="center">
+                <table class="email-container" width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <!-- Header / Logo -->
+                    <tr>
+                        <td class="header">
+                            <!-- Note: Use absolute URLs for images in production emails -->
+                            <img src="../../assets/Jazz.svg" alt="Jazz Events" width="250" style="display: block;">
+                        </td>
+                    </tr>
+
+                    <!-- Content Card -->
+                    <tr>
+                        <td>
+                            <table class="card" width="560" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                    <td>
+                                        <div class="greeting-container">
+                                            <img src="../../assets/decor/gold_accent.png" class="flourish" alt="">
+                                            <span class="greeting-text">Dear <span class="text-gold">Client</span></span>
+                                            <img src="../../assets/decor/gold_accent.png" class="flourish flourish-right" alt="">
+                                        </div>
+                                        
+                                        <p class="message-title">We've successfully received your event booking details</p>
+                                        
+                                        <p class="message-body">
+                                            If you would like to review the details you may log in to our website here:
+                                        </p>
+                                        
+                                        <a href="#" class="btn-gold">View Details</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Notes Section -->
+                    <tr>
+                        <td class="notes-section">
+                            <div class="note-item">This confirmation is only for Jazz Events bookings.</div>
+                            <div class="note-item">Please ignore this email if you've never requested the sending of a booking confirmation.</div>
+                            <div class="note-item">This email is sent automatically by Jazz Events. please do not reply.</div>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+                            <div class="footer-links">
+                                <a href="#">Terms of Service</a>
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Contact</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
