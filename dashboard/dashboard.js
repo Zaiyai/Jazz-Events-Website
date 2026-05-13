@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadStats() {
   const stats = await DB.getStats();
   const grid = document.getElementById('stats-grid');
+  if (!grid) return;
   grid.innerHTML = `
     ${statCard('fa-peso-sign',     'Total Revenue',    stats.totalRevenue.value,    stats.totalRevenue.change,    stats.totalRevenue.sub,    'up')}
     ${statCard('fa-calendar-days', 'Active Events',    stats.activeEvents.value,    stats.activeEvents.change,    stats.activeEvents.sub,    'up')}
@@ -408,6 +409,7 @@ function renderDonut() {
   const circumference = 2 * Math.PI * R;
   let offset = 0;
   const svgEl = document.getElementById('donut-svg');
+  if (!svgEl) return;
   const existingArcs = svgEl.querySelectorAll('.donut-arc');
   existingArcs.forEach(a => a.remove());
 
@@ -437,13 +439,16 @@ function renderDonut() {
     svgEl.appendChild(inner);
   }
 
-  document.getElementById('donut-legend').innerHTML = labels.map((l, i) => {
-    const pct = total ? Math.round(values[i]/total*100) : 0;
-    return `<div class="legend-item">
-      <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l}</div>
-      <div class="legend-pct">${pct}%</div>
-    </div>`;
-  }).join('');
+  const legend = document.getElementById('donut-legend');
+  if (legend) {
+    legend.innerHTML = labels.map((l, i) => {
+      const pct = total ? Math.round(values[i]/total*100) : 0;
+      return `<div class="legend-item">
+        <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l}</div>
+        <div class="legend-pct">${pct}%</div>
+      </div>`;
+    }).join('');
+  }
 }
 
 /* ── Revenue Line Chart ───────────────────────────────────── */
@@ -479,7 +484,9 @@ function renderRevenueChart() {
     `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="${i === data.length-1 ? 5.5 : 4}" fill="#d4af37" stroke="#1a1a1a" stroke-width="2"/>`
   ).join('');
 
-  document.getElementById('revenue-svg').innerHTML = `
+  const svg = document.getElementById('revenue-svg');
+  if (!svg) return;
+  svg.innerHTML = `
     <defs>
       <linearGradient id="revGrad2" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#d4af37" stop-opacity="0.28"/>
