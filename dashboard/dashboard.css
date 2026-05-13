@@ -426,6 +426,17 @@
   width: 4px; height: 4px; border-radius: 50%;
   background: var(--jazz-gold);
 }
+.cal-day.has-event:hover::before {
+  content: attr(data-events);
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  background: var(--bg-darker); border: 1px solid var(--jazz-gold);
+  color: var(--text-white); padding: 8px 12px;
+  border-radius: 6px; font-size: 0.65rem; font-weight: 500;
+  white-space: pre-wrap; word-break: break-word; max-width: 180px;
+  z-index: 1000; margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  pointer-events: none;
+}
 
 /* Loading skeleton */
 .skeleton { background: linear-gradient(90deg, var(--border-dark) 25%, #2a2a2a 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }

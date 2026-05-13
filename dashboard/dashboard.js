@@ -427,11 +427,17 @@ async function renderCalendar() {
   const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
 
-  const eventDays = new Set(
-    events
-      .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
-      .map(e => new Date(e.date).getDate())
-  );
+  // Build a map of day -> array of event names
+  const eventsByDay = {};
+  events
+    .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
+    .forEach(e => {
+      const day = new Date(e.date).getDate();
+      if (!eventsByDay[day]) eventsByDay[day] = [];
+      eventsByDay[day].push(e.name);
+    });
+
+  const eventDays = new Set(Object.keys(eventsByDay).map(d => parseInt(d)));
 
   const today = new Date();
   const firstDay = new Date(calYear, calMonth, 1).getDay();
@@ -448,7 +454,9 @@ async function renderCalendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
     const hasEvent = eventDays.has(d);
-    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}">${d}</div>`;
+    const eventNames = hasEvent ? eventsByDay[d].join(', ') : '';
+    const title = hasEvent ? `Events:\n${eventsByDay[d].join('\n')}` : '';
+    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" ${title ? `title="${title}"` : ''} data-events="${eventNames}">${d}</div>`;
   }
   // Next month overflow
   const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
