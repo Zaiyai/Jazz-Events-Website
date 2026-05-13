@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Jazz Events</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Industry Standard Reset */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #121212; font-family: 'Montserrat', Helvetica, Arial, sans-serif; }
+
+        /* Container & Layout */
+        .wrapper { background-color: #121212; padding: 60px 0; }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        /* Header */
+        .header { padding-bottom: 40px; }
+        .logo { margin: 0 auto; width: 220px; }
+
+        /* Main Content Card */
+        .content-card {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        /* Greeting Section */
+        .greeting-section {
+            display: inline-block;
+            margin-bottom: 35px;
+            width: 100%;
+        }
+        .flourish {
+            display: inline-block;
+            width: 50px;
+            vertical-align: middle;
+            opacity: 0.9;
+        }
+        .flourish-right { transform: scaleX(-1); }
+        .greeting-text {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0 15px;
+            display: inline-block;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+        }
+        .highlight { color: #d4af37; font-weight: 700; }
+
+        /* Message Section */
+        .success-msg {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            padding: 0 20px;
+        }
+        .instruction-msg {
+            color: #a1a1a1;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 50px;
+            padding: 0 10px;
+        }
+
+        /* Call to Action */
+        .cta-button {
+            background-color: #d4af37;
+            color: #000000 !important;
+            padding: 18px 50px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Footnotes */
+        .footnotes {
+            padding: 50px 40px 0 40px;
+            text-align: left;
+        }
+        .footnote-item {
+            color: #777;
+            font-size: 12px;
+            line-height: 2;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 20px;
+            font-weight: 400;
+        }
+        .footnote-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+            font-size: 20px;
+            top: -2px;
+        }
+
+        /* Footer Navigation */
+        .footer-nav {
+            padding-top: 80px;
+            text-align: center;
+        }
+        .footer-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0 25px;
+            display: inline-block;
+        }
+        .footer-link:hover { color: #d4af37; }
+
+        /* Responsive */
+        @media only screen and (max-width: 620px) {
+            .container { width: 100% !important; padding: 0 15px; box-sizing: border-box; }
+            .content-card { padding: 60px 25px; }
+            .footer-link { display: block; padding: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <img src="../../assets/Jazz.svg" alt="Jazz Events" class="logo">
+            </div>
+
+            <!-- Main Content Card -->
+            <div class="content-card">
+                <div class="greeting-section">
+                    <img src="../../assets/decor/gold_accent.png" class="flourish" alt="">
+                    <span class="greeting-text">Dear <span class="highlight">Client</span></span>
+                    <img src="../../assets/decor/gold_accent.png" class="flourish flourish-right" alt="">
+                </div>
+
+                <div class="success-msg">
+                    We've successfully received your event booking details
+                </div>
+
+                <div class="instruction-msg">
+                    If you would like to review the details you may log in to our website here:
+                </div>
+
+                <a href="#" class="cta-button">View Details</a>
+            </div>
+
+            <!-- Footnotes -->
+            <div class="footnotes">
+                <div class="footnote-item">This confirmation is only for Jazz Events bookings.</div>
+                <div class="footnote-item">Please ignore this email if you've never requested the sending of a booking confirmation.</div>
+                <div class="footnote-item">This email is sent automatically by Jazz Events. please do not reply.</div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="footer-nav">
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

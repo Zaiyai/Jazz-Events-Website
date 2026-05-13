@@ -1,5 +1,3 @@
-const dateFrom = document.getElementById('datefrom');
-const dateTo   = document.getElementById('dateto');
 const today = new Date().toISOString().split('T')[0];
 const eventBudget  = document.getElementById('event-budget');
 const attendees    = document.getElementById('attendees');
@@ -37,20 +35,58 @@ function checkDateViability(date) {
         dateToErr.innerHTML   = "Cannot be before event start";
         dateFromErr.classList.add('show');
         dateToErr.classList.add('show');
-        return;
-    } else {
-        dateFromErr.classList.remove('show');
-        dateToErr.classList.remove('show');
-    }
-    
-    if (date.value < today) {
-        dateErr.innerHTML = "Cannot be before today";
-        dateErr.classList.add('show');
+const attendeesErr = document.getElementById('attendees-err');
+const dateFrom     = document.getElementById('datefrom');
+const dateTo       = document.getElementById('dateto');
+
+var fp; // Global scope for accessibility
+
+document.addEventListener('DOMContentLoaded', function() {
+    const daterangeEl = document.getElementById('daterange');
+    if (!daterangeEl) {
+        console.error("Daterange element not found!");
         return;
     }
 
-    dateErr.classList.remove('show');
-}
+    if (typeof flatpickr === 'undefined') {
+        console.error("Flatpickr library not loaded!");
+        return;
+    }
+
+    // Initialize Flatpickr
+    fp = flatpickr("#daterange", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "F j, Y",
+        onChange: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length === 2) {
+                dateFrom.value = instance.formatDate(selectedDates[0], "Y-m-d");
+                dateTo.value = instance.formatDate(selectedDates[1], "Y-m-d");
+                document.getElementById('daterange-err').classList.remove('show');
+            } else if (selectedDates.length === 1) {
+                dateFrom.value = instance.formatDate(selectedDates[0], "Y-m-d");
+                dateTo.value = instance.formatDate(selectedDates[0], "Y-m-d");
+            }
+        }
+    });
+
+    const openBtn = document.getElementById('open-calendar');
+    if (openBtn) {
+        openBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (fp) fp.open();
+        });
+    }
+
+    daterangeEl.addEventListener('click', () => {
+        if (fp) fp.open();
+    });
+    
+    console.log("Flatpickr initialized successfully");
+});
+
+var bookingInfo;
 
 function getEstimatedBudgetNumber() {
     const guests = Number(String(attendees.value).trim());
@@ -64,7 +100,9 @@ function getEstimatedBudgetNumber() {
 
 // On number of guests change
 function updateEstimatedBudget() {
-    if (attendees.value > 9999) {
+    if (!attendees.value) return;
+    
+    if (attendees.value > 99999) {
         eventBudget.innerHTML  = "Too many guests";
         attendeesErr.innerHTML = "Too many guests";
         attendeesErr.classList.add('show');
@@ -95,8 +133,7 @@ async function firstSubmit() {
     const ok = [
         validate('name','name-err'),
         validate('type','type-err'), 
-        validate('datefrom','datefrom-err'),
-        validate('dateto','dateto-err'),
+        validate('daterange','daterange-err'),
         validate('attendees','attendees-err'),
         validate('venue','venue-err'),
         validate('theme','theme-err')].every(Boolean);
@@ -104,8 +141,9 @@ async function firstSubmit() {
     if (!ok) return;
     
     const submitBtn = document.getElementById('submit');
-    submitBtn.innerHTML = "Redirecting...";
-    submitBtn.disabled = true;
+    const originalContent = submitBtn.innerHTML;
+    submitBtn.innerHTML = "<span>Redirecting...</span>";
+    submitBtn.style.pointerEvents = "none";
     
     const budgetAmount = getEstimatedBudgetNumber();
     eventBudget.innerHTML = budgetAmount !== null ? String(budgetAmount) : '';
@@ -139,7 +177,7 @@ async function firstSubmit() {
 // On form actual submission
 function submitBooking() {
     const submitBtn = document.getElementsByClassName('confirm-btn')[0];
-    submitBtn.innerHTML = "Sending...";
+    submitBtn.innerHTML = "<span>Sending...</span>";
     submitBtn.disabled = true;
     DB.createBooking(JSON.parse(sessionStorage.getItem('bookingData'))); 
     sessionStorage.removeItem('bookingData');
