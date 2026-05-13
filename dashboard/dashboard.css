@@ -415,12 +415,21 @@
   margin: auto;
 }
 .cal-day.other-month { color: #374151; }
+.cal-day.has-event {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
 .cal-day.has-event::after {
   content: '';
   position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%);
   width: 4px; height: 4px; border-radius: 50%;
   background: var(--jazz-gold);
 }
+.cal-day.today.has-event {
+  background: var(--jazz-gold);
+  border: none;
+}
+
 
 /* Loading skeleton */
 .skeleton { background: linear-gradient(90deg, var(--border-dark) 25%, #2a2a2a 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }

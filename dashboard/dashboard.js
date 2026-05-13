@@ -427,11 +427,35 @@ async function renderCalendar() {
   const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
 
+  // Get event dates from events table
   const eventDays = new Set(
     events
       .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
       .map(e => new Date(e.date).getDate())
   );
+
+  // Get booking dates from bookings table
+  try {
+    const bookings = await getBookings();
+    if (Array.isArray(bookings)) {
+      bookings.forEach(b => {
+        // Handle date_from and date_to for booking ranges
+        const dateFrom = new Date(b.date_from);
+        const dateTo = new Date(b.date_to);
+        
+        // Only include bookings for the current calendar month
+        if (dateFrom.getFullYear() === calYear || dateTo.getFullYear() === calYear) {
+          for (let d = new Date(dateFrom); d <= dateTo; d.setDate(d.getDate() + 1)) {
+            if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
+              eventDays.add(d.getDate());
+            }
+          }
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Could not load bookings for calendar:', e);
+  }
 
   const today = new Date();
   const firstDay = new Date(calYear, calMonth, 1).getDay();
@@ -457,6 +481,24 @@ async function renderCalendar() {
   }
 
   document.getElementById('cal-grid').innerHTML = html;
+}
+
+// Helper function to fetch bookings
+async function getBookings() {
+  try {
+    const response = await fetch('../scripts/bookings/get_bookings.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    if (!response.ok) return [];
+    
+    const data = await response.json();
+    return (data.ok && Array.isArray(data.bookings)) ? data.bookings : [];
+  } catch (e) {
+    console.warn('Error fetching bookings:', e);
+    return [];
+  }
 }
 
 /* ── Donut chart ──────────────────────────────────────────── */

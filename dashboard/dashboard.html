@@ -197,24 +197,14 @@
         <!-- Mini Calendar -->
         <div class="bottom-card" style="padding: 24px;">
           <div class="cal-nav" style="margin-bottom: 24px;">
-            <span class="cal-month" style="font-size: 1rem;">March 2026</span>
+            <span class="cal-month" id="cal-month-label" style="font-size: 1rem;">March 2026</span>
             <div>
-              <button class="cal-nav-btn" style="font-size: 1rem;">&lt;</button>
-              <button class="cal-nav-btn" style="font-size: 1rem;">&gt;</button>
+              <button class="cal-nav-btn" style="font-size: 1rem;" onclick="calNav(-1)" title="Previous month">&lt;</button>
+              <button class="cal-nav-btn" style="font-size: 1rem;" onclick="calNav(1)" title="Next month">&gt;</button>
             </div>
           </div>
-          <div class="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;">
-            <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div><div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>
-            <!-- Row 1 -->
-            <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div>
-            <!-- Row 2 -->
-            <div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div>
-            <!-- Row 3 -->
-            <div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
-            <!-- Row 4 -->
-            <div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day today">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
-            <!-- Row 5 -->
-            <div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div><div class="cal-day other-month">1</div><div class="cal-day other-month">2</div><div class="cal-day other-month">3</div><div class="cal-day other-month">4</div>
+          <div class="cal-grid" id="cal-grid" style="grid-template-columns: repeat(7, 1fr); gap: 12px;">
+            <!-- Calendar will be rendered by JavaScript -->
           </div>
         </div>
       </div><!-- /bottom-row -->
