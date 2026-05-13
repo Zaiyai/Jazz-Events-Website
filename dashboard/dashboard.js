@@ -60,9 +60,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   await refreshEventsCache();
   await populateClientSelect();
 
+  var words = user.name.trim().split(/\s+/);
+  var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
+  const pfp = document.getElementById('profile-avatar-initials');
+
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;
-  document.getElementById('sidebar-avatar').textContent = user.initials;
+  if (user.profile_picture) {
+    // Use correct path with prefix
+    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+  } else {
+    pfp.textContent = initials;
+    document.getElementById('sidebar-avatar').textContent = initials;
+  }
   document.getElementById('topbar-greeting').textContent = `Welcome back, ${user.name.split(' ')[0]}`;
 
   // Calendar
