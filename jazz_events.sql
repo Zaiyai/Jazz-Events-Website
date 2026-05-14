@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 04:09 PM
+-- Generation Time: May 14, 2026 at 10:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `jazz_events_db`
+-- Database: `jazz_events`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +32,6 @@ CREATE TABLE `analytics_summary` (
   `total_revenue` decimal(12,2) NOT NULL DEFAULT 0.00,
   `new_clients` int(11) NOT NULL DEFAULT 0,
   `average_event_value` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `client_satisfaction` decimal(5,2) NOT NULL DEFAULT 0.00,
   `revenue_growth` decimal(5,2) DEFAULT 0.00,
   `client_growth` decimal(5,2) DEFAULT 0.00,
   `event_value_growth` decimal(5,2) DEFAULT 0.00,
@@ -40,6 +39,22 @@ CREATE TABLE `analytics_summary` (
   `period_label` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `analytics_summary`
+--
+
+INSERT INTO `analytics_summary` (`summary_id`, `total_revenue`, `new_clients`, `average_event_value`, `revenue_growth`, `client_growth`, `event_value_growth`, `satisfaction_growth`, `period_label`, `created_at`) VALUES
+(1, 85000.00, 12, 28333.33, 0.00, 0.00, 0.00, 0.00, 'August 2025', '2025-08-31 15:59:00'),
+(2, 92500.00, 14, 23125.00, 8.82, 16.67, -18.38, 1.11, 'September 2025', '2025-09-30 15:59:00'),
+(3, 110000.00, 16, 22000.00, 18.92, 14.29, -4.87, 1.10, 'October 2025', '2025-10-31 15:59:00'),
+(4, 130000.00, 18, 21666.67, 18.18, 12.50, -1.52, 1.09, 'November 2025', '2025-11-30 15:59:00'),
+(5, 175000.00, 25, 19444.44, 34.62, 38.89, -10.23, 1.51, 'December 2025', '2025-12-31 15:59:00'),
+(6, 68000.00, 8, 22666.67, -61.14, -68.00, 16.57, -2.54, 'January 2026', '2026-01-31 15:59:00'),
+(7, 74000.00, 10, 24666.67, 8.82, 25.00, 8.82, 0.43, 'February 2026', '2026-02-28 15:59:00'),
+(8, 15000.00, 4, 15000.00, -79.73, -60.00, -39.19, 1.73, 'March 2026', '2026-03-31 15:59:00'),
+(9, 56000.00, 6, 28000.00, 273.33, 50.00, 86.67, 2.13, 'April 2026', '2026-04-30 15:59:00'),
+(10, 5000.00, 3, 5000.00, -91.07, -50.00, -82.14, 0.63, 'May 2026 (MTD)', '2026-05-15 02:00:00');
 
 -- --------------------------------------------------------
 
@@ -93,6 +108,22 @@ CREATE TABLE `booking_analytics` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `booking_analytics`
+--
+
+INSERT INTO `booking_analytics` (`booking_analytics_id`, `analytics_month`, `analytics_year`, `total_bookings`, `completed_events`, `cancelled_events`, `created_at`) VALUES
+(1, 'August', '2025', 8, 3, 1, '2025-08-31 15:59:00'),
+(2, 'September', '2025', 9, 4, 0, '2025-09-30 15:59:00'),
+(3, 'October', '2025', 11, 5, 1, '2025-10-31 15:59:00'),
+(4, 'November', '2025', 13, 6, 1, '2025-11-30 15:59:00'),
+(5, 'December', '2025', 18, 9, 2, '2025-12-31 15:59:00'),
+(6, 'January', '2026', 7, 3, 0, '2026-01-31 15:59:00'),
+(7, 'February', '2026', 8, 3, 1, '2026-02-28 15:59:00'),
+(8, 'March', '2026', 3, 1, 0, '2026-03-31 15:59:00'),
+(9, 'April', '2026', 5, 1, 0, '2026-04-30 15:59:00'),
+(10, 'May', '2026', 6, 0, 0, '2026-05-15 02:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -107,10 +138,16 @@ CREATE TABLE `dashboard` (
   `weekly_events` int(11) NOT NULL DEFAULT 0,
   `pending_payments` decimal(12,2) NOT NULL DEFAULT 0.00,
   `pending_invoices` int(11) NOT NULL DEFAULT 0,
-  `client_satisfaction` decimal(5,2) NOT NULL DEFAULT 0.00,
   `total_reviews` int(11) NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `dashboard`
+--
+
+INSERT INTO `dashboard` (`dashboard_id`, `total_revenue`, `last_month_revenue`, `active_events`, `weekly_events`, `pending_payments`, `pending_invoices`, `total_reviews`, `updated_at`) VALUES
+(1, 62000.00, 56000.00, 2, 1, 12000.00, 3, 7, '2026-05-15 02:00:00');
 
 -- --------------------------------------------------------
 
@@ -156,6 +193,19 @@ CREATE TABLE `event_type_analytics` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `event_type_analytics`
+--
+
+INSERT INTO `event_type_analytics` (`event_type_id`, `event_type`, `total_events`, `percentage`, `created_at`) VALUES
+(1, 'Wedding', 5, 38.46, '2026-05-15 02:00:00'),
+(2, 'Birthday', 2, 15.38, '2026-05-15 02:00:00'),
+(3, 'Conference', 3, 23.08, '2026-05-15 02:00:00'),
+(4, 'Debut', 1, 7.69, '2026-05-15 02:00:00'),
+(5, 'Reunion', 1, 7.69, '2026-05-15 02:00:00'),
+(6, 'Corporate', 1, 7.69, '2026-05-15 02:00:00'),
+(7, 'Graduation', 0, 0.00, '2026-05-15 02:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -178,6 +228,32 @@ CREATE TABLE `payments` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `event_id`, `client_id`, `invoice_number`, `amount`, `payment_method`, `payment_status`, `payment_date`, `due_date`, `reference_number`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 22, 82, 'INV-2026-0001', 15000.00, 'BANK_TRANSFER', 'PAID', '2026-04-10', '2026-04-15', 'BT-88421039', 'First 50% downpayment for Golden Gala.', '2026-04-01 01:00:00', '2026-04-10 06:22:00'),
+(2, 22, 82, 'INV-2026-0002', 9000.00, 'GCASH', 'PAID', '2026-04-28', '2026-04-30', 'GC-77302918', 'Second installment – venue and catering.', '2026-04-20 02:15:00', '2026-04-28 08:45:00'),
+(3, 22, 82, 'INV-2026-0003', 6000.00, 'CASH', 'PENDING', NULL, '2026-05-20', NULL, 'Final balance due before event day.', '2026-05-01 00:30:00', '2026-05-01 00:30:00'),
+(4, 24, 29, 'INV-2026-0004', 20000.00, 'BANK_TRANSFER', 'PAID', '2026-04-05', '2026-04-08', 'BT-66109234', 'Downpayment 50% for wedding event.', '2026-03-28 03:00:00', '2026-04-05 01:10:00'),
+(5, 24, 29, 'INV-2026-0005', 12000.00, 'PAYMAYA', 'PAID', '2026-04-22', '2026-04-25', 'PM-54321876', 'Second payment – décor and floral package.', '2026-04-15 05:00:00', '2026-04-22 09:30:00'),
+(6, 24, 29, 'INV-2026-0006', 5000.00, 'GCASH', 'PARTIAL', '2026-05-02', '2026-05-05', 'GC-90123456', 'Partial payment received; balance is 3000.', '2026-04-28 01:45:00', '2026-05-02 02:20:00'),
+(7, 24, 29, 'INV-2026-0007', 3000.00, 'CASH', 'OVERDUE', NULL, '2026-05-10', NULL, 'Remaining balance overdue as of May 11.', '2026-05-03 00:00:00', '2026-05-10 16:00:00'),
+(8, 22, 82, 'INV-2026-0008', 5000.00, 'CREDIT_CARD', 'REFUNDED', '2026-03-20', '2026-03-18', 'CC-11293847', 'Refunded – duplicate charge corrected.', '2026-03-15 06:00:00', '2026-03-20 03:00:00'),
+(9, 24, 29, 'INV-2026-0009', 2000.00, 'GCASH', 'PAID', '2026-03-12', '2026-03-15', 'GC-20394857', 'Advance booking reservation fee.', '2026-03-10 02:00:00', '2026-03-12 01:15:00'),
+(10, 22, 82, 'INV-2026-0010', 4000.00, 'BANK_TRANSFER', 'PAID', '2026-03-25', '2026-03-28', 'BT-39201748', 'Advance payment – AV equipment reservation.', '2026-03-18 01:00:00', '2026-03-25 07:00:00'),
+(21, 22, 82, 'INV-20260401-001', 15000.00, 'BANK_TRANSFER', 'PAID', '2026-04-10', '2026-04-15', 'BT-88421039', 'First 50% downpayment for Golden Gala.', '2026-04-01 01:00:00', '2026-04-10 06:22:00'),
+(22, 22, 82, 'INV-20260420-002', 9000.00, 'GCASH', 'PAID', '2026-04-28', '2026-04-30', 'GC-77302918', 'Second installment - venue and catering.', '2026-04-20 02:15:00', '2026-04-28 08:45:00'),
+(23, 22, 82, 'INV-20260501-003', 6000.00, 'CASH', 'PENDING', NULL, '2026-05-20', NULL, 'Final balance due before event day.', '2026-05-01 00:30:00', '2026-05-01 00:30:00'),
+(24, 24, 29, 'INV-20260328-004', 20000.00, 'BANK_TRANSFER', 'PAID', '2026-04-05', '2026-04-08', 'BT-66109234', 'Downpayment 50% for wedding event.', '2026-03-28 03:00:00', '2026-04-05 01:10:00'),
+(25, 24, 29, 'INV-20260415-005', 12000.00, 'PAYMAYA', 'PAID', '2026-04-22', '2026-04-25', 'PM-54321876', 'Second payment - decor and floral package.', '2026-04-15 05:00:00', '2026-04-22 09:30:00'),
+(26, 24, 29, 'INV-20260428-006', 5000.00, 'GCASH', 'PARTIAL', '2026-05-02', '2026-05-05', 'GC-90123456', 'Partial payment received; balance is 3000.', '2026-04-28 01:45:00', '2026-05-02 02:20:00'),
+(27, 24, 29, 'INV-20260503-007', 3000.00, 'CASH', 'OVERDUE', NULL, '2026-05-10', NULL, 'Remaining balance overdue as of May 11.', '2026-05-03 00:00:00', '2026-05-10 16:00:00'),
+(28, 22, 82, 'INV-20260315-008', 5000.00, 'CREDIT_CARD', 'REFUNDED', '2026-03-20', '2026-03-18', 'CC-11293847', 'Refunded - duplicate charge corrected.', '2026-03-15 06:00:00', '2026-03-20 03:00:00'),
+(29, 24, 29, 'INV-20260310-009', 2000.00, 'GCASH', 'PAID', '2026-03-12', '2026-03-15', 'GC-20394857', 'Advance booking reservation fee.', '2026-03-10 02:00:00', '2026-03-12 01:15:00'),
+(30, 22, 82, 'INV-20260318-010', 4000.00, 'BANK_TRANSFER', 'PAID', '2026-03-25', '2026-03-28', 'BT-39201748', 'Advance payment - AV equipment reservation.', '2026-03-18 01:00:00', '2026-03-25 07:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -193,6 +269,22 @@ CREATE TABLE `revenue_analytics` (
   `completed_events` int(11) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `revenue_analytics`
+--
+
+INSERT INTO `revenue_analytics` (`revenue_id`, `revenue_month`, `revenue_year`, `total_revenue`, `total_bookings`, `completed_events`, `created_at`) VALUES
+(1, 'August', '2025', 85000.00, 8, 3, '2025-08-31 15:59:00'),
+(2, 'September', '2025', 92500.00, 9, 4, '2025-09-30 15:59:00'),
+(3, 'October', '2025', 110000.00, 11, 5, '2025-10-31 15:59:00'),
+(4, 'November', '2025', 130000.00, 13, 6, '2025-11-30 15:59:00'),
+(5, 'December', '2025', 175000.00, 18, 9, '2025-12-31 15:59:00'),
+(6, 'January', '2026', 68000.00, 7, 3, '2026-01-31 15:59:00'),
+(7, 'February', '2026', 74000.00, 8, 3, '2026-02-28 15:59:00'),
+(8, 'March', '2026', 15000.00, 3, 1, '2026-03-31 15:59:00'),
+(9, 'April', '2026', 56000.00, 5, 1, '2026-04-30 15:59:00'),
+(10, 'May', '2026', 5000.00, 6, 0, '2026-05-15 02:00:00');
 
 -- --------------------------------------------------------
 
@@ -436,7 +528,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `analytics_summary`
 --
 ALTER TABLE `analytics_summary`
-  MODIFY `summary_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `summary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -448,13 +540,13 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `booking_analytics`
 --
 ALTER TABLE `booking_analytics`
-  MODIFY `booking_analytics_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_analytics_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `dashboard`
 --
 ALTER TABLE `dashboard`
-  MODIFY `dashboard_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `dashboard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `events`
@@ -466,19 +558,19 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `event_type_analytics`
 --
 ALTER TABLE `event_type_analytics`
-  MODIFY `event_type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `event_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `revenue_analytics`
 --
 ALTER TABLE `revenue_analytics`
-  MODIFY `revenue_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `revenue_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `top_performing_events`
@@ -490,7 +582,7 @@ ALTER TABLE `top_performing_events`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `user_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- Constraints for dumped tables

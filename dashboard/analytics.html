@@ -266,100 +266,131 @@
           if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
           return s;
         }
-        function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : ''; }
+        function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''; }
+        function fmtPHP(n) { return 'PHP ' + Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
-        const lines = [];
         const rDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        lines.push('Jazz Events - Analytics Report');
-        lines.push('Generated: ' + rDate);
-        lines.push('Events included: ' + evs.length);
-        lines.push('');
+        const L = [];
 
-        // --- EXECUTIVE SUMMARY ---
+        // === HEADER ===
+        L.push(',,JAZZ EVENTS MANAGEMENT');
+        L.push(',,ANALYTICS PERFORMANCE REPORT');
+        L.push(',,"Generated: ' + rDate + '"');
+        L.push(',');
+
+        // === EXECUTIVE SUMMARY ===
         if (secs.summary) {
           const totalRev = evs.reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
           const avgVal = evs.length ? totalRev / evs.length : 0;
           const clients = [...new Set(evs.map(e => e.client_id))].length;
+          const totalGuests = evs.reduce((s,e) => s + (parseInt(e.no_of_guests)||0), 0);
           const completed = evs.filter(e => e.status === 'COMPLETED').length;
           const planning = evs.filter(e => e.status === 'PLANNING').length;
           const ongoing = evs.filter(e => e.status === 'ONGOING').length;
           const blocked = evs.filter(e => e.status === 'BLOCKED').length;
+          const compRate = evs.length ? Math.round(completed/evs.length*100) : 0;
+          const cancelRate = evs.length ? Math.round(blocked/evs.length*100) : 0;
 
-          lines.push('=== EXECUTIVE SUMMARY ===');
-          lines.push('Metric,Value');
-          lines.push('Total Revenue,' + esc(totalRev.toFixed(2)));
-          lines.push('Total Events,' + evs.length);
-          lines.push('Avg. Event Value,' + esc(avgVal.toFixed(2)));
-          lines.push('Unique Clients,' + clients);
-          lines.push('Completed,' + completed);
-          lines.push('Planning,' + planning);
-          lines.push('Ongoing,' + ongoing);
-          lines.push('Blocked,' + blocked);
-          lines.push('');
+          L.push(',,KEY PERFORMANCE INDICATORS');
+          L.push('METRIC,VALUE,NOTES');
+          L.push('Total Events,' + evs.length + ',Events included in this report');
+          L.push('Total Revenue,' + esc(fmtPHP(totalRev)) + ',Combined event amounts');
+          L.push('Avg. Event Value,' + esc(fmtPHP(avgVal)) + ',Average revenue per event');
+          L.push('Total Guests,' + totalGuests + ',Combined guest count');
+          L.push('Unique Clients,' + clients + ',Distinct clients involved');
+          L.push('Completed,' + completed + ',' + compRate + '% completion rate');
+          L.push('Planning,' + planning + ',In event planning phase');
+          L.push('Ongoing,' + ongoing + ',Currently in progress');
+          L.push('Blocked,' + blocked + ',' + cancelRate + '% blocked rate');
+          L.push('Completion Rate,' + compRate + '%,');
+          L.push(',');
+
+          // --- STATUS DISTRIBUTION SUB-TABLE ---
+          L.push(',,EVENT STATUS DISTRIBUTION');
+          L.push('STATUS,COUNT,PERCENTAGE');
+          const sts = {PLANNING: planning, ONGOING: ongoing, COMPLETED: completed, BLOCKED: blocked};
+          Object.keys(sts).forEach(st => {
+            const pct = evs.length ? Math.round(sts[st]/evs.length*100) : 0;
+            L.push(st + ',' + sts[st] + ',' + pct + '%');
+          });
+          L.push('TOTAL,' + evs.length + ',100%');
+          L.push(',');
         }
 
-        // --- REVENUE BREAKDOWN ---
+        // === REVENUE BREAKDOWN ===
         if (secs.revenue) {
           const monthly = {};
-          const mNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const mNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           evs.forEach(e => {
             const d = new Date(e.date);
             const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-            if (!monthly[k]) monthly[k] = { label: mNames[d.getMonth()] + ' ' + d.getFullYear(), total: 0, count: 0 };
+            if (!monthly[k]) monthly[k] = { label: mNames[d.getMonth()] + ' ' + d.getFullYear(), total: 0, count: 0, guests: 0 };
             monthly[k].total += parseFloat(e.amount) || 0;
             monthly[k].count++;
+            monthly[k].guests += parseInt(e.no_of_guests) || 0;
           });
           const keys = Object.keys(monthly).sort();
-
-          lines.push('=== REVENUE BREAKDOWN ===');
-          lines.push('Month,Events,Revenue');
-          keys.forEach(k => {
-            lines.push(esc(monthly[k].label) + ',' + monthly[k].count + ',' + monthly[k].total.toFixed(2));
-          });
           const grandTotal = keys.reduce((s, k) => s + monthly[k].total, 0);
-          lines.push('Total,' + evs.length + ',' + grandTotal.toFixed(2));
-          lines.push('');
+          const grandCount = keys.reduce((s, k) => s + monthly[k].count, 0);
+          const grandGuests = keys.reduce((s, k) => s + monthly[k].guests, 0);
+
+          L.push(',,REVENUE BREAKDOWN');
+          L.push('MONTH,EVENTS,GUESTS,REVENUE (PHP)');
+          keys.forEach(k => {
+            L.push(esc(monthly[k].label) + ',' + monthly[k].count + ',' + monthly[k].guests + ',' + esc(fmtPHP(monthly[k].total)));
+          });
+          L.push('TOTAL,' + grandCount + ',' + grandGuests + ',' + esc(fmtPHP(grandTotal)));
+          L.push(',');
         }
 
-        // --- EVENT TYPES ---
+        // === EVENT TYPES ===
         if (secs.types) {
           const counts = {};
-          evs.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
-          const types = Object.keys(counts).sort();
+          const amts = {};
+          evs.forEach(e => {
+            counts[e.type] = (counts[e.type] || 0) + 1;
+            amts[e.type] = (amts[e.type] || 0) + (parseFloat(e.amount) || 0);
+          });
+          const types = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
           const total = evs.length;
 
-          lines.push('=== EVENT TYPES DISTRIBUTION ===');
-          lines.push('Type,Count,Percentage');
+          L.push(',,EVENT TYPES DISTRIBUTION');
+          L.push('EVENT TYPE,TOTAL EVENTS,PERCENTAGE,TOTAL REVENUE (PHP)');
           types.forEach(t => {
             const pct = total ? Math.round(counts[t] / total * 100) : 0;
-            lines.push(esc(t) + ',' + counts[t] + ',' + pct + '%');
+            L.push(esc(t) + ',' + counts[t] + ',' + pct + '%,' + esc(fmtPHP(amts[t])));
           });
-          lines.push('');
+          const totalAmt = Object.values(amts).reduce((s,v) => s+v, 0);
+          L.push('TOTAL,' + total + ',100%,' + esc(fmtPHP(totalAmt)));
+          L.push(',');
         }
 
-        // --- EVENTS DETAIL ---
+        // === EVENTS DETAIL ===
         if (secs.events) {
-          lines.push('=== EVENTS DETAIL ===');
-          lines.push('Event ID,Event Name,Type,Date,Venue,Theme,Guests,Client Name,Client ID,Amount,Status');
+          L.push(',,EVENTS DETAIL');
+          L.push('EVENT ID,EVENT NAME,TYPE,DATE,VENUE,THEME,GUESTS,CLIENT NAME,CLIENT ID,AMOUNT (PHP),STATUS');
           evs.forEach(ev => {
-            lines.push([
+            L.push([
               ev.event_id || '',
-              ev.name || '',
-              ev.type || '',
+              esc(ev.name || ''),
+              esc(ev.type || ''),
               fmtDate(ev.date),
-              ev.venue || '',
-              ev.theme || '',
+              esc(ev.venue || ''),
+              esc(ev.theme || ''),
               ev.no_of_guests || 0,
-              ev.client_name || '',
+              esc(ev.client_name || ''),
               ev.client_id || '',
-              parseFloat(ev.amount) || 0,
+              esc(fmtPHP(ev.amount)),
               ev.status || ''
-            ].map(esc).join(','));
+            ].join(','));
           });
-          lines.push('');
+          L.push(',');
         }
 
-        const csv = lines.join('\n');
+        // === FOOTER ===
+        L.push('This report is system-generated by the Jazz Events Management System. For internal use only.');
+
+        const csv = L.join('\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
