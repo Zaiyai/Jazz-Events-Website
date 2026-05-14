@@ -53,6 +53,15 @@ function validate(id, errId) {
   return !empty;
 }
 
+function validatePasswordComplex(pass) {
+  if (pass.length < 8) return "Must be at least 8 characters.";
+  if (!/[A-Z]/.test(pass)) return "Must contain at least one uppercase letter.";
+  if (!/[a-z]/.test(pass)) return "Must contain at least one lowercase letter.";
+  if (!/[0-9]/.test(pass)) return "Must contain at least one number.";
+  if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(pass)) return "Must contain at least one special character.";
+  return "";
+}
+
 async function handleRegister() {
   const digitInputs = document.querySelectorAll('.reg-digit-input');
   const code = Array.from(digitInputs).map(i => i.value).join('');
@@ -86,6 +95,20 @@ async function handleRegister() {
   }
 
   const pass = document.getElementById('pass').value, pass2 = document.getElementById('pass2').value;
+  const passErr = document.getElementById('pass-err');
+  
+  if (pass) {
+    const pwdErrorMsg = validatePasswordComplex(pass);
+    if (pwdErrorMsg !== "") {
+      document.getElementById('pass').classList.add('has-error');
+      passErr.textContent = pwdErrorMsg;
+      passErr.classList.add('show');
+      return;
+    } else {
+      passErr.textContent = "Password is required."; // Reset to default if empty next time
+    }
+  }
+
   const p2err = document.getElementById('pass2-err');
 
   if (pass && pass2 && pass !== pass2) {
