@@ -485,23 +485,19 @@ function renderDonut() {
   const counts = {};
   events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
   const total = events.length;
-
-  // Group into Corporate / Wedding / Private
-  const buckets = { Corporate: 0, Wedding: 0, Private: 0 };
-  Object.entries(counts).forEach(([type, n]) => {
-    if (type.toLowerCase().includes('wedding')) buckets.Wedding += n;
-    else if (type.toLowerCase().includes('private') || type.toLowerCase().includes('birthday')) buckets.Private += n;
-    else buckets.Corporate += n;
-  });
-
-  const colors = ['#d4af37','#f0d78c','#7a6020'];
-  const labels = Object.keys(buckets);
-  const values = Object.values(buckets);
+  
+  // Dynamic color palette for all event types
+  const colorPalette = ['#d4af37','#f0d78c','#7a6020','#b8860b','#daa520','#cd853f','#8b4513','#a0522d'];
+  
+  // Get all unique event types sorted for consistency
+  const labels = Object.keys(counts).sort();
+  const values = labels.map(type => counts[type]);
+  const colors = labels.map((_, i) => colorPalette[i % colorPalette.length]);
 
   const R = 55, STROKE = 26;
   const circumference = 2 * Math.PI * R;
   let offset = 0;
-  const svgEl = document.getElementById('donut-svg');
+  const svgEl = document.getElementsByClassName('donut-svg')[0];
   if (!svgEl) return;
   const existingArcs = svgEl.querySelectorAll('.donut-arc');
   existingArcs.forEach(a => a.remove());
@@ -516,9 +512,9 @@ function renderDonut() {
     arc.setAttribute('stroke', colors[i]);
     arc.setAttribute('stroke-width', STROKE);
     arc.setAttribute('stroke-dasharray', `${dash} ${circumference - dash}`);
-    arc.setAttribute('stroke-dashoffset', -offset * circumference / (2 * Math.PI * R) * R * 2 * Math.PI);
+    arc.setAttribute('stroke-dashoffset', -offset);
     arc.setAttribute('transform','rotate(-90 80 80)');
-    svgEl.insertBefore(arc, svgEl.lastElementChild);
+    svgEl.appendChild(arc);
     offset += pct * circumference;
   });
 
