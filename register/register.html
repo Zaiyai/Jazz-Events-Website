@@ -28,14 +28,13 @@
       <a href="../home.html#cta-section">Contact</a>
     </nav>
 
-    <div class="nav-right-group">
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input id="search-input" type="text" placeholder="Search Jazz Events...">
-        <ul id="search-content"></ul>
-      </div>
-      <div id="nav-auth-slot"></div>
+    <div class="search-wrapper">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input id="search-input" type="text" placeholder="Search Jazz Events...">
+      <ul id="search-content"></ul>
     </div>
+
+    <div id="nav-auth-slot"></div>
   </div>
 </header>
 
@@ -194,12 +193,9 @@
 </footer>
 
 <div class="page-toast" id="toast"></div>
-<script src="../scripts/main.js"></script>
+<script src="../scripts/main.js?v=2"></script>
+<script src="../scripts/search.js"></script>
 <script src="../scripts/db.js"></script>
 <script src="register.js"></script>
-<script>
-  document.getElementById('burger')?.addEventListener('click', () => document.getElementById('nav-overlay').classList.add('open'));
-  document.getElementById('close-overlay')?.addEventListener('click', () => document.getElementById('nav-overlay').classList.remove('open'));
-</script>
 </body>
 </html>
