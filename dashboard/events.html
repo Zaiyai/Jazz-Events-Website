@@ -65,7 +65,7 @@
         <button class="btn-outline">
           <i class="fa-solid fa-filter"></i> Filter
         </button>
-        <button class="btn-outline" style="margin-right: 12px;">
+        <button class="btn-outline" style="margin-right: 12px;" onclick="openExportModal()">
           <i class="fa-solid fa-upload"></i> Export
         </button>
         <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;" onclick="window.location.href='dashboard.html'">
@@ -115,33 +115,221 @@
 
 <div id="toast" class="toast"></div>
 
+<!-- Export Modal -->
+<div class="modal-overlay" id="modal-export">
+  <div class="modal-box" style="max-width:600px;">
+    <div class="modal-title">
+      <span>Export Event Reports</span>
+      <button class="modal-close" onclick="closeModal('modal-export')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-gray);margin-bottom:12px;">Select events to include in the PDF report.</p>
+    <!-- Filter bar -->
+    <div class="export-filter-bar">
+      <div class="export-search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="export-search" placeholder="Search by name, type, venue..." oninput="applyExportFilters()">
+      </div>
+      <select id="export-status-filter" class="export-filter-select" onchange="applyExportFilters()">
+        <option value="">All Statuses</option>
+        <option value="PLANNING">Planning</option>
+        <option value="ONGOING">Ongoing</option>
+        <option value="COMPLETED">Completed</option>
+        <option value="BLOCKED">Blocked</option>
+      </select>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:var(--text-gray);cursor:pointer;">
+        <input type="checkbox" id="export-select-all" onchange="toggleSelectAll(this.checked)" style="accent-color:var(--jazz-gold);">
+        Select All
+      </label>
+      <span id="export-selected-count" style="font-size:0.7rem;color:var(--text-gray);">0 selected</span>
+    </div>
+    <div id="export-events-list" style="max-height:340px;overflow-y:auto;border:1px solid var(--border-dark);border-radius:8px;background:var(--bg-input);"></div>
+    <div class="modal-footer" style="margin-top:16px;">
+      <button class="btn-ghost" onclick="closeModal('modal-export')">Cancel</button>
+      <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:0.78rem;" onclick="downloadSelectedCSV()">
+        <i class="fa-solid fa-download"></i> Download CSV
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .export-filter-bar{display:flex;gap:10px;margin-bottom:12px}
+  .export-search-wrap{flex:1;position:relative}
+  .export-search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--jazz-gold);font-size:.7rem;pointer-events:none}
+  .export-search-wrap input{width:100%;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:6px;padding:8px 10px 8px 30px;color:var(--text-white);font-size:.75rem;outline:none;font-family:var(--font-sans);transition:border .2s}
+  .export-search-wrap input:focus{border-color:var(--jazz-gold)}
+  .export-search-wrap input::placeholder{color:#4b5563}
+  .export-filter-select{background:var(--bg-card);border:1px solid var(--border-dark);border-radius:6px;padding:8px 12px;color:var(--text-gray);font-size:.72rem;outline:none;cursor:pointer;font-family:var(--font-sans);min-width:130px}
+  .export-filter-select:focus{border-color:var(--jazz-gold)}
+  .export-event-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border-dark);transition:background .15s;cursor:pointer}
+  .export-event-row:last-child{border-bottom:none}
+  .export-event-row:hover{background:rgba(212,175,55,.05)}
+  .export-event-row input[type=checkbox]{accent-color:var(--jazz-gold);width:16px;height:16px;margin-top:2px;flex-shrink:0;cursor:pointer}
+  .export-ev-info{flex:1;min-width:0}
+  .export-ev-name{font-size:.82rem;font-weight:600;color:var(--text-white);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .export-ev-meta{font-size:.68rem;color:var(--text-gray);display:flex;flex-wrap:wrap;gap:6px 14px}
+  .export-ev-meta span{display:flex;align-items:center;gap:4px}
+  .export-ev-meta i{color:var(--jazz-gold);font-size:.6rem;width:12px;text-align:center}
+  .export-ev-status{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:9999px;flex-shrink:0;margin-top:2px}
+  .export-st-planning{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+  .export-st-ongoing{background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.3)}
+  .export-st-completed{background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+  .export-st-blocked{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+  .export-no-results{padding:24px;text-align:center;color:var(--text-gray);font-size:.78rem}
+</style>
+
 <script src="../scripts/db.js"></script>
 <script src="dashboard_ui.js"></script>
 <script src="dashboard.js"></script>
 <script>
-// Initialize events page
+let exportEventsCache = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await DB.getUser();
   if (!user) window.location.href = '../home.html';
-  
-  // Populate sidebar user info
   var words = user.name.trim().split(/\s+/);
   var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
   const pfp = document.getElementById('profile-avatar-initials');
   document.getElementById('sidebar-name').textContent = user.name;
   if (user.profile_picture) {
-    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
-    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
   } else {
     pfp.textContent = initials;
     document.getElementById('sidebar-avatar').textContent = initials;
   }
-  
-  // Render events grid and update stats
   await renderEventsGrid();
   await updateEventStats();
 });
+
+async function openExportModal() {
+  openModal('modal-export');
+  // Reset filters
+  const searchEl = document.getElementById('export-search');
+  const statusEl = document.getElementById('export-status-filter');
+  if (searchEl) searchEl.value = '';
+  if (statusEl) statusEl.value = '';
+  const list = document.getElementById('export-events-list');
+  list.innerHTML = '<div class="export-no-results"><i class="fa-solid fa-spinner fa-spin" style="color:var(--jazz-gold)"></i> Loading events...</div>';
+  exportEventsCache = await getData('events');
+  if (!exportEventsCache || exportEventsCache.length === 0) {
+    list.innerHTML = '<div class="export-no-results">No events found.</div>';
+    return;
+  }
+  renderExportList();
+}
+
+function getFilteredExportEvents() {
+  const query = (document.getElementById('export-search')?.value || '').toLowerCase().trim();
+  const statusFilter = document.getElementById('export-status-filter')?.value || '';
+  return exportEventsCache.map((ev, i) => ({ ev, idx: i })).filter(({ ev }) => {
+    if (statusFilter && ev.status !== statusFilter) return false;
+    if (query) {
+      const searchable = [ev.name, ev.type, ev.venue, ev.theme, ev.client_name].filter(Boolean).join(' ').toLowerCase();
+      if (!searchable.includes(query)) return false;
+    }
+    return true;
+  });
+}
+
+function renderExportList() {
+  const list = document.getElementById('export-events-list');
+  const statusCls = { PLANNING:'export-st-planning', ONGOING:'export-st-ongoing', COMPLETED:'export-st-completed', BLOCKED:'export-st-blocked' };
+  const statusLbl = { PLANNING:'Planning', ONGOING:'Ongoing', COMPLETED:'Completed', BLOCKED:'Blocked' };
+  const filtered = getFilteredExportEvents();
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="export-no-results"><i class="fa-solid fa-calendar-xmark" style="color:var(--jazz-gold);margin-right:6px"></i>No events match your filters.</div>';
+    document.getElementById('export-select-all').checked = false;
+    updateExportCount();
+    return;
+  }
+  list.innerHTML = filtered.map(({ ev, idx }) => {
+    const d = ev.date ? new Date(ev.date) : null;
+    const dateStr = d ? d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '\u2014';
+    const amt = parseFloat(ev.amount)||0;
+    const amtStr = 'P'+amt.toLocaleString('en-PH');
+    const sc = statusCls[ev.status]||'export-st-planning';
+    const sl = statusLbl[ev.status]||ev.status;
+    return `<label class="export-event-row">
+      <input type="checkbox" class="export-cb" data-idx="${idx}" onchange="updateExportCount()">
+      <div class="export-ev-info">
+        <div class="export-ev-name">${ev.name||'Untitled'}</div>
+        <div class="export-ev-meta">
+          <span><i class="fa-solid fa-tag"></i>${ev.type||'Event'}</span>
+          <span><i class="fa-regular fa-calendar"></i>${dateStr}</span>
+          <span><i class="fa-solid fa-users"></i>${ev.no_of_guests||0} guests</span>
+          <span><i class="fa-solid fa-location-dot"></i>${ev.venue||'\u2014'}</span>
+          <span><i class="fa-solid fa-peso-sign"></i>${amtStr}</span>
+        </div>
+      </div>
+      <span class="export-ev-status ${sc}">${sl}</span>
+    </label>`;
+  }).join('');
+  document.getElementById('export-select-all').checked = false;
+  updateExportCount();
+}
+
+function applyExportFilters() {
+  renderExportList();
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.export-cb').forEach(cb => cb.checked = checked);
+  updateExportCount();
+}
+
+function updateExportCount() {
+  const checked = document.querySelectorAll('.export-cb:checked').length;
+  document.getElementById('export-selected-count').textContent = checked + ' selected';
+  const allCb = document.getElementById('export-select-all');
+  const total = document.querySelectorAll('.export-cb').length;
+  allCb.checked = total > 0 && checked === total;
+}
+
+function downloadSelectedCSV() {
+  const indices = [];
+  document.querySelectorAll('.export-cb:checked').forEach(cb => indices.push(parseInt(cb.dataset.idx)));
+  if (indices.length === 0) { showToast('Please select at least one event.','error'); return; }
+
+  const selected = indices.map(i => exportEventsCache[i]);
+
+  function esc(val) {
+    const s = String(val == null ? '' : val);
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+  function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}) : ''; }
+
+  const headers = ['Event ID','Event Name','Type','Date','Venue','Theme','Guests','Client Name','Client ID','Amount','Status'];
+  const rows = selected.map(ev => [
+    ev.event_id || '',
+    ev.name || '',
+    ev.type || '',
+    fmtDate(ev.date),
+    ev.venue || '',
+    ev.theme || '',
+    ev.no_of_guests || 0,
+    ev.client_name || '',
+    ev.client_id || '',
+    parseFloat(ev.amount) || 0,
+    ev.status || ''
+  ]);
+
+  const csv = [headers.map(esc).join(','), ...rows.map(r => r.map(esc).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Jazz_Events_Report_' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV exported! (' + selected.length + ' event' + (selected.length > 1 ? 's' : '') + ')');
+  closeModal('modal-export');
+}
 </script>
 
 </body>
 </html>
+
