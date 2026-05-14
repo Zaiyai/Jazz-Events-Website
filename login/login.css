@@ -227,7 +227,7 @@
     font-size: 0.8rem;
     font-family: var(--font-sans);
     color: #fff;
-    z-index: 9999;
+    z-index: 99999;
     box-shadow: 0 8px 30px rgba(0,0,0,0.5);
     transform: translateY(80px);
     opacity: 0;
