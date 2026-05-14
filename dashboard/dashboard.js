@@ -477,7 +477,7 @@ async function renderCalendar() {
   document.getElementById('cal-grid').innerHTML = html;
 }
 
-/* ── Donut chart ──────────────────────────────────────────── */
+/* ── Donut chart (Chart.js) ───────────────────────────────── */
 function renderDonut() {
   const counts = {};
   events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
@@ -491,100 +491,165 @@ function renderDonut() {
   const values = labels.map(type => counts[type]);
   const colors = labels.map((_, i) => colorPalette[i % colorPalette.length]);
 
-  const R = 55, STROKE = 26;
-  const circumference = 2 * Math.PI * R;
-  let offset = 0;
-  const svgEl = document.getElementsByClassName('donut-svg')[0];
-  if (!svgEl) return;
-  const existingArcs = svgEl.querySelectorAll('.donut-arc');
-  existingArcs.forEach(a => a.remove());
+  const canvas = document.getElementById('dashDonutChart');
+  if (!canvas) return;
 
-  labels.forEach((label, i) => {
-    const pct  = total ? values[i] / total : 0;
-    const dash = pct * circumference;
-    const arc  = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    arc.setAttribute('class','donut-arc');
-    arc.setAttribute('cx','80'); arc.setAttribute('cy','80'); arc.setAttribute('r', R);
-    arc.setAttribute('fill','none');
-    arc.setAttribute('stroke', colors[i]);
-    arc.setAttribute('stroke-width', STROKE);
-    arc.setAttribute('stroke-dasharray', `${dash} ${circumference - dash}`);
-    arc.setAttribute('stroke-dashoffset', -offset);
-    arc.setAttribute('transform','rotate(-90 80 80)');
-    svgEl.appendChild(arc);
-    offset += pct * circumference;
-  });
-
-  // Inner circle
-  let inner = svgEl.querySelector('.donut-inner');
-  if (!inner) {
-    inner = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    inner.setAttribute('class','donut-inner');
-    inner.setAttribute('cx','80'); inner.setAttribute('cy','80');
-    inner.setAttribute('r','42'); inner.setAttribute('fill','#1a1a1a');
-    svgEl.appendChild(inner);
+  // Destroy previous chart if exists
+  if (canvas._chartInstance) {
+    canvas._chartInstance.destroy();
   }
+
+  const ctx = canvas.getContext('2d');
+  canvas._chartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels.length > 0 ? labels : ['No Data'],
+      datasets: [{
+        data: values.length > 0 ? values : [1],
+        backgroundColor: labels.length > 0 ? colors : ['#333'],
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      cutout: '70%',
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#d4af37',
+          borderWidth: 1,
+          titleColor: '#d4af37',
+          bodyColor: '#e5e7eb',
+          padding: 10,
+          displayColors: true,
+          callbacks: {
+            label: function(context) {
+              const pct = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
+              return ` ${context.label}: ${context.parsed} (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
 
   const legend = document.getElementById('donut-legend');
   if (legend) {
-    legend.innerHTML = labels.map((l, i) => {
-      const pct = total ? Math.round(values[i]/total*100) : 0;
-      return `<div class="legend-item">
-        <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l}</div>
-        <div class="legend-pct">${pct}%</div>
-      </div>`;
-    }).join('');
+    if (labels.length > 0) {
+      legend.innerHTML = labels.map((l, i) => {
+        const pct = total ? Math.round(values[i]/total*100) : 0;
+        return `<div class="legend-item">
+          <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l} (${values[i]})</div>
+          <div class="legend-pct">${pct}%</div>
+        </div>`;
+      }).join('');
+    } else {
+      legend.innerHTML = '<div class="legend-item"><span style="color:#4b5563;">No event data</span></div>';
+    }
   }
 }
 
-/* ── Revenue Line Chart ───────────────────────────────────── */
+/* ── Revenue Line Chart (Chart.js) ────────────────────────── */
 function renderRevenueChart() {
-  const data = [28000, 32000, 35000, 38000, 42000, 48295]; // Last 6 months
-  const labels = ['Jul','Aug','Sep','Oct','Nov','Dec'];
-  const W = 580, H = 200, PAD = { t: 20, r: 20, b: 30, l: 45 };
-  const chartW = W - PAD.l - PAD.r;
-  const chartH = H - PAD.t - PAD.b;
-  const minV = Math.min(...data) * 0.9;
-  const maxV = Math.max(...data) * 1.05;
+  const canvas = document.getElementById('dashRevenueChart');
+  if (!canvas) return;
 
-  const xScale = i => PAD.l + (i / (data.length - 1)) * chartW;
-  const yScale = v => PAD.t + chartH - ((v - minV) / (maxV - minV)) * chartH;
+  // Destroy previous chart if exists
+  if (canvas._chartInstance) {
+    canvas._chartInstance.destroy();
+  }
 
-  const points = data.map((v, i) => `${xScale(i)},${yScale(v)}`).join(' ');
-  const areaEnd = `${xScale(data.length-1)},${H - PAD.b} ${xScale(0)},${H - PAD.b}`;
+  // Group event amounts by month from actual data
+  const monthlyData = {};
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  const gridLines = [0.25, 0.5, 0.75, 1].map(f => {
-    const y = PAD.t + chartH - f * chartH;
-    const val = Math.round(minV + f * (maxV - minV));
-    return `
-      <line x1="${PAD.l}" y1="${y}" x2="${W - PAD.r}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-      <text x="${PAD.l - 6}" y="${y + 4}" text-anchor="end" fill="#4b5563" font-size="9" font-family="Montserrat">${val >= 1000 ? (val/1000).toFixed(0)+'k' : val}</text>
-    `;
-  }).join('');
+  if (Array.isArray(events) && events.length > 0) {
+    events.forEach(ev => {
+      const d = new Date(ev.date);
+      const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+      const label = monthNames[d.getMonth()] + ' ' + d.getFullYear();
+      if (!monthlyData[key]) monthlyData[key] = { label: monthNames[d.getMonth()], fullLabel: label, total: 0 };
+      monthlyData[key].total += parseFloat(ev.amount) || 0;
+    });
+  }
 
-  const xLabels = labels.map((l, i) =>
-    `<text x="${xScale(i)}" y="${H - 4}" text-anchor="middle" fill="#4b5563" font-size="9" font-family="Montserrat">${l}</text>`
-  ).join('');
+  // Sort by key and take last 6
+  const sortedKeys = Object.keys(monthlyData).sort();
+  const recentKeys = sortedKeys.slice(-6);
 
-  const circles = data.map((v, i) =>
-    `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="${i === data.length-1 ? 5.5 : 4}" fill="#d4af37" stroke="#1a1a1a" stroke-width="2"/>`
-  ).join('');
+  const labels = recentKeys.length > 0 ? recentKeys.map(k => monthlyData[k].label) : ['—'];
+  const values = recentKeys.length > 0 ? recentKeys.map(k => monthlyData[k].total) : [0];
 
-  const svg = document.getElementById('revenue-svg');
-  if (!svg) return;
-  svg.innerHTML = `
-    <defs>
-      <linearGradient id="revGrad2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#d4af37" stop-opacity="0.28"/>
-        <stop offset="100%" stop-color="#d4af37" stop-opacity="0.02"/>
-      </linearGradient>
-    </defs>
-    ${gridLines}
-    ${xLabels}
-    <polygon points="${points} ${areaEnd}" fill="url(#revGrad2)"/>
-    <polyline points="${points}" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    ${circles}
-  `;
+  const ctx = canvas.getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  gradient.addColorStop(0, 'rgba(212, 175, 55, 0.25)');
+  gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
+  canvas._chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Revenue',
+        data: values,
+        borderColor: '#d4af37',
+        borderWidth: 2.5,
+        backgroundColor: gradient,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#d4af37',
+        pointBorderColor: '#1a1a1a',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#d4af37',
+        pointHoverBorderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#d4af37',
+          borderWidth: 1,
+          titleColor: '#d4af37',
+          bodyColor: '#e5e7eb',
+          padding: 12,
+          displayColors: false,
+          callbacks: {
+            label: function(context) {
+              return '₱' + context.parsed.y.toLocaleString('en-PH');
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+          ticks: {
+            color: '#666',
+            font: { size: 10, family: 'Montserrat' },
+            callback: val => '₱' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val)
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#666', font: { size: 10, family: 'Montserrat' } }
+        }
+      }
+    }
+  });
 }
 
 /* ── Utilities ────────────────────────────────────────────── */

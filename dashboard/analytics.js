@@ -160,55 +160,74 @@ function initRevenueChart() {
 }
 
 /* ── Event Types Doughnut ─────────────────────────────────── */
-function initEventTypesChart() {
-  const ctx = document.getElementById('eventTypesChart').getContext('2d');
+async function initEventTypesChart() {
+  const canvas = document.getElementById('eventTypesChart');
+  if (!canvas) return;
 
-  // Combine event types from both events and bookings
-  const typeCounts = {};
-  (analyticsData.event_types || []).forEach(t => {
-    typeCounts[t.type] = (typeCounts[t.type] || 0) + parseInt(t.cnt);
-  });
-  (analyticsData.booking_types || []).forEach(t => {
-    typeCounts[t.type] = (typeCounts[t.type] || 0) + parseInt(t.cnt);
-  });
+  // Fetch events directly from the database, same as dashboard
+  const events = await getData('events');
 
-  const typeLabels = Object.keys(typeCounts);
-  const typeValues = typeLabels.map(k => typeCounts[k]);
-  const total = typeValues.reduce((a, b) => a + b, 0);
+  // Count types from actual event data
+  const counts = {};
+  if (Array.isArray(events)) {
+    events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
+  }
+  const total = Array.isArray(events) ? events.length : 0;
 
-  // Color palette for up to 8 categories
-  const colorPalette = ['#d4af37', '#e2c87b', '#333', '#8b7355', '#cd853f', '#daa520', '#b8860b', '#7a6020'];
-  const colors = typeLabels.map((_, i) => colorPalette[i % colorPalette.length]);
+  // Dynamic color palette for all event types
+  const colorPalette = ['#d4af37', '#f0d78c', '#7a6020', '#b8860b', '#daa520', '#cd853f', '#8b4513', '#a0522d'];
 
+  const labels = Object.keys(counts).sort();
+  const values = labels.map(type => counts[type]);
+  const colors = labels.map((_, i) => colorPalette[i % colorPalette.length]);
+
+  const ctx = canvas.getContext('2d');
   new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: typeLabels.length > 0 ? typeLabels : ['No Data'],
+      labels: labels.length > 0 ? labels : ['No Data'],
       datasets: [{
-        data: typeValues.length > 0 ? typeValues : [1],
-        backgroundColor: typeLabels.length > 0 ? colors : ['#333'],
+        data: values.length > 0 ? values : [1],
+        backgroundColor: labels.length > 0 ? colors : ['#333'],
         borderWidth: 0,
-        hoverOffset: 4
+        hoverOffset: 6
       }]
     },
     options: {
       cutout: '70%',
       responsive: true,
       maintainAspectRatio: true,
-      plugins: { legend: { display: false } }
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#d4af37',
+          borderWidth: 1,
+          titleColor: '#d4af37',
+          bodyColor: '#e5e7eb',
+          padding: 10,
+          displayColors: true,
+          callbacks: {
+            label: function(context) {
+              const pct = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
+              return ` ${context.label}: ${context.parsed} (${pct}%)`;
+            }
+          }
+        }
+      }
     }
   });
 
   // Render legend
   const legendEl = document.getElementById('pieLegend');
-  if (typeLabels.length > 0) {
-    legendEl.innerHTML = typeLabels.map((label, i) => {
-      const pct = total > 0 ? Math.round((typeValues[i] / total) * 100) : 0;
+  if (labels.length > 0) {
+    legendEl.innerHTML = labels.map((label, i) => {
+      const pct = total > 0 ? Math.round((values[i] / total) * 100) : 0;
       return `
         <div class="legend-item">
           <div class="legend-left">
             <div class="legend-dot" style="background:${colors[i]}"></div>
-            <span>${label} (${typeValues[i]})</span>
+            <span>${label} (${values[i]})</span>
           </div>
           <span class="legend-value">${pct}%</span>
         </div>
