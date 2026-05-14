@@ -225,6 +225,21 @@ async function firstSubmit() {
         if (emailErr) emailErr.classList.remove('show');
     }
 
+    let phoneOk = validate('phone', 'phone-err');
+    const phoneInput = document.getElementById('phone');
+    const phoneErr = document.getElementById('phone-err');
+    if (phoneOk) {
+        const digits = phoneInput.value.replace(/\D/g, '');
+        if (digits.length !== 11) {
+            phoneInput.classList.add('has-error');
+            phoneErr.innerHTML = "Phone number must be exactly 11 digits.";
+            phoneErr.classList.add('show');
+            phoneOk = false;
+        } else {
+            phoneErr.innerHTML = "Phone Number is required.";
+        }
+    }
+
     const ok = [
         validate('name','name-err'),
         typeOk,
@@ -232,7 +247,7 @@ async function firstSubmit() {
         validate('attendees','attendees-err'),
         validate('venue','venue-err'),
         validate('theme','theme-err'),
-        validate('phone','phone-err'),
+        phoneOk,
         emailOk].every(Boolean);
         
     if (!ok) {
