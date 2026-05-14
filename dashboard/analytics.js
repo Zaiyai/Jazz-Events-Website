@@ -73,37 +73,31 @@ function renderStatsCards() {
   const s = analyticsData.stats;
 
   // Total Revenue
-  const revenueEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(1) .page-stat-value');
-  if (revenueEl) revenueEl.textContent = formatPesoCompact(s.total_revenue);
+  const v1 = document.getElementById('an-val-1');
+  const s1 = document.getElementById('an-sub-1');
+  if (v1) v1.textContent = formatPesoCompact(s.total_revenue);
+  if (s1) s1.innerHTML = '<i class="fa-solid fa-chart-bar"></i> From ' + s.total_events + ' events';
 
   // Total Clients
-  const clientsEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(2) .page-stat-value');
-  if (clientsEl) clientsEl.textContent = s.total_clients;
+  const v2 = document.getElementById('an-val-2');
+  const s2 = document.getElementById('an-sub-2');
+  if (v2) v2.textContent = s.total_clients;
+  if (s2) s2.innerHTML = '<i class="fa-solid fa-users"></i> Registered clients';
 
   // Avg Event Value
-  const avgEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(3) .page-stat-value');
-  if (avgEl) avgEl.textContent = formatPesoCompact(s.avg_event_value);
+  const v3 = document.getElementById('an-val-3');
+  const s3 = document.getElementById('an-sub-3');
+  if (v3) v3.textContent = formatPesoCompact(s.avg_event_value);
+  if (s3) s3.innerHTML = '<i class="fa-solid fa-calculator"></i> Per event average';
 
-  // Completed / Total ratio (replaces Client Satisfaction)
-  const satEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(4) .page-stat-value');
-  if (satEl) {
+  // Completion Rate
+  const v4 = document.getElementById('an-val-4');
+  const s4 = document.getElementById('an-sub-4');
+  if (v4) {
     const pct = s.total_events > 0 ? ((s.completed_events / s.total_events) * 100).toFixed(1) : '0.0';
-    satEl.textContent = pct + '%';
+    v4.textContent = pct + '%';
   }
-
-  // Update the stat labels to match actual data
-  const labels = document.querySelectorAll('.stats-grid-4 .page-stat-card .page-stat-label');
-  if (labels[0]) labels[0].textContent = 'TOTAL REVENUE';
-  if (labels[1]) labels[1].textContent = 'TOTAL CLIENTS';
-  if (labels[2]) labels[2].textContent = 'AVG. EVENT VALUE';
-  if (labels[3]) labels[3].textContent = 'COMPLETION RATE';
-
-  // Update sub-text with actual counts
-  const subs = document.querySelectorAll('.stats-grid-4 .page-stat-card .page-stat-sub');
-  if (subs[0]) subs[0].innerHTML = '<i class="fa-solid fa-chart-bar"></i> From ' + s.total_events + ' events';
-  if (subs[1]) subs[1].innerHTML = '<i class="fa-solid fa-users"></i> Registered clients';
-  if (subs[2]) subs[2].innerHTML = '<i class="fa-solid fa-calculator"></i> Per event average';
-  if (subs[3]) subs[3].innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + s.completed_events + ' of ' + s.total_events + ' events';
+  if (s4) s4.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + s.completed_events + ' of ' + s.total_events + ' events';
 }
 
 function formatPesoCompact(val) {
