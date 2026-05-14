@@ -13,7 +13,7 @@
                     nameDisplay.textContent = user.name || 'N/A';
                 }
 
-                // Update Avatar
+                // Update Avatar/Initials
                 if (container) {
                     if (user.profile_picture) {
                         container.innerHTML = `<img src="../${user.profile_picture}" alt="Profile" class="settings-profile-image" id="profile-img">`;
@@ -23,9 +23,15 @@
                         container.innerHTML = `<div class="settings-profile-initials">${initials}</div>`;
                     }
                 }
+
+                // Update Email across settings pages
+                const emailDisplay = document.getElementById('user-email') || document.getElementById('security-linked-email');
+                if (emailDisplay) {
+                    emailDisplay.textContent = user.email || 'N/A';
+                }
             }
         } catch (error) {
-            console.error('Error updating settings left box:', error);
+            console.error('Error fetching user for settings:', error);
         }
     }
 

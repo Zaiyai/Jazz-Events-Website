@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings (Security) — Jazz Events</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="settings.css">
   <link rel="stylesheet" href="../login/login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <div id="topbar-root"></div>
@@ -44,25 +48,23 @@
         </div>
         <h3 class="settings-user-name">Edrian Albero</h3>
       </div>
-      
+
       <!-- Right Box -->
       <div class="settings-content-right">
-        
+
         <div class="settings-info-box-padded">
           <h2 class="settings-heading">
             <span class="settings-heading-gold">Security & Privacy</span>
           </h2>
-          
+
           <!-- Linked Email -->
           <div class="settings-form-group">
             <div class="settings-form-label">Linked Email</div>
             <div class="settings-form-input">
-              <span class="settings-form-input-text">jalbero.XXXX@umak.edu.ph</span>
-              <span class="settings-form-divider">|</span>
-              <button class="settings-edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+              <span class="settings-form-input-text" id="security-linked-email">jalbero.XXXX@umak.edu.ph</span>
             </div>
           </div>
-          
+
           <!-- Current Password -->
           <div class="settings-form-group">
             <div class="settings-form-label">Current Password</div>
@@ -70,7 +72,7 @@
               <span class="settings-form-input-disabled">|</span>
             </div>
           </div>
-          
+
           <!-- Change Password -->
           <div class="settings-form-group">
             <div class="settings-form-label">Change Password</div>
@@ -78,7 +80,7 @@
               <span class="settings-form-input-disabled">|</span>
             </div>
           </div>
-          
+
           <!-- Confirm Changed Password -->
           <div class="settings-form-group">
             <div class="settings-form-label">Confirm Changed Password</div>
@@ -86,12 +88,12 @@
               <span class="settings-form-input-disabled">|</span>
             </div>
           </div>
-          
+
           <div class="settings-form-center">
             <button class="settings-form-button">Confirm Changes</button>
           </div>
         </div>
-        
+
       </div>
     </main>
   </div>
@@ -159,4 +161,5 @@
   <script src="../scripts/db.js"></script>
   <script src="settings_common.js"></script>
 </body>
+
 </html>
