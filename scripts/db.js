@@ -130,6 +130,24 @@ const DB = {
     }
   },
 
+  async getBookingById(booking_id) {
+    const response = await fetch("../scripts/bookings/get_bookings.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ booking_id: booking_id })
+    });
+
+    if (!response.ok) throw new Error("HTTP error: " + response.status);
+
+    const data = await response.json();
+
+    if (data.ok && !data.empty) {
+      return data.bookings[0]; 
+    } else {
+      return null;
+    }
+  },
+
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
     const all = await getData('events');
