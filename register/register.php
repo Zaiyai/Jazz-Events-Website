@@ -13,7 +13,20 @@ $data = json_decode($json);
 
 $email = $conn->real_escape_string($data->email);
 $code = $conn->real_escape_string($data->code);
-$password = $conn->real_escape_string($data->password);
+$password = $data->password;
+
+if (strlen($password) < 8 || 
+    !preg_match('/[A-Z]/', $password) || 
+    !preg_match('/[a-z]/', $password) || 
+    !preg_match('/[0-9]/', $password) || 
+    !preg_match('/[!@#$%^&*()_+{}\[\]:;<>,.?~\\\\\/-]/', $password)) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Password does not meet complexity requirements."
+    ]);
+    exit;
+}
+
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 $checkSQL = "
