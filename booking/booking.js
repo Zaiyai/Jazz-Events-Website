@@ -3,6 +3,8 @@ const eventBudget  = document.getElementById('event-budget');
 const attendees    = document.getElementById('attendees');
 const attendeesErr = document.getElementById('attendees-err')
 
+const dateFrom     = document.getElementById('datefrom');
+const dateTo       = document.getElementById('dateto');
 if (dateFrom && dateTo) {
     dateFrom.setAttribute('min', today);
     dateTo.setAttribute('min', today);
@@ -22,6 +24,7 @@ const SERVICE_BUDGET_RATES = {
     coordination: 500,
 };
 
+
 // On date change
 function checkDateViability(date) {
     const dateErr = date.parentElement.nextElementSibling;
@@ -35,9 +38,8 @@ function checkDateViability(date) {
         dateToErr.innerHTML   = "Cannot be before event start";
         dateFromErr.classList.add('show');
         dateToErr.classList.add('show');
-const attendeesErr = document.getElementById('attendees-err');
-const dateFrom     = document.getElementById('datefrom');
-const dateTo       = document.getElementById('dateto');
+    }
+}
 
 var fp; // Global scope for accessibility
 

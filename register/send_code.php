@@ -26,20 +26,21 @@ if ($conn->connect_error) {
 
 function sendVerificationCode($recipientEmail, $recipientName, $code)
 {
+    $env = parse_ini_file(__DIR__ . '/../.env');
     $mail = new PHPMailer(true);
 
     try {
 
         $mail->isSMTP();
-        $mail->Host       = 'smtp.mailersend.net';
+        $mail->Host       = $env['SMTP_HOST'];
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'MS_CQfumx@test-q3enl6k3n5742vwr.mlsender.net';
-        $mail->Password   = 'mssp.7r4ySxr.3zxk54vx1mpgjy6v.7qg8nO1';
+        $mail->Username   = $env['SMTP_USERNAME'];
+        $mail->Password   = $env['SMTP_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port       = $env['SMTP_PORT'];
 
         // Recipients
-        $mail->setFrom('test@test-q3enl6k3n5742vwr.mlsender.net', 'Jazz Events');
+        $mail->setFrom('edrian.albero0@gmail.com', 'Jazz Events');
         $mail->addAddress($recipientEmail, $recipientName);
 
         $mail->isHTML(true);
