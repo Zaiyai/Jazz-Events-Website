@@ -35,13 +35,15 @@ $type = $data->type;
 $client_id = isset($data->client_id) ? (int) $data->client_id : 0;
 
 $client_label = '';
+$client_email = '';
 if ($client_id > 0) {
-    $clientStmt = $conn->prepare("SELECT name FROM users WHERE user_id = ? LIMIT 1");
+    $clientStmt = $conn->prepare("SELECT name, email FROM users WHERE user_id = ? LIMIT 1");
     $clientStmt->bind_param("i", $client_id);
     $clientStmt->execute();
     $res = $clientStmt->get_result();
     if ($row = $res->fetch_assoc()) {
         $client_label = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8');
+        $client_email = $row['email'];
     }
     $clientStmt->close();
 }
@@ -80,6 +82,7 @@ $booking_details = "<h3>New Booking on Jazz Events Website</h3><br>
 <p><strong>Created at:</strong> $today<br>";
 
 $result = $stmt->execute();
+$newBookingId = $conn->insert_id;
 
 if ($result) {
     echo json_encode([
@@ -97,12 +100,12 @@ $stmt->close();
 try {
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
-    $mail->Host       = getenv('SMTP_HOST');
+    $mail->Host       = $env['SMTP_HOST'];
     $mail->SMTPAuth   = true;
-    $mail->Username   = getenv('SMTP_USERNAME');
-    $mail->Password   = getenv('SMTP_PASSWORD');
+    $mail->Username   = $env['SMTP_USERNAME'];
+    $mail->Password   = $env['SMTP_PASSWORD'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = getenv('SMTP_PORT');
+    $mail->Port       = $env['SMTP_PORT'];
 
     // Recipients
     $mail->setFrom('edrian.albero0@gmail.com', 'Jazz Events');
@@ -152,7 +155,7 @@ $html = <<<HTML
       </p>
 
       <!-- CTA Button -->
-      <a href="#"
+      <a href="{$baseUrl}/settings/client_booking_details.html?id={$newBookingId}"
          style="display:inline-block;background-color:#b8960c;color:#ffffff;text-decoration:none;
                 padding:14px 36px;border-radius:6px;font-size:15px;font-weight:bold;
                 letter-spacing:0.5px;">
@@ -185,31 +188,35 @@ $html = <<<HTML
 </html>
 HTML;
 
-try {
-    //Server settings
-    $mail->SMTPDebug = 1;
-    $mail->isSMTP();
-    $mail->Host       = $env['SMTP_HOST'];
-    $mail->SMTPAuth   = true;
-    $mail->Username   = $env['SMTP_USERNAME'];
-    $mail->Password   = $env['SMTP_PASSWORD'];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = $env['SMTP_PORT'];
+// Send confirmation email to the booker's account email
+if ($client_email !== '') {
+    $mailClient = new PHPMailer(true);
+    try {
+        //Server settings
+        $mailClient->SMTPDebug = 0;
+        $mailClient->isSMTP();
+        $mailClient->Host       = $env['SMTP_HOST'];
+        $mailClient->SMTPAuth   = true;
+        $mailClient->Username   = $env['SMTP_USERNAME'];
+        $mailClient->Password   = $env['SMTP_PASSWORD'];
+        $mailClient->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mailClient->Port       = $env['SMTP_PORT'];
 
-    // Recipients
-    $mail->setFrom('edrian.albero0@gmail.com', 'Jazz Events');
-    $mail->addAddress($email, $cleanName);
+        // Recipients — send to the booker's registered email
+        $mailClient->setFrom('edrian.albero0@gmail.com', 'Jazz Events');
+        $mailClient->addAddress($client_email, $cleanName);
 
-    //Content
-    $mail->isHTML(true);
-    $mail->Subject = 'New Booking Submission!';
-    $mail->Body    = $html;
-    $mail->AltBody = "Dear $cleanName, we've successfully received your event booking details. Please log in to our website to view your booking.";
+        //Content
+        $mailClient->isHTML(true);
+        $mailClient->Subject = 'Booking Confirmation - Jazz Events';
+        $mailClient->Body    = $html;
+        $mailClient->AltBody = "Dear $cleanName, we've successfully received your event booking details. Please log in to our website to view your booking.";
 
-    $mail->send();
-    echo 'Message has been sent';
-} catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        $mailClient->send();
+        echo 'Confirmation email sent to booker';
+    } catch (Exception $e) {
+        echo "Booker email could not be sent. Mailer Error: {$mailClient->ErrorInfo}";
+    }
 }
 
 $conn->close();
