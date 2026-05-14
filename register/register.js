@@ -205,30 +205,7 @@ const resendBtn = document.getElementById('resend-btn');
 let cooldown = 0;
 let timer = null;
 
-let regResendTimer = null;
-let regResendCooldown = 0;
-
-function handleRegResend() {
-  if (regResendCooldown > 0) return;
-  sendCode();
-
-  regResendCooldown = 60;
-  const btn = document.getElementById('resend-btn');
-  regResendTimer = setInterval(() => {
-    regResendCooldown--;
-    btn.textContent = `Re-send (${regResendCooldown}s)`;
-    if (regResendCooldown <= 0) {
-      clearInterval(regResendTimer);
-      btn.textContent = 'Re-send';
-    }
-  }, 1000);
-}
-
-window.handleRegister = handleRegister;
-window.handleRegResend = handleRegResend;
-
-
-function handleResend() {
+async function handleResend() {
   if (cooldown > 0) return;
 
   const email = document.getElementById('email').value.trim();
@@ -238,11 +215,13 @@ function handleResend() {
     return;
   }
 
-  // Call backend to send code (using sendCode function if defined, or custom fetch)
-  if (typeof sendCode === 'function') {
-    sendCode('email', 'resend-btn');
+  const data = await sendCode(email);
+
+  if (data && data.status == "success") {
+    showToast(data.message);
   } else {
-    showToast('Verification code sent to ' + email);
+    showToast(data.message, "error");
+    return;
   }
 
   cooldown = 60;
