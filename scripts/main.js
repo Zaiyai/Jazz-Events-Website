@@ -17,12 +17,21 @@ function bookingRedirect() {
 }
 
 function displayLogin(bookingRedirect = false) {
-  let loginBtn = document.getElementById("login-submit-btn");
-  loginBtn.onclick = () => {
-    handleLogin(bookingRedirect ? true : false);
-  };
-
-  document.getElementsByClassName('auth-section')[0].style.display = "block";
+  const authSection = document.getElementsByClassName('auth-section')[0];
+  
+  if (authSection) {
+    let loginBtn = document.getElementById("login-submit-btn");
+    if (loginBtn) {
+      loginBtn.onclick = () => {
+        handleLogin(bookingRedirect ? true : false);
+      };
+    }
+    authSection.style.display = "block";
+  } else {
+    // Redirect to home if login modal is not on this page
+    const homeUrl = window.location.hostname === "localhost" ? "/Jazz%20Events%20Website/home.html" : "../home.html";
+    window.location.href = homeUrl + "?showLogin=true" + (bookingRedirect ? "&bookingRedirect=true" : "");
+  }
 }
 
 // Read More functionality for reviews
