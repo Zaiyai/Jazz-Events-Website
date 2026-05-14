@@ -92,6 +92,15 @@ const DB = {
     };
   },
 
+  async addClient(clientData) {
+    const response = await fetch("/jazz%20events%20website/scripts/clients/add_client.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(clientData)
+    });
+    return response.json();
+  },
+
   /* ── PAYMENTS ────────────────────────────────────────────── */
   async getPayments() {
     const response = await fetch("/jazz%20events%20website/scripts/payments/get_payments.php", {

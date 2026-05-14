@@ -20,7 +20,7 @@
       <a href="../home.html" style="text-decoration:none;">
         <div class="brand-script">Jazz Events</div>
       </a>
-      <div class="brand-sub">Admin Panel</div>
+      <div class="brand-sub">Staff Panel</div>
     </div>
 
     <nav class="sidebar-nav">
@@ -34,8 +34,8 @@
       <div class="sidebar-user">
         <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
         <div class="sidebar-user-info">
-          <div class="u-name" id="sidebar-name">Edrian Albero</div>
-          <div class="u-role" id="sidebar-role">Event Organizer</div>
+          <div class="u-name" id="sidebar-name">Loading…</div>
+          <div class="u-role" id="sidebar-role">Staff</div>
         </div>
         <button class="sidebar-logout" title="Log out" onclick="DB.logout();">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -49,50 +49,32 @@
       <div class="topbar-left">
         <div class="topbar-heading">Events</div>
         <div class="topbar-divider"></div>
-        <div class="topbar-sub">Manage events</div>
+        <div class="topbar-sub">View and track all events</div>
       </div>
       <div class="topbar-right">
         <div class="topbar-filters">
-          <span class="active">All Events</span>
-          <span>Corporate</span>
-          <span>Wedding</span>
-          <span>Private</span>
+          <span class="active" onclick="filterByType('')">All Events</span>
+          <span onclick="filterByType('Corporate')">Corporate</span>
+          <span onclick="filterByType('Wedding')">Wedding</span>
+          <span onclick="filterByType('Birthday')">Birthday</span>
+          <span onclick="filterByType('Debut')">Debut</span>
         </div>
         <button class="btn-outline">
           <i class="fa-solid fa-filter"></i> Filter
-        </button>
-        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;" onclick="window.location.href='dashboard.html'">
-          <i class="fa-solid fa-plus"></i> New Event
         </button>
       </div>
     </div>
 
     <!-- Content -->
     <div class="dash-content">
-      
-      <!-- Stats -->
-      <!-- Event summaries removed -->
 
       <!-- Events Grid -->
-      <div class="events-grid">
-        <!-- Event 1 -->
-        <div class="event-grid-card">
-          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 160px; object-fit: cover;" alt="Event">
-          <div style="padding: 20px;">
-            <h4 style="font-size: 1rem; color: var(--text-white); margin-bottom: 4px;">Golden Anniversary Gala</h4>
-            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;">Corporate Dinner - 120 guests</div>
-            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-regular fa-calendar" style="color: var(--jazz-gold); width: 16px;"></i> Dec 28, 2026</div>
-            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;"><i class="fa-solid fa-location-dot" style="color: var(--jazz-gold); width: 16px;"></i> Shang-ri La</div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dark); padding-top: 16px;">
-              <div class="client-cell">
-                <div class="client-mini-avatar">P</div>
-                <span style="font-size: 0.75rem; color: var(--text-white); font-weight: 600;">Pat</span>
-              </div>
-              <button class="btn-outline" style="font-size: 0.65rem; padding: 4px 12px; border-radius: 99px;">View Details</button>
-            </div>
-          </div>
+      <div id="events-grid" class="events-grid">
+        <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-gray);">
+          <i class="fa-solid fa-spinner fa-spin" style="color:var(--jazz-gold); margin-right:8px;"></i> Loading events…
         </div>
       </div>
+
     </div>
   </main>
 </div>
@@ -102,5 +84,84 @@
 <script src="../scripts/db.js"></script>
 <script src="../dashboard/dashboard_ui.js"></script>
 <script src="../dashboard/dashboard.js"></script>
+
+<script>
+// Keep track of all events for filtering
+let staffAllEvents = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await DB.getUser();
+  if (!user) { window.location.href = '../home.html'; return; }
+
+  // Populate sidebar
+  const words    = user.name.trim().split(/\s+/);
+  const initials = words.map(w => w[0]).join('').toUpperCase().substring(0, 2);
+  const pfp      = document.getElementById('profile-avatar-initials');
+  document.getElementById('sidebar-name').textContent = user.name;
+
+  if (user.profile_picture) {
+    const prefix = '/jazz%20events%20website/';
+    pfp.innerHTML = `<img src="${prefix}${user.profile_picture}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    document.getElementById('sidebar-avatar').innerHTML = pfp.innerHTML;
+  } else {
+    pfp.textContent = initials;
+    document.getElementById('sidebar-avatar').textContent = initials;
+  }
+
+  await renderEventsGrid();
+  await updateEventStats();
+
+  // Cache for type filtering
+  staffAllEvents = Array.isArray(events) ? [...events] : [];
+});
+
+// Filter grid by event type client-side
+function filterByType(type) {
+  // Update active filter tab
+  document.querySelectorAll('.topbar-filters span').forEach(s => {
+    s.classList.toggle('active', s.textContent === (type || 'All Events'));
+  });
+
+  const filtered = type ? staffAllEvents.filter(e => e.type === type) : staffAllEvents;
+  const grid = document.getElementById('events-grid');
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-gray);">No ${type || ''} events found.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(event => {
+    const eventDate    = new Date(event.date);
+    const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const initials     = formatInitials(event.celebrant || '');
+    const eventImage   = getEventImage(event.type);
+
+    return `
+      <div class="event-grid-card">
+        <img src="${eventImage}" style="width:100%;height:160px;object-fit:cover;" alt="${event.name}">
+        <div style="padding:20px;">
+          <h4 style="font-size:1rem;color:var(--text-white);margin-bottom:4px;">${event.name}</h4>
+          <div style="font-size:0.75rem;color:var(--text-gray);margin-bottom:16px;">${event.type} - ${event.no_of_guests} guests</div>
+          <div style="font-size:0.75rem;color:var(--text-gray);margin-bottom:6px;"><i class="fa-regular fa-calendar" style="color:var(--jazz-gold);width:16px;"></i> ${formattedDate}</div>
+          <div style="font-size:0.75rem;color:var(--text-gray);margin-bottom:6px;"><i class="fa-solid fa-location-dot" style="color:var(--jazz-gold);width:16px;"></i> ${event.venue}</div>
+          <div style="font-size:0.75rem;color:var(--text-gray);margin-bottom:16px;"><i class="fa-solid fa-peso-sign" style="color:var(--jazz-gold);width:16px;"></i> ${formatPeso(event.amount)}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-dark);padding-top:16px;">
+            <div class="client-cell">
+              <div class="client-mini-avatar">${initials}</div>
+              <span style="font-size:0.75rem;color:var(--text-white);font-weight:600;">${(event.celebrant || '').split(' ')[0]}</span>
+            </div>
+            <span class="status-pill ${statusPillClass(event.status)}">${event.status}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function statusPillClass(status) {
+  const map = { PLANNING: 'outline-yellow', ONGOING: 'outline-green', COMPLETED: 'outline-green', BLOCKED: 'outline-red' };
+  return map[status] || 'outline-yellow';
+}
+</script>
+
 </body>
 </html>

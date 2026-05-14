@@ -55,7 +55,7 @@
         <div class="topbar-sub">Manage your clients</div>
       </div>
       <div class="topbar-right">
-        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;">
+        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;" onclick="openAddClientModal()">
           <i class="fa-solid fa-user-plus"></i> Add Client
         </button>
       </div>
@@ -131,10 +131,208 @@
 
 <div id="toast" class="toast"></div>
 
+<!-- Add Client Modal -->
+<div class="modal-overlay" id="modal-add-client" role="dialog" aria-modal="true">
+  <div style="background: #161616; border: 1px solid var(--jazz-gold); border-radius: 12px; width: 100%; max-width: 520px; padding: 36px 40px; position: relative; box-sizing: border-box; max-height: 90vh; overflow-y: auto;">
+    <button onclick="closeModal('modal-add-client')" style="position: absolute; top: 20px; right: 24px; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; opacity: 0.6; transition: opacity 0.2s;">&times;</button>
+
+    <h3 style="color: var(--jazz-gold); font-size: 1.6rem; font-weight: 800; margin: 0 0 6px 0; font-family: var(--font-sans); text-transform: uppercase;">Add <span style="color:#fff;">Client</span></h3>
+    <p style="color: #888; font-size: 0.82rem; margin: 0 0 24px 0;">New client will be registered as a CLIENT account.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <!-- Full Name -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.82rem;">Full Name <span style="color:#f87171">*</span> <span style="color:#888;font-weight:400;">(Last, First M.)</span></label>
+        <input id="cl-name" placeholder="e.g. Santos, Maria R." oninput="clearErr('cl-name')"
+          style="background:#111;border:1px solid #333;color:#fff;border-radius:8px;padding:10px;font-family:var(--font-sans);outline:none;transition:border 0.2s;">
+        <div id="cl-name-err" style="font-size:0.72rem;color:#f87171;display:none;"></div>
+      </div>
+
+      <!-- Email -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.82rem;">Email Address <span style="color:#f87171">*</span></label>
+        <input id="cl-email" type="email" placeholder="e.g. maria.santos@gmail.com" oninput="clearErr('cl-email')"
+          style="background:#111;border:1px solid #333;color:#fff;border-radius:8px;padding:10px;font-family:var(--font-sans);outline:none;transition:border 0.2s;">
+        <div id="cl-email-err" style="font-size:0.72rem;color:#f87171;display:none;"></div>
+      </div>
+
+      <!-- Password -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.82rem;">Password <span style="color:#f87171">*</span></label>
+        <div style="position:relative;">
+          <input id="cl-password" type="password" placeholder="Password" oninput="clearErr('cl-password')"
+            style="background:#111;border:1px solid #333;color:#fff;border-radius:8px;padding:10px;padding-right:40px;width:100%;box-sizing:border-box;font-family:var(--font-sans);outline:none;transition:border 0.2s;">
+          <button type="button" onclick="togglePw('cl-password', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;cursor:pointer;font-size:0.9rem;">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+        <div id="cl-password-err" style="font-size:0.72rem;color:#f87171;display:none;"></div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.82rem;">Confirm Password <span style="color:#f87171">*</span></label>
+        <div style="position:relative;">
+          <input id="cl-confirm" type="password" placeholder="Confirm password" oninput="clearErr('cl-confirm')"
+            style="background:#111;border:1px solid #333;color:#fff;border-radius:8px;padding:10px;padding-right:40px;width:100%;box-sizing:border-box;font-family:var(--font-sans);outline:none;transition:border 0.2s;">
+          <button type="button" onclick="togglePw('cl-confirm', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;cursor:pointer;font-size:0.9rem;">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+        <div id="cl-confirm-err" style="font-size:0.72rem;color:#f87171;display:none;"></div>
+      </div>
+
+      <!-- Bio / Notes (optional) -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.82rem;">Bio <span style="color:#888;font-weight:400;">(optional)</span></label>
+        <textarea id="cl-bio" rows="2" placeholder="Short note about this client"
+          style="background:#111;border:1px solid #333;color:#fff;border-radius:8px;padding:10px;font-family:var(--font-sans);outline:none;resize:vertical;transition:border 0.2s;"></textarea>
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:16px;margin-top:32px;">
+      <button onclick="closeModal('modal-add-client')"
+        style="background:transparent;color:#fff;border:1px solid #555;border-radius:12px;padding:12px 30px;font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 0.2s;"
+        onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#555'">Cancel</button>
+      <button id="save-client-btn" onclick="saveClient()"
+        style="background:var(--jazz-gold);color:#000;border:none;border-radius:12px;padding:12px 40px;font-weight:800;font-size:0.95rem;cursor:pointer;transition:all 0.2s;"
+        onmouseover="this.style.backgroundColor='#bfa035'" onmouseout="this.style.backgroundColor='var(--jazz-gold)'">
+        <i class="fa-solid fa-user-plus" style="margin-right:6px;"></i> Save Client
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  #modal-add-client input:focus,
+  #modal-add-client select:focus,
+  #modal-add-client textarea:focus {
+    border-color: var(--jazz-gold) !important;
+  }
+  .cl-input-error { border-color: #f87171 !important; }
+</style>
+
 <script src="../scripts/db.js"></script>
 <script src="dashboard_ui.js"></script>
 <script src="dashboard.js"></script>
 <script src="clients.js"></script>
+
+<script>
+function openAddClientModal() {
+  ['cl-name','cl-email','cl-password','cl-confirm','cl-bio'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.style.borderColor = '#333'; }
+  });
+  ['cl-name-err','cl-email-err','cl-password-err','cl-confirm-err'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = ''; el.style.display = 'none'; }
+  });
+  openModal('modal-add-client');
+}
+
+function clearErr(fieldId) {
+  const el = document.getElementById(fieldId);
+  const err = document.getElementById(fieldId + '-err');
+  if (el) el.style.borderColor = '#333';
+  if (err) err.style.display = 'none';
+}
+
+function showFieldErr(fieldId, msg) {
+  const el = document.getElementById(fieldId);
+  const err = document.getElementById(fieldId + '-err');
+  if (el) el.style.borderColor = '#f87171';
+  if (err) { err.textContent = msg; err.style.display = 'block'; }
+}
+
+function togglePw(fieldId, btn) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  if (el.type === 'password') {
+    el.type = 'text';
+    btn.innerHTML = '<i class="fa-regular fa-eye-slash"></i>';
+  } else {
+    el.type = 'password';
+    btn.innerHTML = '<i class="fa-regular fa-eye"></i>';
+  }
+}
+
+async function saveClient() {
+  // -- Gather values --
+  const name    = document.getElementById('cl-name').value.trim();
+  const email   = document.getElementById('cl-email').value.trim();
+  const pass    = document.getElementById('cl-password').value;
+  const confirm = document.getElementById('cl-confirm').value;
+  const bio     = document.getElementById('cl-bio').value.trim();
+
+  // -- Validate --
+  let valid = true;
+
+  if (!name) {
+    showFieldErr('cl-name', 'Full name is required.');
+    valid = false;
+  }
+
+  const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email) {
+    showFieldErr('cl-email', 'Email address is required.');
+    valid = false;
+  } else if (!emailReg.test(email)) {
+    showFieldErr('cl-email', 'Enter a valid email address.');
+    valid = false;
+  }
+
+  if (!pass) {
+    showFieldErr('cl-password', 'Password is required.');
+    valid = false;
+  } else if (pass.length < 6) {
+    showFieldErr('cl-password', 'Password must be at least 6 characters.');
+    valid = false;
+  }
+
+  if (!confirm) {
+    showFieldErr('cl-confirm', 'Please confirm the password.');
+    valid = false;
+  } else if (pass && confirm !== pass) {
+    showFieldErr('cl-confirm', 'Passwords do not match.');
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  // -- Submit --
+  const btn = document.getElementById('save-client-btn');
+  const ogText = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+  btn.disabled = true;
+
+  try {
+    const res = await DB.addClient({ name, email, password: pass, bio });
+    if (res.ok) {
+      showToast('Client added successfully!');
+      closeModal('modal-add-client');
+      // Reload clients table
+      const result = await DB.getClients({ page: 1, perPage: 20 });
+      renderClientsTable(result);
+      renderClientStats(result);
+    } else {
+      // Show server-side errors inline if they relate to a specific field
+      const msg = res.message || 'Failed to add client.';
+      if (msg.toLowerCase().includes('email')) {
+        showFieldErr('cl-email', msg);
+      } else {
+        showToast(msg, 'error');
+      }
+    }
+  } catch (e) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    btn.innerHTML = ogText;
+    btn.disabled = false;
+  }
+}
+</script>
 
 </body>
 </html>
