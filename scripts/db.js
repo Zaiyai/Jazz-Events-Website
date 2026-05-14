@@ -83,13 +83,26 @@ const DB = {
     });
     const all = await response.json();
     const start = (page - 1) * perPage;
-    console.log("Fetched clients:", all.clients[0]);
     return {
       data: all.clients.slice(start, start + perPage),
       total: all.clients.length,
       page,
-      perPage
-    };;
+      perPage,
+      stats: all.stats || null
+    };
+  },
+
+  /* ── PAYMENTS ────────────────────────────────────────────── */
+  async getPayments() {
+    const response = await fetch("/jazz%20events%20website/scripts/payments/get_payments.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await response.json();
+    if (data.ok && !data.empty) {
+      return data.payments;
+    }
+    return [];
   },
 
   /* ── BOOKINGS ─────────────────────────────────────────────── */
