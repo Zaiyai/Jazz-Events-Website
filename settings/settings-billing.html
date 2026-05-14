@@ -38,7 +38,10 @@
     <main class="settings-content">
       <!-- Left Box -->
       <div class="settings-content-left">
-        <img src="../assets/team/edrian.jpg" alt="Profile" class="settings-profile-image">
+        <div id="settings-profile-avatar" class="settings-profile-image-container">
+          <!-- Dynamically populated by settings_common.js -->
+          <div class="settings-profile-initials">EA</div>
+        </div>
         <h3 class="settings-user-name">Edrian Albero</h3>
       </div>
       
@@ -151,5 +154,6 @@
   <script src="../scripts/topbar.js"></script>
   <script src="../scripts/main.js"></script>
   <script src="../scripts/db.js"></script>
+  <script src="settings_common.js"></script>
 </body>
 </html>

@@ -38,7 +38,10 @@
     <main class="settings-content">
       <!-- Left Box -->
       <div class="settings-content-left">
-        <img id="profile-img" src="../assets/team/edrian.jpg" alt="Profile Picture" class="settings-profile-image">
+        <div id="settings-profile-avatar" class="settings-profile-image-container">
+          <!-- Dynamically populated by settings_common.js -->
+          <div class="settings-profile-initials">EA</div>
+        </div>
         <h3 class="user-name settings-user-name">Edrian Albero</h3>
         <button id="upload-profile-btn" class="settings-upload-btn">
           <i class="fa-solid fa-camera"></i> Change Photo
@@ -152,6 +155,7 @@
   <script src="../scripts/topbar.js"></script>
   <script src="../scripts/main.js"></script>
   <script src="../scripts/db.js"></script>
+  <script src="settings_common.js"></script>
   <script src="profile_settings.js"></script>
 </body>
 </html>

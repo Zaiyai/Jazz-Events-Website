@@ -2,7 +2,8 @@ const userName = document.getElementsByClassName('user-name');
 const userEmail = document.getElementById('user-email');
 const userProfilePicture = document.getElementById('user-profile-picture');
 const userBio = document.getElementById('user-bio');
-const profileImg = document.getElementById('profile-img');
+// profileImg is now inside the settings-profile-avatar container and is dynamic
+let profileImg = null; 
 const uploadProfileBtn = document.getElementById('upload-profile-btn');
 const profileFileInput = document.getElementById('profile-file-input');
 
@@ -50,15 +51,15 @@ profileFileInput.addEventListener('change', async (e) => {
         const data = await response.json();
 
         if (data.status === 'success') {
-            // Update the image on the page
-            profileImg.src = '../' + data.profile_picture;
+            // Update display using common script
+            await window.updateSettingsLeftBox();
+            
+            // Refresh local user data
+            currentUser = await DB.getUser();
+            updateProfileDisplay();
             
             // Show success message
             showToast('Profile picture updated successfully!', 'success');
-
-            // Refresh user data
-            currentUser = await DB.getUser();
-            updateProfileDisplay();
         } else {
             showToast(data.message || 'Upload failed', 'error');
         }
@@ -261,7 +262,9 @@ function updateProfileDisplay() {
         }
         userEmail.textContent = currentUser.email || 'N/A';
         if (currentUser.profile_picture) {
-            profileImg.src = '../' + currentUser.profile_picture;
+            // Ensure we update the dynamic image element if it exists
+            const img = document.getElementById('profile-img');
+            if (img) img.src = '../' + currentUser.profile_picture;
         }
         userBio.textContent = currentUser.bio || 'N/A';
     }
