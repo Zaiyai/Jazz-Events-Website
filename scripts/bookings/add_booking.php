@@ -91,15 +91,14 @@ if ($result) {
 
 // Send to admin email
 try {
-    //Server settings
-    $mail->SMTPDebug = 1;
+    $mail->SMTPDebug = 0;
     $mail->isSMTP();
-    $mail->Host       = $env['SMTP_HOST'];
+    $mail->Host       = getenv('SMTP_HOST');
     $mail->SMTPAuth   = true;
-    $mail->Username   = $env['SMTP_USERNAME'];
-    $mail->Password   = $env['SMTP_PASSWORD'];
+    $mail->Username   = getenv('SMTP_USERNAME');
+    $mail->Password   = getenv('SMTP_PASSWORD');
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = $env['SMTP_PORT'];
+    $mail->Port       = getenv('SMTP_PORT');
 
     // Recipients
     $mail->setFrom('edrian.albero0@gmail.com', 'Jazz Events');

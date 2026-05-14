@@ -1,21 +1,23 @@
 // bookings.js – UI logic for Admin Bookings page
-// Assumes useBookings service is loaded globally
+// Fetches real data from jazz_events database via useBookings API
 
 const PAGE_SIZE = 5;
 let currentPage = 1;
 let filteredBookings = [];
+let allBookings = [];
 
-function initBookingsPage() {
-  // Load initial data
-  loadBookings();
+async function initBookingsPage() {
+  // Load initial data from the database
+  await loadBookings();
   // Attach event listeners
   document.getElementById('new-booking-btn')?.addEventListener('click', openNewBookingModal);
   document.getElementById('booking-search-input')?.addEventListener('input', debounce(handleSearch, 300));
   document.getElementById('status-filter')?.addEventListener('change', applyFilters);
 }
 
-function loadBookings() {
-  const all = window.useBookings.getBookings();
+async function loadBookings() {
+  const all = await window.useBookings.getBookings();
+  allBookings = all;
   filteredBookings = all;
   renderStats(all);
   renderBookingsTable(all);
@@ -25,18 +27,16 @@ function renderStats(bookings) {
   const stats = {
     total: bookings.length,
     pending: bookings.filter(b => b.status === 'PENDING').length,
-    confirmed: bookings.filter(b => b.status === 'CONFIRMED').length,
-    completed: bookings.filter(b => b.status === 'COMPLETED').length,
-    cancelled: bookings.filter(b => b.status === 'CANCELLED').length,
+    accepted: bookings.filter(b => b.status === 'ACCEPTED').length,
+    rejected: bookings.filter(b => b.status === 'REJECTED').length,
   };
   const container = document.getElementById('booking-stats');
   if (!container) return;
   container.innerHTML = `
     ${statCard('fa-solid fa-clipboard-list', 'Total Bookings', stats.total, '', '', 'up')}
     ${statCard('fa-solid fa-hourglass-start', 'Pending', stats.pending, '', '', 'warn')}
-    ${statCard('fa-solid fa-check-double', 'Confirmed', stats.confirmed, '', '', 'up')}
-    ${statCard('fa-solid fa-flag-checkered', 'Completed', stats.completed, '', '', 'up')}
-    ${statCard('fa-solid fa-ban', 'Cancelled', stats.cancelled, '', '', 'warn')}
+    ${statCard('fa-solid fa-check-double', 'Accepted', stats.accepted, '', '', 'up')}
+    ${statCard('fa-solid fa-ban', 'Rejected', stats.rejected, '', '', 'warn')}
   `;
 }
 
@@ -91,7 +91,7 @@ function renderBookingsTable(bookings) {
         <div class="actions-cell">
           <button class="row-action-btn" title="View Details" onclick="viewBooking('${b.id}')"><i class="fa-solid fa-eye"></i></button>
           <button class="row-action-btn" title="Edit Booking" onclick="editBooking('${b.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-          <button class="row-action-btn danger" title="Cancel Booking" onclick="confirmCancelBooking('${b.id}')"><i class="fa-solid fa-ban"></i></button>
+          <button class="row-action-btn danger" title="Reject Booking" onclick="confirmCancelBooking('${b.id}')"><i class="fa-solid fa-ban"></i></button>
         </div>
       </td>
     </tr>
@@ -118,17 +118,19 @@ function handleSearch(e) {
   applyFilters(query);
 }
 
-function applyFilters(searchQuery = '') {
+async function applyFilters(searchQuery = '') {
   if (typeof searchQuery !== 'string') {
     searchQuery = document.getElementById('booking-search-input')?.value.toLowerCase() || '';
   }
   const statusVal = document.getElementById('status-filter')?.value || '';
-  const all = window.useBookings.getBookings();
-  filteredBookings = all.filter(b => {
+
+  // Use cached data to avoid re-fetching for simple filters
+  filteredBookings = allBookings.filter(b => {
     const statusMatch = !statusVal || b.status === statusVal;
     const searchMatch = !searchQuery ||
       b.clientName.toLowerCase().includes(searchQuery) ||
-      b.email.toLowerCase().includes(searchQuery);
+      b.email.toLowerCase().includes(searchQuery) ||
+      (b.eventName && b.eventName.toLowerCase().includes(searchQuery));
     return statusMatch && searchMatch;
   });
   currentPage = 1;
@@ -146,7 +148,7 @@ function openNewBookingModal() {
 }
 
 function editBooking(id) {
-  const b = window.useBookings.getBookings().find(bk => bk.id === id);
+  const b = allBookings.find(bk => String(bk.id) === String(id));
   if (!b) return;
   document.getElementById('new-booking-modal-title').textContent = 'Edit Booking';
   document.getElementById('booking-edit-id').value = id;
@@ -156,30 +158,36 @@ function editBooking(id) {
   document.getElementById('bk-event-date').value = b.eventDate;
   document.getElementById('bk-venue').value = b.venue || '';
   document.getElementById('bk-budget').value = b.budget || '';
-  document.getElementById('bk-notes').value = b.notes || '';
+  document.getElementById('bk-notes').value = b.theme || '';
   openModal('modal-new-booking');
 }
 
 function viewBooking(id) {
-  const b = window.useBookings.getBookings().find(bk => bk.id === id);
+  const b = allBookings.find(bk => String(bk.id) === String(id));
   if (!b) return;
   const contentEl = document.getElementById('view-booking-content');
   contentEl.innerHTML = `
     <div class="view-detail-grid">
+      <div class="detail-item"><label>Booking Name</label><span>${b.eventName}</span></div>
       <div class="detail-item"><label>Client Name</label><span>${b.clientName}</span></div>
       <div class="detail-item"><label>Email Address</label><span>${b.email}</span></div>
+      <div class="detail-item"><label>Phone</label><span>${b.phone || 'N/A'}</span></div>
       <div class="detail-item"><label>Event Type</label><span>${b.eventType}</span></div>
-      <div class="detail-item"><label>Event Date</label><span>${formatDate(b.eventDate)}</span></div>
+      <div class="detail-item"><label>Date From</label><span>${formatDate(b.eventDate)}</span></div>
+      <div class="detail-item"><label>Date To</label><span>${b.dateTo ? formatDate(b.dateTo) : 'N/A'}</span></div>
+      <div class="detail-item"><label>Guests</label><span>${b.guests || 'N/A'}</span></div>
       <div class="detail-item"><label>Venue</label><span>${b.venue || 'TBD'}</span></div>
-      <div class="detail-item"><label>Budget</label><span>${b.budget ? '₱' + b.budget.toLocaleString() : 'Not set'}</span></div>
-      <div class="detail-item full-width"><label>Notes</label><div class="notes-box">${b.notes || 'No notes provided.'}</div></div>
+      <div class="detail-item"><label>Theme</label><span>${b.theme || 'N/A'}</span></div>
+      <div class="detail-item"><label>Budget</label><span>${b.budget ? '₱' + Number(b.budget).toLocaleString() : 'Not set'}</span></div>
       <div class="detail-item full-width"><label>Current Status</label><div>${statusBadge(b.status)}</div></div>
+      <div class="detail-item"><label>Created</label><span>${b.createdAt || 'N/A'}</span></div>
+      <div class="detail-item"><label>Last Updated</label><span>${b.updatedAt || 'N/A'}</span></div>
     </div>
   `;
   openModal('modal-view-booking');
 }
 
-function saveBooking() {
+async function saveBooking() {
   const valid = validateForm([
     { id: 'bk-client-name', msg: 'Client name required.' },
     { id: 'bk-client-email', msg: 'Client email required.' },
@@ -189,37 +197,37 @@ function saveBooking() {
 
   const id = document.getElementById('booking-edit-id').value;
   const data = {
-    clientName: document.getElementById('bk-client-name').value.trim(),
+    name: document.getElementById('bk-client-name').value.trim(),
     email: document.getElementById('bk-client-email').value.trim(),
-    eventType: document.getElementById('bk-event-type').value.trim() || 'General Event',
-    eventDate: document.getElementById('bk-event-date').value,
+    type: document.getElementById('bk-event-type').value.trim() || 'General Event',
+    date_from: document.getElementById('bk-event-date').value,
     venue: document.getElementById('bk-venue').value.trim(),
     budget: document.getElementById('bk-budget').value ? parseFloat(document.getElementById('bk-budget').value) : null,
-    notes: document.getElementById('bk-notes').value.trim()
+    theme: document.getElementById('bk-notes').value.trim()
   };
 
   if (id) {
-    window.useBookings.updateBooking(id, data);
-    showToast(`Booking for ${data.clientName} updated.`);
+    await window.useBookings.updateBooking(id, data);
+    showToast(`Booking updated successfully.`);
   } else {
-    data.status = 'PENDING';
-    window.useBookings.createBooking(data);
-    showToast(`New booking for ${data.clientName} created.`);
+    // For new bookings from admin, use the existing add_booking endpoint
+    showToast(`Use the client booking form to create new bookings.`, 'error');
+    return;
   }
   closeModal('modal-new-booking');
-  loadBookings();
+  await loadBookings();
 }
 
 function confirmCancelBooking(id) {
-  const b = window.useBookings.getBookings().find(bk => bk.id === id);
+  const b = allBookings.find(bk => String(bk.id) === String(id));
   if (!b) return;
-  document.getElementById('cancel-confirm-msg').innerHTML = `Are you sure you want to cancel the booking for <strong style="color:var(--jazz-gold)">${b.clientName}</strong>? This action will set the status to Cancelled.`;
+  document.getElementById('cancel-confirm-msg').innerHTML = `Are you sure you want to reject the booking for <strong style="color:var(--jazz-gold)">${b.clientName}</strong>? This action will set the status to Rejected.`;
   const confirmBtn = document.getElementById('confirm-cancel-btn');
-  confirmBtn.onclick = () => {
-    window.useBookings.changeStatus(id, 'CANCELLED');
-    showToast('Booking has been cancelled.');
+  confirmBtn.onclick = async () => {
+    await window.useBookings.changeStatus(id, 'REJECTED');
+    showToast('Booking has been rejected.');
     closeModal('modal-cancel-booking');
-    loadBookings();
+    await loadBookings();
   };
   openModal('modal-cancel-booking');
 }
@@ -227,9 +235,8 @@ function confirmCancelBooking(id) {
 function statusBadge(status) {
   const map = {
     PENDING: 'status-pending',
-    CONFIRMED: 'status-confirmed',
-    COMPLETED: 'status-completed',
-    CANCELLED: 'status-cancelled'
+    ACCEPTED: 'status-confirmed',
+    REJECTED: 'status-cancelled'
   };
   const cls = map[status] || 'status-pending';
   return `<span class="status-pill ${cls}">${status}</span>`;
@@ -266,5 +273,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  initBookingsPage();
+  await initBookingsPage();
 });
