@@ -13,11 +13,9 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Read and decode JSON from JavaScript
-$json = file_get_contents('php://input');
-$data = json_decode($json);
-
-$sql = "SELECT event_id, name, type, no_of_guests, client_name, date, venue,  status, amount FROM events";
+$sql = "SELECT e.event_id, e.name, e.type, e.no_of_guests, e.client_id, u.name AS client_name, e.date, e.venue, e.theme, e.status, e.amount
+        FROM events e
+        INNER JOIN users u ON u.user_id = e.client_id";
 $result = $conn->query($sql);
 
 if ($result) {

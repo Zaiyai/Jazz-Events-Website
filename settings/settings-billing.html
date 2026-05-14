@@ -9,91 +9,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="settings.css">
   <link rel="stylesheet" href="../login/login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    body { background-color: #111; color: #fff; padding-top: 80px; }
-    .settings-container { display: flex; min-height: 80vh; max-width: 1200px; margin: 40px auto 80px auto; gap: 40px; padding: 0 24px; }
-    .settings-sidebar { width: 250px; flex-shrink: 0; }
-    .settings-nav a {
-      display: block; padding: 12px 16px; border-radius: 6px; font-size: 0.85rem;
-      text-decoration: none; margin-bottom: 8px; transition: background 0.2s, color 0.2s;
-    }
-    .settings-nav a:hover { background: rgba(255,255,255,0.05); }
-    .settings-nav a.active { background: rgba(255,255,255,0.05); color: #fff; }
-    .settings-nav a.inactive { color: #aaa; }
-    
-    .settings-content {
-      flex: 1; display: flex; background: #161616; border-radius: 12px;
-      border: 1px solid rgba(212, 175, 55, 0.2); overflow: hidden;
-    }
-    .settings-content-left {
-      width: 300px; background: #0f0f0f; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 40px;
-      border-right: 1px solid rgba(212, 175, 55, 0.2);
-    }
-    .settings-content-right { flex: 1; padding: 40px; }
-    
-    .info-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px; background: #1a1a1a;
-    }
-    .info-row:not(:last-child) { border-bottom: 1px solid #222; }
-    .info-label { color: #888; font-size: 0.9rem; width: 140px; }
-    .info-val { color: #fff; font-size: 0.9rem; flex: 1; text-align: right; line-height: 1.6; }
-    .info-edit-btn {
-      background: none; border: none; color: #d4af37; margin-left: 20px;
-      cursor: pointer; transition: opacity 0.2s; font-size: 1rem;
-    }
-    .info-edit-btn:hover { opacity: 0.7; }
-    
-    @media (max-width: 900px) {
-      .settings-container { flex-direction: column; }
-      .settings-sidebar { width: 100%; }
-      .settings-content { flex-direction: column; }
-      .settings-content-left { width: 100%; border-right: none; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-    <div class="nav-container">
-      <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-      <nav class="nav-links desktop-nav">
-        <a href="../dashboard/dashboard.html" style="color: #d4af37;">ADMIN PANEL</a>
-        <span style="color: #333; margin: 0 10px;">|</span>
-        <a href="../home.html">Home</a>
-        <a href="../home.html#services-section">Services</a>
-        <a href="../home.html#team-section">Team</a>
-        <a href="../home.html#reviews-section">Reviews</a>
-        <a href="../home.html#about">About Us</a>
-        <a href="../home.html#cta-section">Contact</a>
-      </nav>
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input id="search-input" type="text" placeholder="Search Jazz Events...">
-      </div>
-      <div id="nav-auth-slot">
-        <div class="profile-menu-wrap">
-          <button class="profile-avatar-btn" style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d4af37; background: transparent; color: #d4af37; cursor: pointer;">
-            <i class="fa-regular fa-user"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+  <div id="topbar-root"></div>
 
   <div class="settings-container">
     <!-- Sidebar -->
     <aside class="settings-sidebar">
-      <div class="logo-container" style="margin-bottom: 40px; display: flex; align-items: center;">
-        <span class="script-text" style="font-size: 2.8rem; color: #fff;">Jazz</span>
-        <span class="script-text" style="font-size: 2.8rem; margin-top: -12px; margin-left: 12px; color: #fff;">Events</span>
+      <div class="logo-container settings-logo-container">
+        <span class="script-text settings-logo-text">Jazz</span>
+        <span class="script-text settings-logo-text">Events</span>
       </div>
-      <div style="font-size: 0.95rem; color: #d4af37; margin-bottom: 24px; font-weight: 600; display: flex; align-items: center; gap: 12px;">
+      <div class="settings-label">
         <i class="fa-solid fa-gear"></i> Settings
       </div>
       <nav class="settings-nav">
@@ -107,50 +38,50 @@
     <main class="settings-content">
       <!-- Left Box -->
       <div class="settings-content-left">
-        <img src="../assets/team/edrian.jpg" alt="Profile" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 24px; border: 2px solid #d4af37; padding: 4px; background: #000;">
-        <h3 style="color: #fff; font-weight: 600; font-size: 1.3rem;">Edrian Albero</h3>
+        <img src="../assets/team/edrian.jpg" alt="Profile" class="settings-profile-image">
+        <h3 class="settings-user-name">Edrian Albero</h3>
       </div>
       
       <!-- Right Box -->
       <div class="settings-content-right">
         
-        <div style="border: 1px solid #d4af37; border-radius: 8px; padding: 32px;">
-          <h2 style="font-size: 1.6rem; margin-bottom: 32px; display: flex; align-items: center; gap: 8px;">
-            <span style="color: #d4af37;">Billings & Payment Options</span>
+        <div class="settings-info-box-padded">
+          <h2 class="settings-heading">
+            <span class="settings-heading-gold">Billings & Payment Options</span>
           </h2>
           
           <!-- Current Card Linked -->
-          <div style="margin-bottom: 32px;">
-            <div style="color: #ccc; font-size: 0.95rem; margin-bottom: 12px;">Current Card Linked:</div>
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="display: flex; align-items: center; background: #121626; border-radius: 6px; padding: 0 20px; height: 48px; min-width: 280px;">
-                <span style="flex: 1; color: #d4af37; font-family: monospace; font-size: 1rem; text-align: center;">XXXX-XXXX-XXXX-0072</span>
-                <button style="background:none; border:none; color:#d4af37; cursor:pointer; margin-left: 16px;"><i class="fa-solid fa-pen-to-square"></i></button>
+          <div class="settings-billing-section">
+            <div class="settings-billing-label">Current Card Linked:</div>
+            <div class="settings-billing-container">
+              <div class="settings-card-display">
+                <span class="settings-card-number">XXXX-XXXX-XXXX-0072</span>
+                <button class="settings-edit-btn" style="margin-left: 16px;"><i class="fa-solid fa-pen-to-square"></i></button>
               </div>
-              <div style="color: #4ade80; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
-                <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i> *Card is verified
+              <div class="settings-verified-badge">
+                <i class="fa-solid fa-circle-check settings-verified-icon"></i> *Card is verified
               </div>
             </div>
           </div>
           
           <!-- Available Online Payment Options -->
-          <div style="margin-bottom: 32px;">
-            <div style="color: #ccc; font-size: 0.95rem; margin-bottom: 12px;">Available Online Payment Options:</div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" style="max-height: 100%; max-width: 100%;" alt="Mastercard"></div>
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" style="max-height: 100%; max-width: 100%;" alt="Apple Pay"></div>
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" style="max-height: 100%; max-width: 100%;" alt="Visa"></div>
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" style="max-height: 100%; max-width: 100%;" alt="PayPal"></div>
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" style="max-height: 100%; max-width: 100%;" alt="Google Pay"></div>
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" style="max-height: 100%; max-width: 100%;" alt="Bitcoin"></div>
+          <div class="settings-billing-section">
+            <div class="settings-billing-label">Available Online Payment Options:</div>
+            <div class="settings-payment-grid">
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard"></div>
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay"></div>
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa"></div>
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"></div>
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" alt="Google Pay"></div>
+              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin"></div>
             </div>
           </div>
           
           <!-- Available Offline Payment Options -->
           <div>
-            <div style="color: #ccc; font-size: 0.95rem; margin-bottom: 12px;">Available Offline Payment Options:</div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <div style="background: #fff; border-radius: 6px; width: 60px; height: 40px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 800; font-size: 0.8rem; border: 2px solid #ccc;">CASH</div>
+            <div class="settings-billing-label">Available Offline Payment Options:</div>
+            <div class="settings-payment-grid">
+              <div class="settings-payment-cash">CASH</div>
             </div>
           </div>
           
@@ -161,14 +92,14 @@
   </div>
 
   <!-- Standard Footer -->
-  <footer style="margin-top: 40px;">
+  <footer class="settings-footer-margin">
     <div class="footer-grid">
       <div class="footer-col">
         <div class="logo-container">
-          <span class="script-text" style="font-size: 3rem;">Jazz</span>
-          <span class="script-text" style="font-size: 3rem; margin-top: -18px; margin-left: 18px;">Events</span>
+          <span class="script-text settings-footer-logo">Jazz</span>
+          <span class="script-text settings-footer-logo">Events</span>
         </div>
-        <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px; color: #888;">
+        <p class="settings-footer-description">
           Elevating moments with exquisite culinary experiences.
         </p>
       </div>
@@ -217,5 +148,9 @@
     </div>
   </footer>
 
+  <div class="page-toast" id="toast"></div>
+  <script src="../scripts/topbar.js"></script>
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/db.js"></script>
 </body>
 </html>

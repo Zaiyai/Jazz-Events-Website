@@ -7,26 +7,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="../styles.css?v=5">
     <link rel="stylesheet" href="booking.css?v=5">
 </head>
 <body>
-    <!-- Navigation Header -->
-    <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-        <div class="nav-container">
-        <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-        <nav class="nav-links desktop-nav">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services-section">Services</a>
-            <a href="../home.html#team-section">Team</a>
-            <a href="../home.html#reviews-section">Reviews</a>
-            <a href="../home.html#about">About Us</a>
-            <a href="../home.html#cta-section">Contact</a>
-        </nav>
-
-        <div id="nav-auth-slot"></div>
-    </div>
-  </header>
+    <div id="topbar-root"></div>
 
     <section id="banner-section" class="hero">
         <div class="hero-bg">
@@ -92,36 +81,36 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label>Services Applied for:</label>
-                        <div class="checkbox-group" style="margin-top: 16px;">
-                            <div class="chk-readonly checked">
+                        <div class="checkbox-group" id="summary-services" style="margin-top: 16px;">
+                            <div class="chk-readonly" data-service="catering">
                                 <div class="chk-box"></div>
                                 <span>Full Catering</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="styling">
                                 <div class="chk-box"></div>
                                 <span>Event Styling</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="decoration">
                                 <div class="chk-box"></div>
                                 <span>Decoration</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="lights">
                                 <div class="chk-box"></div>
                                 <span>Lights</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="sounds">
                                 <div class="chk-box"></div>
                                 <span>Sounds</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="photography">
                                 <div class="chk-box"></div>
                                 <span>Photography</span>
                             </div>
-                            <div class="chk-readonly checked">
+                            <div class="chk-readonly" data-service="videography">
                                 <div class="chk-box"></div>
                                 <span>Videography</span>
                             </div>
-                            <div class="chk-readonly">
+                            <div class="chk-readonly" data-service="coordination">
                                 <div class="chk-box"></div>
                                 <span>Guidance & Coordination</span>
                             </div>
@@ -173,61 +162,80 @@
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="../images/logo.png" alt="Jazz Events Logo" class="footer-logo">
-                <p>Elevating moments with exquisite culinary experience.</p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="../home.html">Home</a>
-                <a href="../home.html#services-section">Services</a>
-                <a href="../home.html#reviews-section">Reviews</a>
-                <a href="../home.html#about">About Us</a>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Services</h4>
-                <a href="#">Weddings</a>
-                <a href="#">Concerts</a>
-                <a href="#">Corporate Events</a>
-                <a href="#">Graduations</a>
-                <a href="#">Birthday Parties</a>
-                <a href="#">Get a Quote</a>
-            </div>
-            
-            <div class="footer-contact">
-                <h4>Contact Us</h4>
-                <div class="contact-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Jade Residences 1403 Imus, Philippines</span>
+    <!-- Detailed Footer Section -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Logo Column -->
+            <div class="footer-col">
+                <div class="logo-container" >
+                    <span class="script-text" style="font-size: 4rem;">Jazz</span>
+                    <span class="script-text" style="font-size: 4rem; margin-top: -24px; margin-left: 24px;">Events</span>
                 </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>0965 633 7494<br>0997 425 7958</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-brands fa-facebook"></i>
-                    <a href="#">Jazz Events</a>
-                </div>
+                <p style="font-size: 0.875rem; margin-top: 32px; line-height: 1.6; max-width: 300px;">
+                    Elevating moments with exquisite culinary experiences.
+                </p>
+            </div>
+
+            <!-- Quick Links Column -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="../home.html#banner-section">Home</a></li>
+                    <li><a href="../home.html#services-section">Services</a></li>
+                    <li><a href="../home.html#team-section">Team</a></li>
+                    <li><a href="../home.html#reviews-section">Reviews</a></li>
+                    <li><a href="../home.html#about">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Services Column -->
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li>Weddings</li>
+                    <li>Concerts</li>
+                    <li>Corporate Events</li>
+                    <li>Graduations</li>
+                    <li>Birthday Parties</li>
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li class="contact-item">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <a href="https://maps.app.goo.gl/ZtKzYYbJnv6EQXTT8">Jade Residences 1403 Imus, Philippines</a>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <div>
+                            <div>0965 633 7494</div>
+                            <div>0997 425 7958</div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fa-brands fa-facebook-f contact-icon"></i>
+                        <a href="https://www.facebook.com/share/1Aupn9hgVP/">Jazz Events</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>&copy; 2025 Jazz Events. All rights reserved.</p>
-            <div class="footer-legal">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+            <div class="legalogin-links">
+                <a href="../policies/privacyPolicy.html">Privacy Policy</a>
+                <a href="../policies/termsOfService.html">Terms of Service</a>
             </div>
         </div>
     </footer>
 
+    <script src="../scripts/topbar.js"></script>
+    <script src="../scripts/main.js"></script>
     <script src="../scripts/db.js"></script>
     <script src="booking.js"></script>
-    <script src="client_dashboard.js"></script>
     <script>
         (function() {
             const bookingInfo = JSON.parse(sessionStorage.getItem('bookingData'));
@@ -239,9 +247,23 @@
             document.getElementById('eventAttendees').innerHTML = bookingInfo.no_of_guests;
             document.getElementById('eventVenue').innerHTML = bookingInfo.venue;
             document.getElementById('eventTheme').innerHTML = bookingInfo.theme;
-            document.getElementById('eventBudget').innerHTML = bookingInfo.budget;
+            {
+                const b = bookingInfo.budget;
+                const n = typeof b === 'number' ? b : parseFloat(String(b).replace(/,/g, ''));
+                document.getElementById('eventBudget').innerHTML = Number.isFinite(n)
+                    ? n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                    : String(b);
+            }
             document.getElementById('eventPNum').innerHTML = bookingInfo.phone_number;
             document.getElementById('eventEmail').innerHTML = bookingInfo.email;
+
+            const selected = new Set(
+                Array.isArray(bookingInfo.services) ? bookingInfo.services : []
+            );
+            document.querySelectorAll('#summary-services .chk-readonly[data-service]').forEach((row) => {
+                const key = row.getAttribute('data-service');
+                row.classList.toggle('checked', selected.has(key));
+            });
         })();
     </script>
 </body>

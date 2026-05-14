@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initialogin-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jazz Events</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
     <link rel="stylesheet" href="login/login.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     
@@ -17,41 +17,7 @@
 </head>
 <body>
 
-    <!-- Navigation Header -->
-    <header style="background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px);">
-        <div class="nav-container">
-        <button id="burger" class="mobile-btn"><i class="fa-solid fa-bars"></i></button>
-        <nav class="nav-links desktop-nav">
-            <a href="#">Home</a>
-            <a href="#services-section">Services</a>
-            <a href="#team-section">Team</a>
-            <a href="#reviews-section">Reviews</a>
-            <a href="#about">About Us</a>
-            <a href="#cta-section">Contact</a>
-        </nav>
-
-        <div class="search-wrapper">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input id="search-input" type="text" placeholder="Search Jazz Events...">
-            <ul id="search-content"></ul>
-        </div>
-
-        <div id="nav-auth-slot"></div>
-    </div>
-  </header>
-
-    <!-- Mobile nav overlay -->
-    <div id="nav-overlay" class="nav-overlay mobile-only">
-    <button id="close-overlay" class="close-btn">✕</button>
-        <nav class="nav-links overlay-links">
-            <a href="#">Home</a>
-            <a href="#services-section">Services</a>
-            <a href="#team-section">Team</a>
-            <a href="#reviews-section">Reviews</a>
-            <a href="#about">About Us</a>
-            <a href="#cta-section">Contact</a>
-        </nav>
-    </div>
+    <div id="topbar-root"></div>
 
     <!-- Main Banner Hero Section -->
     <section id="banner-section" class="hero">
@@ -101,18 +67,23 @@
 
                 <div class="field-group">
                     <label class="field-label" for="login-email">Email*</label>
-                    <div class="field-input-wrapper">
-                        <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                    <div class="field-control">
+                        <div class="field-input-wrapper">
+                            <input class="field-input" type="email" id="login-email" placeholder="maria@domain.com" autocomplete="email">
+                        </div>
                         <div class="err-msg" id="login-email-err">Email address is required.</div>
                     </div>
                 </div>
 
                 <div class="field-group">
                     <label class="field-label" for="login-pass">Password*</label>
-                    <div class="field-input-wrapper pass-wrap">
-                        <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
-                        <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
+                    <div class="field-control">
+                        <div class="field-input-wrapper pass-wrap">
+                            <input class="field-input" type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+                            <button class="eye-btn" onclick="togglePass('login-pass', this)" type="button"><i class="fa-solid fa-eye-slash"></i></button>
+                        </div>
                         <div class="err-msg" id="login-pass-err">Password is required.</div>
+                        <div class="err-msg" id="login-auth-err"></div>
                     </div>
                 </div>
                 
@@ -150,56 +121,56 @@
 
                 <div class="services-grid">
                     <!-- Debut Card -->
-                    <div class="service-card">
+                    <a href="services/debut.html" class="service-card">
                         <div class="service-img-box">
                             <img src="assets/people/debut2.jpg" alt="Debut">
                             <div class="service-img-overlay"></div>
                         </div>
                         <div class="service-content">
                             <h3 class="service-title">Debut</h3>
-                            <p class="service-text">A coming of age celebration for a girl, their transition to womanhood</p>
+                            <p class="service-text">A grand coming-of-age celebration marking a young woman's elegant transition into adulthood</p>
                             <div class="corner-triangle"></div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Catering Card -->
-                    <div class="service-card">
+                    <a href="services/catering.html" class="service-card">
                         <div class="service-img-box">
                             <img src="assets/food/cater4.jpg" alt="Catering">
                             <div class="service-img-overlay"></div>
                         </div>
                         <div class="service-content">
                             <h3 class="service-title">Catering</h3>
-                            <p class="service-text">Providing excellent food services and staff accommodation</p>
+                            <p class="service-text">Exceptional cuisine and professional service for events of every size and occasion</p>
                             <div class="corner-triangle"></div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Parties and Celebrations Card -->
-                    <div class="service-card">
+                    <a href="services/celebrations.html" class="service-card">
                         <div class="service-img-box">
                             <img src="assets/people/people3.jpg" alt="Celebrations">
                             <div class="service-img-overlay"></div>
                         </div>
                         <div class="service-content">
                             <h3 class="service-title">Celebrations</h3>
-                            <p class="service-text">To celebrate your loved ones birthdays or anniversaries</p>
+                            <p class="service-text">Birthdays, anniversaries, reunions — we make every milestone unforgettable</p>
                             <div class="corner-triangle"></div>
                         </div>
-                    </div>
+                    </a>
 
-                    <!-- Crews Card -->
-                    <div class="service-card">
+                    <!-- Weddings Card -->
+                    <a href="services/weddings.html" class="service-card">
                         <div class="service-img-box">
                             <img src="assets/people/wedding.jpg" alt="Wedding">
                             <div class="service-img-overlay"></div>
                         </div>
                         <div class="service-content">
                             <h3 class="service-title">Weddings</h3>
-                            <p class="service-text">Celebrating another year of you! Wishing you the happiest of birthdays.</p>
+                            <p class="service-text">Full-service wedding planning to make your dream celebration a beautiful reality</p>
                             <div class="corner-triangle"></div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -446,11 +417,10 @@
             <div class="footer-col">
                 <h3>Services</h3>
                 <ul class="footer-links">
-                    <li>Weddings</li>
-                    <li>Concerts</li>
-                    <li>Corporate Events</li>
-                    <li>Graduations</li>
-                    <li>Birthday Parties</li>
+                    <li><a href="services/debut.html">Debut</a></li>
+                    <li><a href="services/catering.html">Catering</a></li>
+                    <li><a href="services/celebrations.html">Celebrations</a></li>
+                    <li><a href="services/weddings.html">Weddings</a></li>
                 </ul>
             </div>
 
@@ -488,6 +458,7 @@
 
 <div class="page-toast" id="toast"></div>
 
+<script src="scripts/topbar.js"></script>
 <script src="scripts/main.js"></script>
 <script src="scripts/search.js"></script>
 <script src="scripts/carousel.js"></script>

@@ -19,16 +19,20 @@ $data = json_decode($json);
 
 $name = $conn->real_escape_string($data->name);
 $type = $conn->real_escape_string($data->type);
-$no_of_guests = $conn->real_escape_string($data->no_of_guests);
-$client_name = $conn->real_escape_string($data->client_name);
+$no_of_guests = (int)$data->no_of_guests;
+$client_id = (int)$data->client_id;
 $date = $conn->real_escape_string($data->date);
 $venue = $conn->real_escape_string($data->venue);
 $theme = $conn->real_escape_string($data->theme);
 $status = $conn->real_escape_string($data->status);
-$amount = $conn->real_escape_string($data->amount);
+$amount = (int)$data->amount;
 
-$sql = "INSERT INTO events (name, type, no_of_guests, client_name, date, venue, theme, status, amount)
-VALUES ('$name', '$type', '$no_of_guests', '$client_name', '$date', '$venue', '$theme', '$status', '$amount')";
+$celebrantRaw = isset($data->celebrant) && $data->celebrant !== '' ? $data->celebrant : $data->name;
+$celebrant = $conn->real_escape_string(substr($celebrantRaw, 0, 100));
+$created_by = $conn->real_escape_string(isset($data->created_by) ? $data->created_by : 'Admin');
+
+$sql = "INSERT INTO events (name, type, no_of_guests, celebrant, client_id, date, venue, theme, status, amount, created_by)
+VALUES ('$name', '$type', $no_of_guests, '$celebrant', $client_id, '$date', '$venue', '$theme', '$status', $amount, '$created_by')";
 $result = $conn->query($sql);
 
 if ($result) {

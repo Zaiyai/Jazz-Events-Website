@@ -1,22 +1,76 @@
 var events;
+let dashboardCurrentUser = null;
 let eventsPage = 1;
 let noEventStatement = "Wala po event...";
 const eventsPerPage = 4;
 let allEventsCache = [];
 let calYear, calMonth;
 let filterStatus = '', filterClient = '';
-let deletePending = null; 
+let deletePending = null;
+
+async function refreshEventsCache() {
+  events = await getData('events');
+}
+
+function paginateEvents(all, page) {
+  const start = (page - 1) * eventsPerPage;
+  return {
+    data: all.slice(start, start + eventsPerPage),
+    total: all.length,
+    page,
+    perPage: eventsPerPage,
+  };
+}
+
+async function populateClientSelect() {
+  const sel = document.getElementById('ev-client');
+  if (!sel) return;
+  try {
+    const res = await fetch('../scripts/clients/get_clients.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    const keep = sel.value;
+    sel.innerHTML = '<option value="">Select a client</option>';
+    if (data.ok && Array.isArray(data.clients)) {
+      for (const c of data.clients) {
+        const opt = document.createElement('option');
+        opt.value = c.user_id;
+        opt.textContent = c.name;
+        sel.appendChild(opt);
+      }
+    }
+    if (keep) sel.value = keep;
+  } catch (e) {
+    console.warn('Could not load clients list', e);
+  }
+} 
 
 
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  events = await getDataOrDefault('events', DEFAULT_EVENTS);
   const user = await DB.getUser();
   if (!user) window.location.href = '../home.html';
+  dashboardCurrentUser = user;
+
+  await refreshEventsCache();
+  await populateClientSelect();
+
+  var words = user.name.trim().split(/\s+/);
+  var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
+  const pfp = document.getElementById('profile-avatar-initials');
 
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;
-  document.getElementById('sidebar-avatar').textContent = user.initials;
+  if (user.profile_picture) {
+    // Use correct path with prefix
+    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+  } else {
+    pfp.textContent = initials;
+    document.getElementById('sidebar-avatar').textContent = initials;
+  }
   document.getElementById('topbar-greeting').textContent = `Welcome back, ${user.name.split(' ')[0]}`;
 
   // Calendar
@@ -33,22 +87,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderRevenueChart();
 
   // Search
-  document.getElementById('dash-search-input').addEventListener('input', debounce(handleSearch, 300));
+  document.getElementById('dash-search-input')?.addEventListener('input', debounce(handleSearch, 300));
 
   // Filter toggle
-  document.getElementById('btn-filter-events').addEventListener('click', () => {
+  document.getElementById('btn-filter-events')?.addEventListener('click', () => {
     const bar = document.getElementById('filter-bar');
     bar.style.display = bar.style.display === 'none' ? 'flex' : 'none';
   });
 
   // Export
-  document.getElementById('btn-export-events').addEventListener('click', exportEvents);
+  document.getElementById('btn-export-events')?.addEventListener('click', exportEvents);
 });
 
 /* ── Stats ────────────────────────────────────────────────── */
 async function loadStats() {
   const stats = await DB.getStats();
   const grid = document.getElementById('stats-grid');
+  if (!grid) return;
   grid.innerHTML = `
     ${statCard('fa-peso-sign',     'Total Revenue',    stats.totalRevenue.value,    stats.totalRevenue.change,    stats.totalRevenue.sub,    'up')}
     ${statCard('fa-calendar-days', 'Active Events',    stats.activeEvents.value,    stats.activeEvents.change,    stats.activeEvents.sub,    'up')}
@@ -75,7 +130,10 @@ function statCard(icon, label, value, change, sub, badgeType) {
 
 /* ── Events Table ─────────────────────────────────────────── */
 async function loadEvents() {
-  const result = await DB.getEvents(eventsPage, eventsPerPage);
+  await refreshEventsCache();
+  const maxPage = Math.max(1, Math.ceil(events.length / eventsPerPage) || 1);
+  if (eventsPage > maxPage) eventsPage = maxPage;
+  const result = paginateEvents(events, eventsPage);
   allEventsCache = result;
   renderEventsTable(result);
 }
@@ -105,8 +163,8 @@ function renderEventsTable(result) {
       </td>
       <td>
         <div class="client-cell">
-          <div class="client-mini-avatar">${formatInitials(ev.client_name)}</div>
-          ${ev.client_name}
+          <div class="client-mini-avatar">${formatInitials(ev.client_name || '')}</div>
+          ${ev.client_name || '—'}
         </div>
       </td>
       <td>${formatDate(ev.date)}</td>
@@ -137,8 +195,10 @@ function renderEventsTable(result) {
 
 async function changePage(page) {
   if (page < 1) return;
+  const totalPages = Math.max(1, Math.ceil(events.length / eventsPerPage));
+  if (page > totalPages) return;
   eventsPage = page;
-  const result = await DB.getEvents(page, eventsPerPage);
+  const result = paginateEvents(events, page);
   renderEventsTable(result);
 }
 
@@ -146,11 +206,11 @@ async function changePage(page) {
 function openNewEventModal() {
   document.getElementById('event-modal-title').textContent = 'New Event';
   document.getElementById('event-edit-id').value = '';
-  ['ev-name','ev-type','ev-client','ev-guests','ev-date','ev-venue','ev-amount'].forEach(id => {
+  ['ev-name','ev-type','ev-client','ev-guests','ev-date','ev-venue','ev-theme','ev-amount'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  document.getElementById('ev-status').value = 'pending';
+  document.getElementById('ev-status').value = 'PLANNING';
   openModal('modal-new-event');
 }
 
@@ -162,16 +222,17 @@ async function addEvent() {
 }
 
 async function editEvent(id) {
-  const ev = events.find(e => e.event_id === id);
+  const ev = events.find(e => String(e.event_id) === String(id));
   if (!ev) return;
   eventModalTitle.textContent = 'Edit Event';
   document.getElementById('event-edit-id').value = id;
   document.getElementById('ev-name').value   = ev.name || '';
   document.getElementById('ev-type').value   = ev.type || '';
-  document.getElementById('ev-client').value = ev.client_name || '';
+  document.getElementById('ev-client').value = ev.client_id != null ? String(ev.client_id) : '';
   document.getElementById('ev-guests').value = ev.no_of_guests || '';
   document.getElementById('ev-date').value   = ev.date || '';
   document.getElementById('ev-venue').value  = ev.venue || '';
+  document.getElementById('ev-theme').value  = ev.theme || '';
   document.getElementById('ev-status').value = ev.status || 'PLANNING';
   document.getElementById('ev-amount').value = ev.amount || '';
   openModal('modal-new-event');
@@ -180,24 +241,32 @@ async function editEvent(id) {
 async function saveEvent() {
   const valid = validateForm([
     { id: 'ev-name',   msg: 'Event name is required.' },
-    { id: 'ev-client', msg: 'Client name is required.' },
+    { id: 'ev-client', msg: 'Please select a client.' },
     { id: 'ev-date',   msg: 'Date is required.' },
     { id: 'ev-venue',  msg: 'Venue is required.' },
   ]);
   if (!valid) return;
+  console.log("HEllo")
+
+  const clientId = parseInt(document.getElementById('ev-client').value, 10);
+  if (!clientId || Number.isNaN(clientId)) {
+    showToast('Please select a client.', 'error');
+    return;
+  }
 
   const id = document.getElementById('event-edit-id').value;
   const name = document.getElementById('ev-name').value.trim();
   const data = {
     name,
-    type:     document.getElementById('ev-type').value.trim()   || 'Event',
-    client_name:   document.getElementById('ev-client').value.trim(),
-    no_of_guests:   parseInt(document.getElementById('ev-guests').value) || 0,
-    date:     document.getElementById('ev-date').value,
-    venue:    document.getElementById('ev-venue').value.trim(),
-    theme:    document.getElementById('ev-theme').value.trim(),
-    status:   document.getElementById('ev-status').value,
-    amount:   parseFloat(document.getElementById('ev-amount').value) || 0,
+    type:         document.getElementById('ev-type').value.trim()        || 'Event',
+    client_id:    clientId,
+    no_of_guests: parseInt(document.getElementById('ev-guests').value)   || 0,
+    date:         document.getElementById('ev-date').value,
+    venue:        document.getElementById('ev-venue').value.trim(),
+    theme:        document.getElementById('ev-theme').value.trim(),
+    status:       document.getElementById('ev-status').value,
+    amount:       parseFloat(document.getElementById('ev-amount').value) || 0,
+    created_by:   dashboardCurrentUser && dashboardCurrentUser.name ? dashboardCurrentUser.name : 'Admin',
   };
 
   // If edit, update event, else add new event
@@ -211,6 +280,8 @@ async function saveEvent() {
   closeModal('modal-new-event');
   eventsPage = 1;
   await loadEvents();
+  renderCalendar();
+  renderDonut();
 }
 
 /* ── Delete ───────────────────────────────────────────────── */
@@ -228,6 +299,8 @@ async function executeDelete() {
     await DB.deleteEvent(id);
     showToast('Event deleted.');
     await loadEvents();
+    renderCalendar();
+    renderDonut();
   } else if (type === 'task') {
     await DB.deleteTask(id);
     showToast('Task deleted.');
@@ -243,24 +316,29 @@ function closeDelete() {
 
 /* ── Filters ──────────────────────────────────────────────── */
 function applyFilters() {
-  filterStatus = document.getElementById('filter-status').value;
-  filterClient = document.getElementById('filter-client').value.trim().toLowerCase();
+  const fs = document.getElementById('filter-status');
+  const fc = document.getElementById('filter-client');
+  filterStatus = fs ? fs.value : '';
+  filterClient = fc ? fc.value.trim().toLowerCase() : '';
   applyFilterLogic();
 }
 
 function clearFilters() {
-  document.getElementById('filter-status').value = '';
-  document.getElementById('filter-client').value = '';
+  const fs = document.getElementById('filter-status');
+  const fc = document.getElementById('filter-client');
+  if (fs) fs.value = '';
+  if (fc) fc.value = '';
   filterStatus = '';
   filterClient = '';
   loadEvents();
 }
 
 function applyFilterLogic() {
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  const all = Array.isArray(events) ? events : [];
+  const clientKey = (ev) => (ev.client_name || '').toLowerCase();
   const filtered = all.filter(ev => {
     const statusMatch = !filterStatus || ev.status === filterStatus;
-    const clientMatch = !filterClient || ev.client.toLowerCase().includes(filterClient);
+    const clientMatch = !filterClient || clientKey(ev).includes(filterClient);
     return statusMatch && clientMatch;
   });
   const sliced = filtered.slice(0, eventsPerPage);
@@ -269,11 +347,11 @@ function applyFilterLogic() {
 
 /* ── Export ───────────────────────────────────────────────── */
 function exportEvents() {
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  const all = Array.isArray(events) ? events : [];
   const csv = [
     ['Name','Type','Client','Date','Venue','Status','Amount'],
-    ...all.map(e => [e.name, e.type, e.client, e.date, e.venue, e.status, e.amount])
-  ].map(row => row.map(v => `"${v}"`).join(',')).join('\n');
+    ...all.map(e => [e.name, e.type, e.client_name || '', e.date, e.venue, e.status, e.amount])
+  ].map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -285,14 +363,18 @@ function exportEvents() {
 /* ── Search ───────────────────────────────────────────────── */
 function handleSearch(e) {
   const q = e.target.value.trim().toLowerCase();
-  if (!q) { loadEvents(); return; }
-  const all = getDataOrDefault('events', DEFAULT_EVENTS);
+  if (!q) {
+    eventsPage = 1;
+    loadEvents();
+    return;
+  }
+  const all = Array.isArray(events) ? events : [];
   const filtered = all.filter(ev =>
-    ev.name.toLowerCase().includes(q) ||
-    ev.client.toLowerCase().includes(q) ||
-    ev.venue.toLowerCase().includes(q)
+    (ev.name || '').toLowerCase().includes(q) ||
+    (ev.client_name || '').toLowerCase().includes(q) ||
+    (ev.venue || '').toLowerCase().includes(q)
   );
-  renderEventsTable({ data: filtered.slice(0,eventsPerPage), total: filtered.length, page:1, perPage:eventsPerPage });
+  renderEventsTable({ data: filtered.slice(0, eventsPerPage), total: filtered.length, page: 1, perPage: eventsPerPage });
 }
 
 /* ── Tasks ────────────────────────────────────────────────── */
@@ -354,11 +436,17 @@ async function renderCalendar() {
   const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
 
-  const eventDays = new Set(
-    events
-      .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
-      .map(e => new Date(e.date).getDate())
-  );
+  // Build a map of day -> array of event names
+  const eventsByDay = {};
+  events
+    .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
+    .forEach(e => {
+      const day = new Date(e.date).getDate();
+      if (!eventsByDay[day]) eventsByDay[day] = [];
+      eventsByDay[day].push(e.name, e.status);
+    });
+
+  const eventDays = new Set(Object.keys(eventsByDay).map(d => parseInt(d)));
 
   const today = new Date();
   const firstDay = new Date(calYear, calMonth, 1).getDay();
@@ -375,7 +463,10 @@ async function renderCalendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
     const hasEvent = eventDays.has(d);
-    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}">${d}</div>`;
+    const eventNames = hasEvent ? eventsByDay[d][0] : '';
+    const eventStatus = hasEvent ? eventsByDay[d][1] : '';
+    const title = hasEvent ? `Events:\n${eventNames}` : '';
+    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" ${title ? `title="${title}"` : ''} data-events="${eventNames}" data-status="${eventStatus.toLowerCase()}">${d}</div>`;
   }
   // Next month overflow
   const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
@@ -391,23 +482,20 @@ function renderDonut() {
   const counts = {};
   events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
   const total = events.length;
-
-  // Group into Corporate / Wedding / Private
-  const buckets = { Corporate: 0, Wedding: 0, Private: 0 };
-  Object.entries(counts).forEach(([type, n]) => {
-    if (type.toLowerCase().includes('wedding')) buckets.Wedding += n;
-    else if (type.toLowerCase().includes('private') || type.toLowerCase().includes('birthday')) buckets.Private += n;
-    else buckets.Corporate += n;
-  });
-
-  const colors = ['#d4af37','#f0d78c','#7a6020'];
-  const labels = Object.keys(buckets);
-  const values = Object.values(buckets);
+  
+  // Dynamic color palette for all event types
+  const colorPalette = ['#d4af37','#f0d78c','#7a6020','#b8860b','#daa520','#cd853f','#8b4513','#a0522d'];
+  
+  // Get all unique event types sorted for consistency
+  const labels = Object.keys(counts).sort();
+  const values = labels.map(type => counts[type]);
+  const colors = labels.map((_, i) => colorPalette[i % colorPalette.length]);
 
   const R = 55, STROKE = 26;
   const circumference = 2 * Math.PI * R;
   let offset = 0;
-  const svgEl = document.getElementById('donut-svg');
+  const svgEl = document.getElementsByClassName('donut-svg')[0];
+  if (!svgEl) return;
   const existingArcs = svgEl.querySelectorAll('.donut-arc');
   existingArcs.forEach(a => a.remove());
 
@@ -421,9 +509,9 @@ function renderDonut() {
     arc.setAttribute('stroke', colors[i]);
     arc.setAttribute('stroke-width', STROKE);
     arc.setAttribute('stroke-dasharray', `${dash} ${circumference - dash}`);
-    arc.setAttribute('stroke-dashoffset', -offset * circumference / (2 * Math.PI * R) * R * 2 * Math.PI);
+    arc.setAttribute('stroke-dashoffset', -offset);
     arc.setAttribute('transform','rotate(-90 80 80)');
-    svgEl.insertBefore(arc, svgEl.lastElementChild);
+    svgEl.appendChild(arc);
     offset += pct * circumference;
   });
 
@@ -437,13 +525,16 @@ function renderDonut() {
     svgEl.appendChild(inner);
   }
 
-  document.getElementById('donut-legend').innerHTML = labels.map((l, i) => {
-    const pct = total ? Math.round(values[i]/total*100) : 0;
-    return `<div class="legend-item">
-      <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l}</div>
-      <div class="legend-pct">${pct}%</div>
-    </div>`;
-  }).join('');
+  const legend = document.getElementById('donut-legend');
+  if (legend) {
+    legend.innerHTML = labels.map((l, i) => {
+      const pct = total ? Math.round(values[i]/total*100) : 0;
+      return `<div class="legend-item">
+        <div class="legend-left"><div class="legend-dot" style="background:${colors[i]}"></div>${l}</div>
+        <div class="legend-pct">${pct}%</div>
+      </div>`;
+    }).join('');
+  }
 }
 
 /* ── Revenue Line Chart ───────────────────────────────────── */
@@ -479,7 +570,9 @@ function renderRevenueChart() {
     `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="${i === data.length-1 ? 5.5 : 4}" fill="#d4af37" stroke="#1a1a1a" stroke-width="2"/>`
   ).join('');
 
-  document.getElementById('revenue-svg').innerHTML = `
+  const svg = document.getElementById('revenue-svg');
+  if (!svg) return;
+  svg.innerHTML = `
     <defs>
       <linearGradient id="revGrad2" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#d4af37" stop-opacity="0.28"/>
@@ -500,6 +593,130 @@ function debounce(fn, ms) {
   return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), ms); };
 }
 
+/* ── Events Page Functions ────────────────────────────────── */
+// Update event stats for events.html page
+async function updateEventStats() {
+  try {
+    await refreshEventsCache();
+    
+    // Calculate stats
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    let totalEvents = events.length;
+    let upcomingEvents = 0;
+    let ongoingEvents = 0;
+    let completedEvents = 0;
+    let thisMonthEvents = 0;
+    
+    events.forEach(event => {
+      const eventDate = new Date(event.date);
+      const eventMonth = eventDate.getMonth();
+      const eventYear = eventDate.getFullYear();
+      
+      // Count this month
+      if (eventMonth === currentMonth && eventYear === currentYear) {
+        thisMonthEvents++;
+      }
+      
+      // Count by status
+      if (event.status === 'COMPLETED') {
+        completedEvents++;
+      } else if (event.status === 'ONGOING') {
+        ongoingEvents++;
+      }
+      
+      // Count upcoming (next 30 days)
+      if (eventDate > now && eventDate <= thirtyDaysFromNow) {
+        upcomingEvents++;
+      }
+    });
+    
+    // Update DOM
+    const totalEl = document.getElementById('stat-total-events');
+    const monthEl = document.getElementById('stat-events-month');
+    const upcomingEl = document.getElementById('stat-upcoming-events');
+    const ongoingEl = document.getElementById('stat-ongoing-events');
+    const completedEl = document.getElementById('stat-completed-events');
+    
+    if (totalEl) totalEl.textContent = totalEvents;
+    if (monthEl) monthEl.textContent = thisMonthEvents;
+    if (upcomingEl) upcomingEl.textContent = upcomingEvents;
+    if (ongoingEl) ongoingEl.textContent = ongoingEvents;
+    if (completedEl) completedEl.textContent = completedEvents;
+    
+  } catch (error) {
+    console.error('Error updating stats:', error);
+  }
+}
+
+// Fetch and render events grid for events.html page
+async function renderEventsGrid() {
+  try {
+    await refreshEventsCache();
+    const gridContainer = document.getElementById('events-grid');
+    
+    if (!gridContainer) {
+      console.warn('events-grid container not found');
+      return;
+    }
+    
+    if (!events || events.length === 0) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-gray);">No events found</div>';
+      return;
+    }
+    
+    gridContainer.innerHTML = events.map(event => {
+      const eventDate = new Date(event.date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const initials = formatInitials(event.celebrant || '');
+      const eventImage = getEventImage(event.type);
+      
+      return `
+        <div class="event-grid-card">
+          <img src="${eventImage}" style="width: 100%; height: 160px; object-fit: cover;" alt="${event.name}">
+          <div style="padding: 20px;">
+            <h4 style="font-size: 1rem; color: var(--text-white); margin-bottom: 4px;">${event.name}</h4>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;">${event.type} - ${event.no_of_guests} guests</div>
+            
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-regular fa-calendar" style="color: var(--jazz-gold); width: 16px;"></i> ${formattedDate}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-solid fa-location-dot" style="color: var(--jazz-gold); width: 16px;"></i> ${event.venue}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;"><i class="fa-solid fa-peso-sign" style="color: var(--jazz-gold); width: 16px;"></i> ${formatPeso(event.amount)}</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dark); padding-top: 16px;">
+              <div class="client-cell">
+                <div class="client-mini-avatar">${initials}</div>
+                <span style="font-size: 0.75rem; color: var(--text-white); font-weight: 600;">${(event.celebrant || '').split(' ')[0]}</span>
+              </div>
+              <button class="btn-outline" style="font-size: 0.65rem; padding: 4px 12px; border-radius: 99px;" onclick="editEvent('${event.event_id}')">View Details</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error rendering events grid:', error);
+    const gridContainer = document.getElementById('events-grid');
+    if (gridContainer) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-red);">Error loading events</div>';
+    }
+  }
+}
+
+// Get event image based on type
+function getEventImage(type) {
+  const imageMap = {
+    'Wedding': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80',
+    'Birthday': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    'Conference': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80',
+    'Debut': 'https://images.unsplash.com/photo-1530103862676-de88d660f9dd?auto=format&fit=crop&w=800&q=80',
+    'Gala': 'https://images.unsplash.com/photo-1620663479979-994191d8bb71?auto=format&fit=crop&w=800&q=80',
+  };
+  return imageMap[type] || 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80';
+}
+
 // Expose to inline onclick handlers
 window.editEvent        = editEvent;
 window.confirmDelete    = confirmDelete;
@@ -512,7 +729,6 @@ window.clearFilters     = clearFilters;
 window.saveEvent        = saveEvent;
 window.saveTask         = saveTask;
 window.toggleTask       = toggleTask;
-// window.toggleTeamOnline = toggleTeamOnline;
 window.exportEvents     = exportEvents;
 window.openModal        = openModal;
 window.closeModal       = closeModal;

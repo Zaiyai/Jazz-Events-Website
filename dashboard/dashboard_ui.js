@@ -26,8 +26,11 @@ function formatPeso(amount) {
 }
 
 function formatInitials(name) {
-  let initials = [ name[0], name.trim().split(' ').at(-1)[0] ];
-  return initials.join("");
+  if (!name || !String(name).trim()) return '?';
+  const parts = String(name).trim().split(/\s+/);
+  const first = parts[0][0];
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : first;
+  return (first + last).toUpperCase();
 }
 
 function formatDate(isoStr) {
@@ -43,16 +46,19 @@ function statusPill(status) {
     ONGOING:    'status-ongoing',
     PLANNING:   'status-planning',
     BLOCKED:    'status-blocked',
+    PENDING:    'status-pending',
+    CONFIRMED:  'status-confirmed',
+    CANCELLED:  'status-cancelled'
   };
-  const cls = map[status] || 'status-planning';
+  const cls = map[status] || 'status-pending';
   return `<span class="status-pill ${cls}">${capitalize(status)}</span>`;
 }
 
 function capitalize(str) {
-  return str ? str[0].toUpperCase() + str.slice(1) : '';
+  return str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : '';
 }
 
-/* ── Mobile nav overlay ──────────────────────────────────── */
+/* ── Mobile nav overlay (Main Site Only) ────────────────── */
 function initMobileNav() {
   const openBtn  = document.getElementById('nav-open');
   const closeBtn = document.getElementById('nav-close');
@@ -65,6 +71,29 @@ function initMobileNav() {
 function guestOnly(redirectTo = 'dashboard.html') {
   const user = DB.getUser();
   if (user) { window.location.href = redirectTo; }
+}
+
+/* ── Role-based Permissions ─────────────────────────────── */
+function initPermissions() {
+  const userType = COOKIES.getCookie("user_type");
+  const path = window.location.pathname.toLowerCase();
+  
+  // Basic Auth Check: Only ADMIN and STAFF can access dashboard area
+  if (userType !== 'ADMIN' && userType !== 'STAFF') {
+    window.location.href = '../home.html';
+    return;
+  }
+
+  // Staff Restrictions
+  if (userType === 'STAFF') {
+    // 1. Page Access Control (Redirect to staff folder)
+    if (path.includes('clients.html') || path.includes('analytics.html') || (path.includes('dashboard.html') && !path.includes('/staff/'))) {
+      showToast("Access Denied: Redirecting to Staff Panel...", "error");
+      setTimeout(() => {
+        window.location.href = '../staff/dashboard.html';
+      }, 1500);
+    }
+  }
 }
 
 /* ── Modal helpers ───────────────────────────────────────── */
@@ -92,15 +121,8 @@ function validateForm(fields) {
   return valid;
 }
 
-const sidebar = document.getElementById('sidebar');
-
 /* ── Run on page load ─────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
-
-  if (sidebar.classList.contains('not-main')) {
-    sidebar.addEventListener('mouseleave', () => { sidebar.style.width = "0"; });
-  }
+  initPermissions();
 });
-
-function openSidebar() { sidebar.style.width = "250px"; };
