@@ -88,15 +88,14 @@ if ($result) {
 }
 
 try {
-    //Server settings
-    $mail->SMTPDebug = 1;
+    $mail->SMTPDebug = 0;
     $mail->isSMTP();
-    $mail->Host       = 'smtp.mailersend.net';
+    $mail->Host       = getenv('SMTP_HOST');
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'MS_CQfumx@test-q3enl6k3n5742vwr.mlsender.net';
-    $mail->Password   = 'mssp.7r4ySxr.3zxk54vx1mpgjy6v.7qg8nO1';
+    $mail->Username   = getenv('SMTP_USERNAME');
+    $mail->Password   = getenv('SMTP_PASSWORD');
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
+    $mail->Port       = getenv('SMTP_PORT');
 
     // Recipients
     $mail->setFrom('test@test-q3enl6k3n5742vwr.mlsender.net', 'Jazz Events');
