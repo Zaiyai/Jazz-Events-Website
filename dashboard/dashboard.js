@@ -596,6 +596,130 @@ function debounce(fn, ms) {
   return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), ms); };
 }
 
+/* ── Events Page Functions ────────────────────────────────── */
+// Update event stats for events.html page
+async function updateEventStats() {
+  try {
+    await refreshEventsCache();
+    
+    // Calculate stats
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    let totalEvents = events.length;
+    let upcomingEvents = 0;
+    let ongoingEvents = 0;
+    let completedEvents = 0;
+    let thisMonthEvents = 0;
+    
+    events.forEach(event => {
+      const eventDate = new Date(event.date);
+      const eventMonth = eventDate.getMonth();
+      const eventYear = eventDate.getFullYear();
+      
+      // Count this month
+      if (eventMonth === currentMonth && eventYear === currentYear) {
+        thisMonthEvents++;
+      }
+      
+      // Count by status
+      if (event.status === 'COMPLETED') {
+        completedEvents++;
+      } else if (event.status === 'ONGOING') {
+        ongoingEvents++;
+      }
+      
+      // Count upcoming (next 30 days)
+      if (eventDate > now && eventDate <= thirtyDaysFromNow) {
+        upcomingEvents++;
+      }
+    });
+    
+    // Update DOM
+    const totalEl = document.getElementById('stat-total-events');
+    const monthEl = document.getElementById('stat-events-month');
+    const upcomingEl = document.getElementById('stat-upcoming-events');
+    const ongoingEl = document.getElementById('stat-ongoing-events');
+    const completedEl = document.getElementById('stat-completed-events');
+    
+    if (totalEl) totalEl.textContent = totalEvents;
+    if (monthEl) monthEl.textContent = thisMonthEvents;
+    if (upcomingEl) upcomingEl.textContent = upcomingEvents;
+    if (ongoingEl) ongoingEl.textContent = ongoingEvents;
+    if (completedEl) completedEl.textContent = completedEvents;
+    
+  } catch (error) {
+    console.error('Error updating stats:', error);
+  }
+}
+
+// Fetch and render events grid for events.html page
+async function renderEventsGrid() {
+  try {
+    await refreshEventsCache();
+    const gridContainer = document.getElementById('events-grid');
+    
+    if (!gridContainer) {
+      console.warn('events-grid container not found');
+      return;
+    }
+    
+    if (!events || events.length === 0) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-gray);">No events found</div>';
+      return;
+    }
+    
+    gridContainer.innerHTML = events.map(event => {
+      const eventDate = new Date(event.date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const initials = formatInitials(event.celebrant || '');
+      const eventImage = getEventImage(event.type);
+      
+      return `
+        <div class="event-grid-card">
+          <img src="${eventImage}" style="width: 100%; height: 160px; object-fit: cover;" alt="${event.name}">
+          <div style="padding: 20px;">
+            <h4 style="font-size: 1rem; color: var(--text-white); margin-bottom: 4px;">${event.name}</h4>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;">${event.type} - ${event.no_of_guests} guests</div>
+            
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-regular fa-calendar" style="color: var(--jazz-gold); width: 16px;"></i> ${formattedDate}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-solid fa-location-dot" style="color: var(--jazz-gold); width: 16px;"></i> ${event.venue}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;"><i class="fa-solid fa-peso-sign" style="color: var(--jazz-gold); width: 16px;"></i> ${formatPeso(event.amount)}</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dark); padding-top: 16px;">
+              <div class="client-cell">
+                <div class="client-mini-avatar">${initials}</div>
+                <span style="font-size: 0.75rem; color: var(--text-white); font-weight: 600;">${(event.celebrant || '').split(' ')[0]}</span>
+              </div>
+              <button class="btn-outline" style="font-size: 0.65rem; padding: 4px 12px; border-radius: 99px;" onclick="editEvent('${event.event_id}')">View Details</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error rendering events grid:', error);
+    const gridContainer = document.getElementById('events-grid');
+    if (gridContainer) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-red);">Error loading events</div>';
+    }
+  }
+}
+
+// Get event image based on type
+function getEventImage(type) {
+  const imageMap = {
+    'Wedding': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80',
+    'Birthday': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    'Conference': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80',
+    'Debut': 'https://images.unsplash.com/photo-1530103862676-de88d660f9dd?auto=format&fit=crop&w=800&q=80',
+    'Gala': 'https://images.unsplash.com/photo-1620663479979-994191d8bb71?auto=format&fit=crop&w=800&q=80',
+  };
+  return imageMap[type] || 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80';
+}
+
 // Expose to inline onclick handlers
 window.editEvent        = editEvent;
 window.confirmDelete    = confirmDelete;
