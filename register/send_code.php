@@ -71,14 +71,11 @@ $data = json_decode($json);
 $name = trim($data->name ?? '');
 $email = trim($data->email ?? '');
 
-if (
-    empty($name) ||
-    empty($email)
-) {
+if (empty($email)) {
 
     echo json_encode([
         "status" => "error",
-        "message" => "All fields are required."
+        "message" => "Email is required."
     ]);
 
     exit;
@@ -122,12 +119,14 @@ $insertSQL = "
     INSERT INTO users (
         name,
         email,
+        user_type,
         verification_code,
         is_verified
     )
     VALUES (
         '$name',
         '$email',
+        'CLIENT',
         '$verificationCode',
         0
     )
