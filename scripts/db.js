@@ -92,6 +92,19 @@ const DB = {
     };;
   },
 
+  /* ── PAYMENTS ────────────────────────────────────────────── */
+  async getPayments() {
+    const response = await fetch("/jazz%20events%20website/scripts/payments/get_payments.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await response.json();
+    if (data.ok && !data.empty) {
+      return data.payments;
+    }
+    return [];
+  },
+
   /* ── BOOKINGS ─────────────────────────────────────────────── */
   async createBooking(event) {
     fetch("/Jazz%20Events%20Website/scripts/bookings/add_booking.php", {

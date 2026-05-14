@@ -205,103 +205,17 @@
                 <th>STATUS</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-4578</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">P</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Pat</span>
-                  </div>
+            <tbody id="payments-tbody">
+              <tr id="payments-loading">
+                <td colspan="6" style="text-align:center; padding:32px; color:var(--text-gray);">
+                  Loading payments…
                 </td>
-                <td style="color: var(--text-gray);">Golden Anniversary Gala</td>
-                <td style="color: var(--text-white);">₱ 380,000</td>
-                <td style="color: var(--text-gray);">Dec 28, 2026</td>
-                <td><span class="status-pill outline-green">Paid</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-2346</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">E</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Emma</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">Garden Wedding</td>
-                <td style="color: var(--text-white);">₱ 738,500</td>
-                <td style="color: var(--text-gray);">July 15, 2026</td>
-                <td><span class="status-pill outline-yellow">Pending</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-0824</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">M</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Michael</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">Michael Reeve's New Invention</td>
-                <td style="color: var(--text-white);">₱ 450,900</td>
-                <td style="color: var(--text-gray);">Oct 2, 2025</td>
-                <td><span class="status-pill outline-green">Paid</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-0023</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">S</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Sarah</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">50th Birthday Celebration</td>
-                <td style="color: var(--text-white);">₱ 329,000</td>
-                <td style="color: var(--text-gray);">Nov 20, 2026</td>
-                <td><span class="status-pill outline-purple">Refunded</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-0567</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">J</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Johnny</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">Johnny Cage Movie Premiere</td>
-                <td style="color: var(--text-white);">₱ 223,000</td>
-                <td style="color: var(--text-gray);">Mar 3, 2026</td>
-                <td><span class="status-pill outline-green">Paid</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-0092</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">K</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Kano</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">RPG Fireworks Display</td>
-                <td style="color: var(--text-white);">₱ 690,980</td>
-                <td style="color: var(--text-gray);">April 5, 2026</td>
-                <td><span class="status-pill outline-red">Overdue</span></td>
-              </tr>
-              <tr>
-                <td style="color: var(--jazz-gold); padding-left: 24px;">#INV-0725</td>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-mini-avatar">L</div>
-                    <span style="font-weight: 600; color: var(--text-white);">Liu</span>
-                  </div>
-                </td>
-                <td style="color: var(--text-gray);">The Way of The Dragon Fire Show</td>
-                <td style="color: var(--text-white);">₱ 990,900</td>
-                <td style="color: var(--text-gray);">May 6, 2026</td>
-                <td><span class="status-pill outline-green">Paid</span></td>
               </tr>
             </tbody>
           </table>
           
           <div class="table-footer" style="border-top: 1px solid var(--border-dark);">
-            <span>Showing 6 of 120 clients</span>
+            <span id="payments-footer-text">Loading…</span>
             <div class="pagination">
               <button class="pg-btn">Previous</button>
               <button class="pg-btn">Next</button>
@@ -320,6 +234,83 @@
 <script src="../scripts/db.js"></script>
 <script src="dashboard_ui.js"></script>
 <script src="dashboard.js"></script>
+
+<script>
+(async function loadPayments() {
+  const tbody = document.getElementById('payments-tbody');
+  const footerText = document.getElementById('payments-footer-text');
+
+  try {
+    const payments = await DB.getPayments();
+
+    if (!payments || payments.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" style="text-align:center; padding:32px; color:var(--text-gray);">
+            No payments found.
+          </td>
+        </tr>`;
+      footerText.textContent = 'No payments';
+      return;
+    }
+
+    tbody.innerHTML = payments.map(p => {
+      // Format amount as ₱ with commas
+      const amount = Number(p.amount).toLocaleString('en-PH', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+
+      // Format date
+      const dateStr = p.payment_date
+        ? new Date(p.payment_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : '—';
+
+      // Status pill class
+      const statusMap = {
+        'PAID':     'outline-green',
+        'PENDING':  'outline-yellow',
+        'OVERDUE':  'outline-red',
+        'REFUNDED': 'outline-purple',
+        'PARTIAL':  'outline-yellow'
+      };
+      const pillClass = statusMap[p.payment_status] || 'outline-yellow';
+      const statusLabel = p.payment_status.charAt(0) + p.payment_status.slice(1).toLowerCase();
+
+      // Client initials fallback
+      const initials = p.client_initials
+        || p.client_name.split(',')[0].trim().charAt(0).toUpperCase();
+
+      return `
+        <tr>
+          <td style="color: var(--jazz-gold); padding-left: 24px;">${p.invoice_number}</td>
+          <td>
+            <div class="client-cell">
+              <div class="client-mini-avatar">${initials}</div>
+              <span style="font-weight: 600; color: var(--text-white);">${p.client_name}</span>
+            </div>
+          </td>
+          <td style="color: var(--text-gray);">${p.event_name}</td>
+          <td style="color: var(--text-white);">₱ ${amount}</td>
+          <td style="color: var(--text-gray);">${dateStr}</td>
+          <td><span class="status-pill ${pillClass}">${statusLabel}</span></td>
+        </tr>`;
+    }).join('');
+
+    footerText.textContent = `Showing ${payments.length} payment${payments.length !== 1 ? 's' : ''}`;
+
+  } catch (err) {
+    console.error('Failed to load payments:', err);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:32px; color:#f87171;">
+          Failed to load payments. Please try again.
+        </td>
+      </tr>`;
+    footerText.textContent = 'Error loading payments';
+  }
+})();
+</script>
 
 </body>
 </html>
