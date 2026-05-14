@@ -74,6 +74,24 @@ const DB = {
     return null;
   },
 
+  async getClients({ page = 1, perPage = 20 } = {}) {
+    const response = await fetch("/jazz%20events%20website/scripts/clients/get_clients.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const all = await response.json();
+    const start = (page - 1) * perPage;
+    console.log("Fetched clients:", all.clients[0]);
+    return {
+      data: all.clients.slice(start, start + perPage),
+      total: all.clients.length,
+      page,
+      perPage
+    };;
+  },
+
   /* ── BOOKINGS ─────────────────────────────────────────────── */
   async createBooking(event) {
     fetch("/Jazz%20Events%20Website/scripts/bookings/add_booking.php", {
@@ -115,7 +133,6 @@ const DB = {
   /* ── EVENTS ─────────────────────────────────────────────── */
   async getEvents(page = 1, perPage = 4) {
     const all = await getData('events');
-    await console.log(all);
     const start = (page - 1) * perPage;
     return {
       data: all.slice(start, start + perPage),

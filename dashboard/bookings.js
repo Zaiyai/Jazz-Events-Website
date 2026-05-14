@@ -248,6 +248,23 @@ window.changeBookingPage = changeBookingPage;
 window.saveBooking = saveBooking;
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Populate sidebar avatar
+  const user = await DB.getUser();
+  if (user) {
+    var words = user.name.trim().split(/\s+/);
+    var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
+    const pfp = document.getElementById('profile-avatar-initials');
+
+    document.getElementById('sidebar-name').textContent = user.name;
+    if (user.profile_picture) {
+      pfp.innerHTML = '<img src="' + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+      document.getElementById('sidebar-avatar').innerHTML = '<img src="' + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    } else {
+      pfp.textContent = initials;
+      document.getElementById('sidebar-avatar').textContent = initials;
+    }
+  }
+
   initBookingsPage();
 });

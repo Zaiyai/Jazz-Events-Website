@@ -25,13 +25,10 @@ function paginateEvents(all, page) {
 async function populateClientSelect() {
   const sel = document.getElementById('ev-client');
   if (!sel) return;
-  const email = COOKIES.getCookie('email');
-  if (!email) return;
   try {
-    const res = await fetch('../scripts/clients/list_clients.php', {
+    const res = await fetch('../scripts/clients/get_clients.php', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      headers: { 'Content-Type': 'application/json' }
     });
     const data = await res.json();
     const keep = sel.value;
@@ -60,9 +57,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   await refreshEventsCache();
   await populateClientSelect();
 
+  var words = user.name.trim().split(/\s+/);
+  var initials = words.map(function(w){ return w[0]; }).join('').toUpperCase().substring(0,2);
+  const pfp = document.getElementById('profile-avatar-initials');
+
   // Populate sidebar user info
   document.getElementById('sidebar-name').textContent = user.name;
-  document.getElementById('sidebar-avatar').textContent = user.initials;
+  if (user.profile_picture) {
+    // Use correct path with prefix
+    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+  } else {
+    pfp.textContent = initials;
+    document.getElementById('sidebar-avatar').textContent = initials;
+  }
   document.getElementById('topbar-greeting').textContent = `Welcome back, ${user.name.split(' ')[0]}`;
 
   // Calendar
@@ -428,11 +436,17 @@ async function renderCalendar() {
   const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
 
-  const eventDays = new Set(
-    events
-      .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
-      .map(e => new Date(e.date).getDate())
-  );
+  // Build a map of day -> array of event names
+  const eventsByDay = {};
+  events
+    .filter(e => { const d = new Date(e.date); return d.getFullYear() === calYear && d.getMonth() === calMonth; })
+    .forEach(e => {
+      const day = new Date(e.date).getDate();
+      if (!eventsByDay[day]) eventsByDay[day] = [];
+      eventsByDay[day].push(e.name, e.status);
+    });
+
+  const eventDays = new Set(Object.keys(eventsByDay).map(d => parseInt(d)));
 
   const today = new Date();
   const firstDay = new Date(calYear, calMonth, 1).getDay();
@@ -449,7 +463,10 @@ async function renderCalendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
     const hasEvent = eventDays.has(d);
-    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}">${d}</div>`;
+    const eventNames = hasEvent ? eventsByDay[d][0] : '';
+    const eventStatus = hasEvent ? eventsByDay[d][1] : '';
+    const title = hasEvent ? `Events:\n${eventNames}` : '';
+    html += `<div class="cal-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" ${title ? `title="${title}"` : ''} data-events="${eventNames}" data-status="${eventStatus.toLowerCase()}">${d}</div>`;
   }
   // Next month overflow
   const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
@@ -465,23 +482,19 @@ function renderDonut() {
   const counts = {};
   events.forEach(e => { counts[e.type] = (counts[e.type] || 0) + 1; });
   const total = events.length;
-
-  // Group into Corporate / Wedding / Private
-  const buckets = { Corporate: 0, Wedding: 0, Private: 0 };
-  Object.entries(counts).forEach(([type, n]) => {
-    if (type.toLowerCase().includes('wedding')) buckets.Wedding += n;
-    else if (type.toLowerCase().includes('private') || type.toLowerCase().includes('birthday')) buckets.Private += n;
-    else buckets.Corporate += n;
-  });
-
-  const colors = ['#d4af37','#f0d78c','#7a6020'];
-  const labels = Object.keys(buckets);
-  const values = Object.values(buckets);
+  
+  // Dynamic color palette for all event types
+  const colorPalette = ['#d4af37','#f0d78c','#7a6020','#b8860b','#daa520','#cd853f','#8b4513','#a0522d'];
+  
+  // Get all unique event types sorted for consistency
+  const labels = Object.keys(counts).sort();
+  const values = labels.map(type => counts[type]);
+  const colors = labels.map((_, i) => colorPalette[i % colorPalette.length]);
 
   const R = 55, STROKE = 26;
   const circumference = 2 * Math.PI * R;
   let offset = 0;
-  const svgEl = document.getElementById('donut-svg');
+  const svgEl = document.getElementsByClassName('donut-svg')[0];
   if (!svgEl) return;
   const existingArcs = svgEl.querySelectorAll('.donut-arc');
   existingArcs.forEach(a => a.remove());
@@ -496,9 +509,9 @@ function renderDonut() {
     arc.setAttribute('stroke', colors[i]);
     arc.setAttribute('stroke-width', STROKE);
     arc.setAttribute('stroke-dasharray', `${dash} ${circumference - dash}`);
-    arc.setAttribute('stroke-dashoffset', -offset * circumference / (2 * Math.PI * R) * R * 2 * Math.PI);
+    arc.setAttribute('stroke-dashoffset', -offset);
     arc.setAttribute('transform','rotate(-90 80 80)');
-    svgEl.insertBefore(arc, svgEl.lastElementChild);
+    svgEl.appendChild(arc);
     offset += pct * circumference;
   });
 
@@ -578,6 +591,130 @@ function renderRevenueChart() {
 function debounce(fn, ms) {
   let timer;
   return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), ms); };
+}
+
+/* ── Events Page Functions ────────────────────────────────── */
+// Update event stats for events.html page
+async function updateEventStats() {
+  try {
+    await refreshEventsCache();
+    
+    // Calculate stats
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    let totalEvents = events.length;
+    let upcomingEvents = 0;
+    let ongoingEvents = 0;
+    let completedEvents = 0;
+    let thisMonthEvents = 0;
+    
+    events.forEach(event => {
+      const eventDate = new Date(event.date);
+      const eventMonth = eventDate.getMonth();
+      const eventYear = eventDate.getFullYear();
+      
+      // Count this month
+      if (eventMonth === currentMonth && eventYear === currentYear) {
+        thisMonthEvents++;
+      }
+      
+      // Count by status
+      if (event.status === 'COMPLETED') {
+        completedEvents++;
+      } else if (event.status === 'ONGOING') {
+        ongoingEvents++;
+      }
+      
+      // Count upcoming (next 30 days)
+      if (eventDate > now && eventDate <= thirtyDaysFromNow) {
+        upcomingEvents++;
+      }
+    });
+    
+    // Update DOM
+    const totalEl = document.getElementById('stat-total-events');
+    const monthEl = document.getElementById('stat-events-month');
+    const upcomingEl = document.getElementById('stat-upcoming-events');
+    const ongoingEl = document.getElementById('stat-ongoing-events');
+    const completedEl = document.getElementById('stat-completed-events');
+    
+    if (totalEl) totalEl.textContent = totalEvents;
+    if (monthEl) monthEl.textContent = thisMonthEvents;
+    if (upcomingEl) upcomingEl.textContent = upcomingEvents;
+    if (ongoingEl) ongoingEl.textContent = ongoingEvents;
+    if (completedEl) completedEl.textContent = completedEvents;
+    
+  } catch (error) {
+    console.error('Error updating stats:', error);
+  }
+}
+
+// Fetch and render events grid for events.html page
+async function renderEventsGrid() {
+  try {
+    await refreshEventsCache();
+    const gridContainer = document.getElementById('events-grid');
+    
+    if (!gridContainer) {
+      console.warn('events-grid container not found');
+      return;
+    }
+    
+    if (!events || events.length === 0) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-gray);">No events found</div>';
+      return;
+    }
+    
+    gridContainer.innerHTML = events.map(event => {
+      const eventDate = new Date(event.date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const initials = formatInitials(event.celebrant || '');
+      const eventImage = getEventImage(event.type);
+      
+      return `
+        <div class="event-grid-card">
+          <img src="${eventImage}" style="width: 100%; height: 160px; object-fit: cover;" alt="${event.name}">
+          <div style="padding: 20px;">
+            <h4 style="font-size: 1rem; color: var(--text-white); margin-bottom: 4px;">${event.name}</h4>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;">${event.type} - ${event.no_of_guests} guests</div>
+            
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-regular fa-calendar" style="color: var(--jazz-gold); width: 16px;"></i> ${formattedDate}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px;"><i class="fa-solid fa-location-dot" style="color: var(--jazz-gold); width: 16px;"></i> ${event.venue}</div>
+            <div style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 16px;"><i class="fa-solid fa-peso-sign" style="color: var(--jazz-gold); width: 16px;"></i> ${formatPeso(event.amount)}</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dark); padding-top: 16px;">
+              <div class="client-cell">
+                <div class="client-mini-avatar">${initials}</div>
+                <span style="font-size: 0.75rem; color: var(--text-white); font-weight: 600;">${(event.celebrant || '').split(' ')[0]}</span>
+              </div>
+              <button class="btn-outline" style="font-size: 0.65rem; padding: 4px 12px; border-radius: 99px;" onclick="editEvent('${event.event_id}')">View Details</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (error) {
+    console.error('Error rendering events grid:', error);
+    const gridContainer = document.getElementById('events-grid');
+    if (gridContainer) {
+      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-red);">Error loading events</div>';
+    }
+  }
+}
+
+// Get event image based on type
+function getEventImage(type) {
+  const imageMap = {
+    'Wedding': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80',
+    'Birthday': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    'Conference': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80',
+    'Debut': 'https://images.unsplash.com/photo-1530103862676-de88d660f9dd?auto=format&fit=crop&w=800&q=80',
+    'Gala': 'https://images.unsplash.com/photo-1620663479979-994191d8bb71?auto=format&fit=crop&w=800&q=80',
+  };
+  return imageMap[type] || 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80';
 }
 
 // Expose to inline onclick handlers
