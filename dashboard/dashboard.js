@@ -25,13 +25,10 @@ function paginateEvents(all, page) {
 async function populateClientSelect() {
   const sel = document.getElementById('ev-client');
   if (!sel) return;
-  const email = COOKIES.getCookie('email');
-  if (!email) return;
   try {
-    const res = await fetch('../scripts/clients/list_clients.php', {
+    const res = await fetch('../scripts/clients/get_clients.php', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      headers: { 'Content-Type': 'application/json' }
     });
     const data = await res.json();
     const keep = sel.value;
