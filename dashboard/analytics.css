@@ -82,16 +82,32 @@
 }
 
 .chart-body { height: 300px; position: relative; }
-.chart-body-pie { height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.chart-body-pie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  overflow: hidden;
+}
+
+.chart-body-pie canvas {
+  max-width: 160px;
+  max-height: 160px;
+  width: 160px !important;
+  height: 160px !important;
+}
 .chart-body-bar { height: 350px; }
 
 /* Pie Legend */
 .pie-legend {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
 .legend-item {

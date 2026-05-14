@@ -1,4 +1,9 @@
 // analytics.js – Logic and Chart initialization for Analytics tab
+// Fetches all data from the database via analytics.php
+
+let analyticsData = null;
+let topEventsPage = 1;
+const topEventsPerPage = 4;
 
 // Initialize page on load
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,29 +24,111 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  initAnalytics();
+  await initAnalytics();
 });
 
-function initAnalytics() {
+async function fetchAnalyticsData() {
+  try {
+    const response = await fetch('../scripts/events/analytics.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!response.ok) throw new Error('HTTP error: ' + response.status);
+    const data = await response.json();
+    if (data.ok) {
+      return data;
+    }
+    console.warn('Analytics fetch returned not ok:', data);
+    return null;
+  } catch (error) {
+    console.error('Failed to fetch analytics data:', error);
+    return null;
+  }
+}
+
+async function initAnalytics() {
+  analyticsData = await fetchAnalyticsData();
+  if (!analyticsData) {
+    console.warn('No analytics data available, charts will be empty.');
+    analyticsData = {
+      stats: { total_revenue: 0, total_events: 0, avg_event_value: 0, total_clients: 0, total_bookings: 0, completed_events: 0 },
+      event_types: [],
+      booking_types: [],
+      monthly_revenue: [],
+      monthly_bookings: [],
+      monthly_completed: [],
+      top_events: []
+    };
+  }
+
+  renderStatsCards();
   initRevenueChart();
   initEventTypesChart();
   initBookingsChart();
   renderTopEventsTable();
 }
 
+/* ── Stats Cards ──────────────────────────────────────────── */
+function renderStatsCards() {
+  const s = analyticsData.stats;
+
+  // Total Revenue
+  const revenueEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(1) .page-stat-value');
+  if (revenueEl) revenueEl.textContent = formatPesoCompact(s.total_revenue);
+
+  // Total Clients
+  const clientsEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(2) .page-stat-value');
+  if (clientsEl) clientsEl.textContent = s.total_clients;
+
+  // Avg Event Value
+  const avgEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(3) .page-stat-value');
+  if (avgEl) avgEl.textContent = formatPesoCompact(s.avg_event_value);
+
+  // Completed / Total ratio (replaces Client Satisfaction)
+  const satEl = document.querySelector('.stats-grid-4 .page-stat-card:nth-child(4) .page-stat-value');
+  if (satEl) {
+    const pct = s.total_events > 0 ? ((s.completed_events / s.total_events) * 100).toFixed(1) : '0.0';
+    satEl.textContent = pct + '%';
+  }
+
+  // Update the stat labels to match actual data
+  const labels = document.querySelectorAll('.stats-grid-4 .page-stat-card .page-stat-label');
+  if (labels[0]) labels[0].textContent = 'TOTAL REVENUE';
+  if (labels[1]) labels[1].textContent = 'TOTAL CLIENTS';
+  if (labels[2]) labels[2].textContent = 'AVG. EVENT VALUE';
+  if (labels[3]) labels[3].textContent = 'COMPLETION RATE';
+
+  // Update sub-text with actual counts
+  const subs = document.querySelectorAll('.stats-grid-4 .page-stat-card .page-stat-sub');
+  if (subs[0]) subs[0].innerHTML = '<i class="fa-solid fa-chart-bar"></i> From ' + s.total_events + ' events';
+  if (subs[1]) subs[1].innerHTML = '<i class="fa-solid fa-users"></i> Registered clients';
+  if (subs[2]) subs[2].innerHTML = '<i class="fa-solid fa-calculator"></i> Per event average';
+  if (subs[3]) subs[3].innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + s.completed_events + ' of ' + s.total_events + ' events';
+}
+
+function formatPesoCompact(val) {
+  val = parseFloat(val) || 0;
+  return '₱' + val.toLocaleString('en-PH', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+/* ── Revenue Chart ────────────────────────────────────────── */
 function initRevenueChart() {
   const ctx = document.getElementById('revenueChart').getContext('2d');
   const gradient = ctx.createLinearGradient(0, 0, 0, 300);
   gradient.addColorStop(0, 'rgba(212, 175, 55, 0.2)');
   gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
 
+  const monthlyData = analyticsData.monthly_revenue;
+  const labels = monthlyData.length > 0 ? monthlyData.map(m => m.month_label) : ['—'];
+  const values = monthlyData.length > 0 ? monthlyData.map(m => parseFloat(m.revenue)) : [0];
+
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      labels: labels,
       datasets: [{
         label: 'Revenue',
-        data: [150000, 185000, 210000, 280000, 320000, 390000],
+        data: values,
         borderColor: '#d4af37',
         borderWidth: 2,
         backgroundColor: gradient,
@@ -61,7 +148,7 @@ function initRevenueChart() {
       scales: {
         y: {
           grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-          ticks: { color: '#666', font: { size: 10 }, callback: val => '₱' + (val/1000) + 'k' }
+          ticks: { color: '#666', font: { size: 10 }, callback: val => '₱' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val) }
         },
         x: {
           grid: { display: false },
@@ -72,60 +159,107 @@ function initRevenueChart() {
   });
 }
 
+/* ── Event Types Doughnut ─────────────────────────────────── */
 function initEventTypesChart() {
   const ctx = document.getElementById('eventTypesChart').getContext('2d');
+
+  // Combine event types from both events and bookings
+  const typeCounts = {};
+  (analyticsData.event_types || []).forEach(t => {
+    typeCounts[t.type] = (typeCounts[t.type] || 0) + parseInt(t.cnt);
+  });
+  (analyticsData.booking_types || []).forEach(t => {
+    typeCounts[t.type] = (typeCounts[t.type] || 0) + parseInt(t.cnt);
+  });
+
+  const typeLabels = Object.keys(typeCounts);
+  const typeValues = typeLabels.map(k => typeCounts[k]);
+  const total = typeValues.reduce((a, b) => a + b, 0);
+
+  // Color palette for up to 8 categories
+  const colorPalette = ['#d4af37', '#e2c87b', '#333', '#8b7355', '#cd853f', '#daa520', '#b8860b', '#7a6020'];
+  const colors = typeLabels.map((_, i) => colorPalette[i % colorPalette.length]);
+
   new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Corporate', 'Weddings', 'Private'],
+      labels: typeLabels.length > 0 ? typeLabels : ['No Data'],
       datasets: [{
-        data: [45, 32, 23],
-        backgroundColor: ['#d4af37', '#e2c87b', '#333'],
+        data: typeValues.length > 0 ? typeValues : [1],
+        backgroundColor: typeLabels.length > 0 ? colors : ['#333'],
         borderWidth: 0,
         hoverOffset: 4
       }]
     },
     options: {
-      cutout: '75%',
+      cutout: '70%',
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
       plugins: { legend: { display: false } }
     }
   });
 
+  // Render legend
   const legendEl = document.getElementById('pieLegend');
-  const colors = ['#d4af37', '#e2c87b', '#333'];
-  const labels = ['Corporate', 'Weddings', 'Private'];
-  const values = ['45%', '32%', '23%'];
-
-  legendEl.innerHTML = labels.map((label, i) => `
-    <div class="legend-item">
-      <div class="legend-left">
-        <div class="legend-dot" style="background:${colors[i]}"></div>
-        <span>${label}</span>
-      </div>
-      <span class="legend-value">${values[i]}</span>
-    </div>
-  `).join('');
+  if (typeLabels.length > 0) {
+    legendEl.innerHTML = typeLabels.map((label, i) => {
+      const pct = total > 0 ? Math.round((typeValues[i] / total) * 100) : 0;
+      return `
+        <div class="legend-item">
+          <div class="legend-left">
+            <div class="legend-dot" style="background:${colors[i]}"></div>
+            <span>${label} (${typeValues[i]})</span>
+          </div>
+          <span class="legend-value">${pct}%</span>
+        </div>
+      `;
+    }).join('');
+  } else {
+    legendEl.innerHTML = '<div class="legend-item"><span style="color:#666;">No event data</span></div>';
+  }
 }
 
+/* ── Bookings Bar Chart ───────────────────────────────────── */
 function initBookingsChart() {
   const ctx = document.getElementById('bookingsChart').getContext('2d');
+
+  const bookingsData = analyticsData.monthly_bookings;
+  const completedData = analyticsData.monthly_completed;
+
+  // Merge month keys from both datasets
+  const allMonthKeys = new Map();
+  bookingsData.forEach(m => allMonthKeys.set(m.month_key, m.month_label));
+  completedData.forEach(m => allMonthKeys.set(m.month_key, m.month_label));
+
+  // Sort by month_key
+  const sortedMonths = Array.from(allMonthKeys.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  const labels = sortedMonths.length > 0 ? sortedMonths.map(m => m[1]) : ['—'];
+  const monthKeys = sortedMonths.map(m => m[0]);
+
+  // Build lookup maps
+  const bookingsMap = {};
+  bookingsData.forEach(m => { bookingsMap[m.month_key] = parseInt(m.total_bookings); });
+  const completedMap = {};
+  completedData.forEach(m => { completedMap[m.month_key] = parseInt(m.completed); });
+
+  const bookingsValues = monthKeys.map(k => bookingsMap[k] || 0);
+  const completedValues = monthKeys.map(k => completedMap[k] || 0);
+
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      labels: labels,
       datasets: [
         {
           label: 'Completed Events',
-          data: [45, 85, 60, 90, 70, 110],
+          data: completedValues,
           backgroundColor: '#d4af37',
           borderRadius: 2,
           barThickness: 40
         },
         {
           label: 'Total Bookings',
-          data: [35, 10, 35, 5, 20, 5], // Difference to make stack match screenshot
+          data: bookingsValues,
           backgroundColor: '#333',
           borderRadius: 2,
           barThickness: 40
@@ -158,59 +292,95 @@ function initBookingsChart() {
   });
 }
 
+/* ── Top Events Table ─────────────────────────────────────── */
 function renderTopEventsTable() {
-  const events = [
-    {
-      name: 'Golden Anniversary Gala',
-      type: 'Corporate Dinner - 120 Guests',
-      date: 'December 20, 2026',
-      revenue: '₱380,000',
-      satisfaction: '98%',
-      img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=100&q=80'
-    },
-    {
-      name: 'Garden Wedding',
-      type: 'Wedding - 200 Guests',
-      date: 'July 15, 2026',
-      revenue: '₱738,500',
-      satisfaction: '99%',
-      img: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=100&q=80'
-    },
-    {
-      name: "New Year's Executive Retreat",
-      type: 'Corporate - 50 Guests',
-      date: 'October 2, 2025',
-      revenue: '₱450,900',
-      satisfaction: '91%',
-      img: 'https://images.unsplash.com/photo-1530103862676-de88d660f9dd?auto=format&fit=crop&w=100&q=80'
-    },
-    {
-      name: '50th Birthday Celebration',
-      type: 'Private Party - 80 Guests',
-      date: 'November 20, 2026',
-      revenue: '₱329,000',
-      satisfaction: '89%',
-      img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80'
-    }
-  ];
+  const allEvents = analyticsData.top_events || [];
+  const totalEvents = allEvents.length;
+  const totalPages = Math.max(1, Math.ceil(totalEvents / topEventsPerPage));
+
+  if (topEventsPage > totalPages) topEventsPage = totalPages;
+  if (topEventsPage < 1) topEventsPage = 1;
+
+  const start = (topEventsPage - 1) * topEventsPerPage;
+  const pageEvents = allEvents.slice(start, start + topEventsPerPage);
 
   const tbody = document.getElementById('top-events-tbody');
-  tbody.innerHTML = events.map(ev => `
-    <tr>
-      <td>
-        <div class="event-details-cell">
-          <img src="${ev.img}" class="event-thumb">
-          <div class="event-info-text">
-            <h4>${ev.name}</h4>
-            <p>${ev.type}</p>
-          </div>
-        </div>
-      </td>
-      <td>${ev.date}</td>
-      <td style="color:var(--text-white); font-weight:600;">${ev.revenue}</td>
-      <td><span class="satisfaction-high">${ev.satisfaction}</span></td>
-    </tr>
-  `).join('');
+
+  // Image map based on event type
+  const imageMap = {
+    'Wedding': 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=100&q=80',
+    'Birthday': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80',
+    'Conference': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=100&q=80',
+    'Debut': 'https://images.unsplash.com/photo-1530103862676-de88d660f9dd?auto=format&fit=crop&w=100&q=80',
+    'Gala': 'https://images.unsplash.com/photo-1620663479979-994191d8bb71?auto=format&fit=crop&w=100&q=80',
+  };
+  const defaultImg = 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=100&q=80';
+
+  if (pageEvents.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:#666;">No events found</td></tr>';
+  } else {
+    tbody.innerHTML = pageEvents.map(ev => {
+      const img = imageMap[ev.type] || defaultImg;
+      const eventDate = new Date(ev.date);
+      const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const formattedRevenue = '₱' + parseFloat(ev.amount).toLocaleString('en-PH');
+      const typeLabel = ev.type + ' - ' + ev.no_of_guests + ' Guests';
+      const statusClass = ev.status === 'COMPLETED' ? 'satisfaction-high' : 'satisfaction-med';
+      return `
+        <tr>
+          <td>
+            <div class="event-details-cell">
+              <img src="${img}" class="event-thumb">
+              <div class="event-info-text">
+                <h4>${ev.name}</h4>
+                <p>${typeLabel}</p>
+              </div>
+            </div>
+          </td>
+          <td>${formattedDate}</td>
+          <td style="color:var(--text-white); font-weight:600;">${formattedRevenue}</td>
+          <td><span class="${statusClass}">${ev.status}</span></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Update footer count
+  const countEl = document.getElementById('table-count');
+  if (countEl) {
+    if (totalEvents === 0) {
+      countEl.textContent = 'No events';
+    } else {
+      const showStart = start + 1;
+      const showEnd = Math.min(start + topEventsPerPage, totalEvents);
+      countEl.textContent = `Showing ${showStart}–${showEnd} of ${totalEvents} events`;
+    }
+  }
+
+  // Update pagination buttons
+  renderTopEventsPagination(totalPages);
 }
 
-document.addEventListener('DOMContentLoaded', initAnalytics);
+function renderTopEventsPagination(totalPages) {
+  const paginationEl = document.querySelector('.table-footer-analytics .pagination');
+  if (!paginationEl) return;
+
+  paginationEl.innerHTML = `
+    <button class="pg-btn" onclick="changeTopEventsPage(${topEventsPage - 1})" ${topEventsPage <= 1 ? 'disabled' : ''}>Previous</button>
+    ${Array.from({length: totalPages}, (_, i) =>
+      `<button class="pg-btn ${i+1 === topEventsPage ? 'active' : ''}" onclick="changeTopEventsPage(${i+1})">${i+1}</button>`
+    ).join('')}
+    <button class="pg-btn" onclick="changeTopEventsPage(${topEventsPage + 1})" ${topEventsPage >= totalPages ? 'disabled' : ''}>Next</button>
+  `;
+}
+
+function changeTopEventsPage(page) {
+  const totalEvents = (analyticsData.top_events || []).length;
+  const totalPages = Math.max(1, Math.ceil(totalEvents / topEventsPerPage));
+  if (page < 1 || page > totalPages) return;
+  topEventsPage = page;
+  renderTopEventsTable();
+}
+
+// Expose pagination to inline onclick
+window.changeTopEventsPage = changeTopEventsPage;
