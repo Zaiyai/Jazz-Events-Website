@@ -52,7 +52,7 @@
         <div class="topbar-sub">Track transactions & invoices</div>
       </div>
       <div class="topbar-right">
-        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;">
+        <button class="btn-gold" style="padding: 10px 20px; font-size: 0.85rem;" onclick="openRecordPaymentModal()">
           <i class="fa-solid fa-plus"></i> Record Payment
         </button>
       </div>
@@ -99,12 +99,116 @@
 <script src="../dashboard/dashboard_ui.js"></script>
 <script src="../dashboard/dashboard.js"></script>
 
+<!-- Modals -->
+  <div class="modal-overlay" id="modal-record-payment" role="dialog" aria-modal="true">
+    <div style="background: #161616; border: 1px solid var(--jazz-gold); border-radius: 12px; width: 100%; max-width: 550px; padding: 32px 40px; position: relative; box-sizing: border-box; max-height: 90vh; overflow-y: auto;">
+      <button onclick="closeModal('modal-record-payment')" style="position: absolute; top: 20px; right: 24px; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; opacity: 0.6; transition: opacity 0.2s;">&times;</button>
+      
+      <h3 style="color: var(--jazz-gold); font-size: 1.6rem; font-weight: 800; margin-bottom: 24px; margin-top: 0; font-family: var(--font-sans); text-transform: uppercase;">Record <span style="color: #fff;">Payment</span></h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <!-- Event -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Event <span style="color:#f87171">*</span></label>
+          <select id="pay-event-id" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+            <option value="">Select Event...</option>
+          </select>
+          <div class="error-msg" id="pay-event-id-err" style="font-size: 0.7rem; color: #f87171; display: none;"></div>
+        </div>
+        
+        <!-- Client -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Client <span style="color:#f87171">*</span></label>
+          <select id="pay-client-id" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+            <option value="">Select Client...</option>
+          </select>
+          <div class="error-msg" id="pay-client-id-err" style="font-size: 0.7rem; color: #f87171; display: none;"></div>
+        </div>
+
+        <!-- Invoice -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Invoice Number <span style="color:#f87171">*</span></label>
+          <input id="pay-invoice-number" placeholder="e.g. INV-2026-001" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+          <div class="error-msg" id="pay-invoice-number-err" style="font-size: 0.7rem; color: #f87171; display: none;"></div>
+        </div>
+
+        <!-- Amount -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Amount <span style="color:#f87171">*</span></label>
+          <input id="pay-amount" type="number" step="0.01" placeholder="e.g. 50000" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+          <div class="error-msg" id="pay-amount-err" style="font-size: 0.7rem; color: #f87171; display: none;"></div>
+        </div>
+
+        <!-- Payment Method -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Payment Method <span style="color:#f87171">*</span></label>
+          <select id="pay-method" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+            <option value="CREDIT_CARD">Credit Card</option>
+            <option value="BANK_TRANSFER">Bank Transfer</option>
+            <option value="GCASH">GCash</option>
+            <option value="PAYMAYA">PayMaya</option>
+            <option value="CASH">Cash</option>
+          </select>
+        </div>
+
+        <!-- Payment Status -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Status <span style="color:#f87171">*</span></label>
+          <select id="pay-status" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+            <option value="PENDING">Pending</option>
+            <option value="PAID">Paid</option>
+            <option value="PARTIAL">Partial</option>
+            <option value="OVERDUE">Overdue</option>
+            <option value="REFUNDED">Refunded</option>
+          </select>
+        </div>
+
+        <!-- Payment Date -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Payment Date</label>
+          <input id="pay-date" type="date" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+        </div>
+
+        <!-- Due Date -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Due Date <span style="color:#f87171">*</span></label>
+          <input id="pay-due-date" type="date" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+          <div class="error-msg" id="pay-due-date-err" style="font-size: 0.7rem; color: #f87171; display: none;"></div>
+        </div>
+
+        <!-- Reference -->
+        <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Reference Number</label>
+          <input id="pay-reference" placeholder="e.g. Transaction ID" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; transition: border 0.2s;">
+        </div>
+
+        <!-- Notes -->
+        <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px;">
+          <label style="color: var(--jazz-gold); font-weight: 600; font-size: 0.85rem;">Notes</label>
+          <textarea id="pay-notes" rows="3" placeholder="Additional details" style="background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 10px; font-family: var(--font-sans); outline: none; resize: vertical; transition: border 0.2s;"></textarea>
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: center; gap: 16px; margin-top: 32px;">
+        <button onclick="closeModal('modal-record-payment')" style="background: transparent; color: #fff; border: 1px solid #555; border-radius: 12px; padding: 12px 30px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#555'">Cancel</button>
+        <button id="save-payment-btn" onclick="savePayment()" style="background: var(--jazz-gold); color: #000; border: none; border-radius: 12px; padding: 12px 40px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#bfa035'" onmouseout="this.style.backgroundColor='var(--jazz-gold)'"><i class="fa-solid fa-floppy-disk" style="margin-right: 6px;"></i> Save Payment</button>
+      </div>
+    </div>
+  </div>
+<style>
+  /* Extra hover states for inputs */
+  #modal-record-payment input:focus, #modal-record-payment select:focus, #modal-record-payment textarea:focus {
+    border-color: var(--jazz-gold) !important;
+  }
+</style>
+
 <script>
-(async function loadPayments() {
+async function loadPayments() {
   const tbody = document.getElementById('payments-tbody');
 
   try {
-    const payments = await DB.getPayments();
+    const response = await DB.getPayments();
+    const payments = response.data;
 
     if (!payments || payments.length === 0) {
       tbody.innerHTML = `
@@ -117,29 +221,25 @@
     }
 
     tbody.innerHTML = payments.map(p => {
-      // Format amount as ₱ with commas
       const amount = Number(p.amount).toLocaleString('en-PH', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
 
-      // Format date
       const dateStr = p.payment_date
         ? new Date(p.payment_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
         : '—';
 
-      // Status pill class
       const statusMap = {
         'PAID':     'outline-green',
         'PENDING':  'outline-yellow',
         'OVERDUE':  'outline-red',
-        'REFUNDED': 'outline-blue',
+        'REFUNDED': 'outline-purple',
         'PARTIAL':  'outline-yellow'
       };
       const pillClass = statusMap[p.payment_status] || 'outline-yellow';
       const statusLabel = p.payment_status.charAt(0) + p.payment_status.slice(1).toLowerCase();
 
-      // Client initials fallback
       const initials = p.client_initials
         || p.client_name.split(',')[0].trim().charAt(0).toUpperCase();
 
@@ -168,7 +268,104 @@
         </td>
       </tr>`;
   }
-})();
+}
+
+async function openRecordPaymentModal() {
+  const user = DB.getUser();
+  try {
+    const eventsResult = await DB.getEvents(1, 9999);
+    const eventSelect = document.getElementById('pay-event-id');
+    eventSelect.innerHTML = '<option value="">Select Event...</option>' + eventsResult.data.map(e => `<option value="${e.event_id}">${e.name}</option>`).join('');
+  } catch (e) {
+    console.error("Failed to load events", e);
+  }
+  
+  try {
+    const clientsResult = await DB.getClients({ page: 1, perPage: 9999 });
+    const clientSelect = document.getElementById('pay-client-id');
+    clientSelect.innerHTML = '<option value="">Select Client...</option>' + clientsResult.data.map(c => `<option value="${c.user_id}">${c.name}</option>`).join('');
+  } catch (e) {
+    console.error("Failed to load clients", e);
+  }
+  
+  document.getElementById('pay-invoice-number').value = 'INV-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('pay-amount').value = '';
+  document.getElementById('pay-date').value = '';
+  document.getElementById('pay-due-date').value = '';
+  document.getElementById('pay-reference').value = '';
+  document.getElementById('pay-notes').value = '';
+
+  ['pay-event-id', 'pay-client-id', 'pay-invoice-number', 'pay-amount', 'pay-due-date'].forEach(id => {
+    document.getElementById(id).classList.remove('error');
+    const errEl = document.getElementById(id + '-err');
+    if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+  });
+
+  openModal('modal-record-payment');
+}
+
+async function savePayment() {
+  const fields = [
+    { id: 'pay-event-id', msg: 'Event is required' },
+    { id: 'pay-client-id', msg: 'Client is required' },
+    { id: 'pay-invoice-number', msg: 'Invoice Number is required' },
+    { id: 'pay-amount', msg: 'Amount is required' },
+    { id: 'pay-due-date', msg: 'Due Date is required' }
+  ];
+  
+  let valid = true;
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const errEl = document.getElementById(f.id + '-err');
+    if (!el.value.trim()) {
+      valid = false;
+      el.style.borderColor = '#f87171';
+      if (errEl) { errEl.textContent = f.msg; errEl.style.display = 'block'; }
+    } else {
+      el.style.borderColor = '#333';
+      if (errEl) { errEl.style.display = 'none'; }
+    }
+  });
+  
+  if (!valid) return;
+
+  const btn = document.getElementById('save-payment-btn');
+  const ogText = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+  btn.disabled = true;
+
+  const payload = {
+    event_id: document.getElementById('pay-event-id').value,
+    client_id: document.getElementById('pay-client-id').value,
+    invoice_number: document.getElementById('pay-invoice-number').value,
+    amount: document.getElementById('pay-amount').value,
+    payment_method: document.getElementById('pay-method').value,
+    payment_status: document.getElementById('pay-status').value,
+    payment_date: document.getElementById('pay-date').value || null,
+    due_date: document.getElementById('pay-due-date').value,
+    reference_number: document.getElementById('pay-reference').value,
+    notes: document.getElementById('pay-notes').value
+  };
+
+  try {
+    const res = await DB.addPayment(payload);
+    if (res.ok) {
+      showToast('Payment recorded successfully!');
+      closeModal('modal-record-payment');
+      loadPayments();
+    } else {
+      showToast(res.message || 'Error recording payment', 'error');
+    }
+  } catch (e) {
+    showToast('Network error recording payment', 'error');
+  } finally {
+    btn.innerHTML = ogText;
+    btn.disabled = false;
+  }
+}
+
+// Initial load
+loadPayments();
 </script>
 
 </body>

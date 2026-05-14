@@ -99,10 +99,19 @@ const DB = {
       headers: { "Content-Type": "application/json" }
     });
     const data = await response.json();
-    if (data.ok && !data.empty) {
-      return data.payments;
-    }
-    return [];
+    return {
+      data: (data.ok && !data.empty) ? data.payments : [],
+      stats: data.stats || null
+    };
+  },
+
+  async addPayment(paymentData) {
+    const response = await fetch("/jazz%20events%20website/scripts/payments/add_payment.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(paymentData)
+    });
+    return response.json();
   },
 
   /* ── BOOKINGS ─────────────────────────────────────────────── */
