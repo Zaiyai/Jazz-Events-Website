@@ -11,8 +11,8 @@ $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 $json = file_get_contents("php://input");
 $data = json_decode($json);
 
-$email = $conn->real_escape_string($data->email);
-$code = $conn->real_escape_string($data->code);
+$email = $data->email;
+$code = $data->code;
 $password = $data->password;
 
 if (strlen($password) < 8 || 
@@ -29,40 +29,37 @@ if (strlen($password) < 8 ||
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$checkSQL = "
-    SELECT email
-    FROM users
-    WHERE email = '$email' AND is_verified = 1
-";
+// Check if email is already verified
+$checkStmt = $conn->prepare("SELECT email FROM users WHERE email = ? AND is_verified = 1");
+$checkStmt->bind_param("s", $email);
+$checkStmt->execute();
+$checkStmt->store_result();
 
-$result = $conn->query($checkSQL);
-
-if ($result->num_rows > 0) {
+if ($checkStmt->num_rows > 0) {
     echo json_encode([
         "status" => "error",
         "message" => "Email already taken."
     ]);
+    $checkStmt->close();
+    $conn->close();
     exit;
 }
+$checkStmt->close();
 
-$sql = "
-    SELECT *
-    FROM users
-    WHERE email = '$email'
-    AND verification_code = '$code'
-";
-
-$result = $conn->query($sql);
+// Verify the code matches
+$verifyStmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND verification_code = ?");
+$verifyStmt->bind_param("ss", $email, $code);
+$verifyStmt->execute();
+$result = $verifyStmt->get_result();
 
 if ($result->num_rows > 0) {
 
-    $updateSQL = "
-        UPDATE users
-        SET is_verified = 1, password = '$hashed_password'
-        WHERE email = '$email'
-    ";
+    $verifyStmt->close();
 
-    $conn->query($updateSQL);
+    $updateStmt = $conn->prepare("UPDATE users SET is_verified = 1, password = ? WHERE email = ?");
+    $updateStmt->bind_param("ss", $hashed_password, $email);
+    $updateStmt->execute();
+    $updateStmt->close();
 
     echo json_encode([
         "status" => "success",
@@ -71,9 +68,12 @@ if ($result->num_rows > 0) {
     ]);
 
 } else {
+    $verifyStmt->close();
     echo json_encode([
         "status" => "error",
         "message" => "Mismatched verification code."
     ]);
 }
+
+$conn->close();
 ?>

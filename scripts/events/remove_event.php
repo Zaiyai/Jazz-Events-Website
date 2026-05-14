@@ -18,8 +18,10 @@ $json = file_get_contents('php://input');
 $data = json_decode($json);
 
 $event_id = (int)$data->event_id;
-$sql = "DELETE FROM events WHERE event_id = $event_id";
-$result = $conn->query($sql);
+
+$stmt = $conn->prepare("DELETE FROM events WHERE event_id = ?");
+$stmt->bind_param("i", $event_id);
+$result = $stmt->execute();
 
 if ($result) {
     echo json_encode([
@@ -31,5 +33,6 @@ if ($result) {
     ]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

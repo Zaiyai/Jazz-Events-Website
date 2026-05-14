@@ -17,23 +17,24 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$name = $conn->real_escape_string($data->name);
-$type = $conn->real_escape_string($data->type);
+$name = $data->name;
+$type = $data->type;
 $no_of_guests = (int)$data->no_of_guests;
 $client_id = (int)$data->client_id;
-$date = $conn->real_escape_string($data->date);
-$venue = $conn->real_escape_string($data->venue);
-$theme = $conn->real_escape_string($data->theme);
-$status = $conn->real_escape_string($data->status);
+$date = $data->date;
+$venue = $data->venue;
+$theme = $data->theme;
+$status = $data->status;
 $amount = (int)$data->amount;
 
 $celebrantRaw = isset($data->celebrant) && $data->celebrant !== '' ? $data->celebrant : $data->name;
-$celebrant = $conn->real_escape_string(substr($celebrantRaw, 0, 100));
-$created_by = $conn->real_escape_string(isset($data->created_by) ? $data->created_by : 'Admin');
+$celebrant = substr($celebrantRaw, 0, 100);
+$created_by = isset($data->created_by) ? $data->created_by : 'Admin';
 
-$sql = "INSERT INTO events (name, type, no_of_guests, celebrant, client_id, date, venue, theme, status, amount, created_by)
-VALUES ('$name', '$type', $no_of_guests, '$celebrant', $client_id, '$date', '$venue', '$theme', '$status', $amount, '$created_by')";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("INSERT INTO events (name, type, no_of_guests, celebrant, client_id, date, venue, theme, status, amount, created_by)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssisssssis", $name, $type, $no_of_guests, $celebrant, $client_id, $date, $venue, $theme, $status, $amount, $created_by);
+$result = $stmt->execute();
 
 if ($result) {
     echo json_encode([
@@ -45,5 +46,6 @@ if ($result) {
     ]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

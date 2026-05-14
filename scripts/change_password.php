@@ -21,17 +21,20 @@ if (!isset($data->email) || !isset($data->current_password) || !isset($data->new
     exit;
 }
 
-$email = $conn->real_escape_string($data->email);
+$email = $data->email;
 $current_password = $data->current_password;
 $new_password = $data->new_password;
 
 // Fetch user password
-$sql = "SELECT password FROM users WHERE email = '$email' LIMIT 1";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT password FROM users WHERE email = ? LIMIT 1");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     $user = $result->fetch_assoc();
     $hashed_password = $user['password'];
+    $stmt->close();
 
     // Verify current password
     if (password_verify($current_password, $hashed_password)) {
@@ -59,17 +62,21 @@ if ($result && $result->num_rows > 0) {
         }
 
         $new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $update_sql = "UPDATE users SET password = '$new_hashed_password' WHERE email = '$email'";
 
-        if ($conn->query($update_sql)) {
+        $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+        $updateStmt->bind_param("ss", $new_hashed_password, $email);
+
+        if ($updateStmt->execute()) {
             echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to update password."]);
         }
+        $updateStmt->close();
     } else {
         echo json_encode(["status" => "error", "message" => "Incorrect current password."]);
     }
 } else {
+    $stmt->close();
     echo json_encode(["status" => "error", "message" => "User not found."]);
 }
 

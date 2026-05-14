@@ -17,10 +17,12 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$user_id = $conn->real_escape_string($data->user_id);
+$user_id = (int) $data->user_id;
 
-$sql = "SELECT booking_id, name, type, no_of_guests, date_from, date_to, venue, theme, status, budget FROM booking WHERE client_id = $user_id";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT booking_id, name, type, no_of_guests, date_from, date_to, venue, theme, status, budget FROM booking WHERE client_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result) {
     if ($result->num_rows > 0) {
@@ -39,5 +41,6 @@ if ($result) {
     ]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

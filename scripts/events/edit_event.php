@@ -18,18 +18,19 @@ $json = file_get_contents('php://input');
 $data = json_decode($json);
 
 $event_id = (int)$data->event_id;
-$name = $conn->real_escape_string($data->name);
-$type = $conn->real_escape_string($data->type);
+$name = $data->name;
+$type = $data->type;
 $no_of_guests = (int)$data->no_of_guests;
 $client_id = (int)$data->client_id;
-$date = $conn->real_escape_string($data->date);
-$venue = $conn->real_escape_string($data->venue);
-$theme = $conn->real_escape_string($data->theme);
-$status = $conn->real_escape_string($data->status);
+$date = $data->date;
+$venue = $data->venue;
+$theme = $data->theme;
+$status = $data->status;
 $amount = (int)$data->amount;
 
-$sql = "UPDATE events SET name = '$name', type = '$type', no_of_guests = $no_of_guests, client_id = $client_id, date = '$date', venue = '$venue', theme = '$theme', status = '$status', amount = $amount WHERE event_id = $event_id";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("UPDATE events SET name = ?, type = ?, no_of_guests = ?, client_id = ?, date = ?, venue = ?, theme = ?, status = ?, amount = ? WHERE event_id = ?");
+$stmt->bind_param("ssiissssii", $name, $type, $no_of_guests, $client_id, $date, $venue, $theme, $status, $amount, $event_id);
+$result = $stmt->execute();
 
 if ($result) {
     echo json_encode([
@@ -39,9 +40,10 @@ if ($result) {
 } else {
     echo json_encode([
         "status" => "error", 
-        "message" => "Error updating record: " . $conn->error
+        "message" => "Error updating record: " . $stmt->error
     ]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

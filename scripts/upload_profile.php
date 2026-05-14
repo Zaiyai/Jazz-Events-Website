@@ -26,7 +26,7 @@ if (!isset($_FILES['profile_picture']) || $_FILES['profile_picture']['error'] !=
 }
 
 $file = $_FILES['profile_picture'];
-$email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : null;
+$email = isset($_POST['email']) ? $_POST['email'] : null;
 
 if (!$email) {
     echo json_encode(["status" => "error", "message" => "Email is required."]);
@@ -62,9 +62,10 @@ if (!move_uploaded_file($file['tmp_name'], $filepath)) {
 
 // Store relative path in database
 $relativePath = "assets/profiles/" . $filename;
-$sql = "UPDATE users SET profile_picture = '$relativePath' WHERE email = '$email'";
+$stmt = $conn->prepare("UPDATE users SET profile_picture = ? WHERE email = ?");
+$stmt->bind_param("ss", $relativePath, $email);
 
-if ($conn->query($sql) === TRUE) {
+if ($stmt->execute()) {
     echo json_encode([
         "status" => "success",
         "message" => "Profile picture uploaded successfully.",
@@ -76,5 +77,6 @@ if ($conn->query($sql) === TRUE) {
     echo json_encode(["status" => "error", "message" => "Failed to update profile picture in database."]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

@@ -17,51 +17,65 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$email = $conn->real_escape_string($data->email);
+$email = $data->email;
 
 // Check if this is an update request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($data->name) || isset($data->bio)) {
     // UPDATE request - update user profile fields
     
     // Validate email exists
-    $checkSql = "SELECT user_id FROM users WHERE email = '$email' LIMIT 1";
-    $checkResult = $conn->query($checkSql);
+    $checkStmt = $conn->prepare("SELECT user_id FROM users WHERE email = ? LIMIT 1");
+    $checkStmt->bind_param("s", $email);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
     
     if (!$checkResult || $checkResult->num_rows === 0) {
         echo json_encode(["status" => "error", "message" => "User not found."]);
+        $checkStmt->close();
         $conn->close();
         exit;
     }
     
     $user = $checkResult->fetch_assoc();
     $user_id = $user['user_id'];
+    $checkStmt->close();
     
-    // Build update query
+    // Build update query dynamically with prepared statements
     $updates = [];
-    $params = [];
+    $types = "";
+    $values = [];
     
     if (isset($data->name) && !empty($data->name)) {
-        $name = $conn->real_escape_string($data->name);
-        $updates[] = "name = '$name'";
+        $updates[] = "name = ?";
+        $types .= "s";
+        $values[] = $data->name;
     }
     
     if (isset($data->email) && !empty($data->email) && $data->email !== $email) {
         // Check if new email already exists
-        $newEmail = $conn->real_escape_string($data->email);
-        $emailCheck = $conn->query("SELECT user_id FROM users WHERE email = '$newEmail' AND user_id != $user_id LIMIT 1");
+        $emailCheckStmt = $conn->prepare("SELECT user_id FROM users WHERE email = ? AND user_id != ? LIMIT 1");
+        $newEmail = $data->email;
+        $emailCheckStmt->bind_param("si", $newEmail, $user_id);
+        $emailCheckStmt->execute();
+        $emailCheckStmt->store_result();
         
-        if ($emailCheck && $emailCheck->num_rows > 0) {
+        if ($emailCheckStmt->num_rows > 0) {
             echo json_encode(["status" => "error", "message" => "Email already in use."]);
+            $emailCheckStmt->close();
             $conn->close();
             exit;
         }
+        $emailCheckStmt->close();
         
-        $updates[] = "email = '$newEmail'";
+        $updates[] = "email = ?";
+        $types .= "s";
+        $values[] = $newEmail;
     }
     
     if (isset($data->bio)) {
-        $bio = $conn->real_escape_string($data->bio);
-        $updates[] = "bio = '$bio'";
+        $updates[] = "bio = ?";
+        $types .= "s";
+        $values[] = $data->bio;
     }
     
     if (empty($updates)) {
@@ -70,9 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($data->name) || isset($data->
         exit;
     }
     
-    $updateSql = "UPDATE users SET " . implode(", ", $updates) . " WHERE user_id = $user_id";
+    // Add user_id to WHERE clause
+    $types .= "i";
+    $values[] = $user_id;
     
-    if ($conn->query($updateSql)) {
+    $updateSql = "UPDATE users SET " . implode(", ", $updates) . " WHERE user_id = ?";
+    $updateStmt = $conn->prepare($updateSql);
+    $updateStmt->bind_param($types, ...$values);
+    
+    if ($updateStmt->execute()) {
         echo json_encode([
             "status" => "success",
             "message" => "Profile updated successfully."
@@ -80,15 +100,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($data->name) || isset($data->
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Failed to update profile: " . $conn->error
+            "message" => "Failed to update profile: " . $updateStmt->error
         ]);
     }
+    $updateStmt->close();
 } else {
     // GET request - retrieve user data
     
     // Look up the user by email
-    $sql = "SELECT user_id, email, name, initials, profile_picture, bio FROM users WHERE email = '$email' LIMIT 1";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT user_id, email, name, initials, profile_picture, bio FROM users WHERE email = ? LIMIT 1");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result) {
         $row = $result->fetch_assoc();
@@ -106,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($data->name) || isset($data->
             "status"  => "error"
         ]);
     }
+    $stmt->close();
 }
 
 $conn->close();

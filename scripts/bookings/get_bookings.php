@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 // Read and decode JSON from JavaScript
 $json = file_get_contents('php://input');
 $data = json_decode($json);
-$booking_id = isset($data->booking_id) ? $conn->real_escape_string($data->booking_id) : null;
+$booking_id = isset($data->booking_id) ? (int) $data->booking_id : null;
 
 $sql = "SELECT b.booking_id, b.name, b.type, b.client_id, u.name AS client_name,
                b.email, b.phone, b.date_from, b.date_to,
@@ -26,12 +26,16 @@ $sql = "SELECT b.booking_id, b.name, b.type, b.client_id, u.name AS client_name,
         INNER JOIN users u ON u.user_id = b.client_id";
 
 if ($booking_id) {
-    $sql .= " WHERE b.booking_id = $booking_id";
+    $sql .= " WHERE b.booking_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $booking_id);
 } else {
     $sql .= " ORDER BY b.created_at DESC";
+    $stmt = $conn->prepare($sql);
 }
 
-$result = $conn->query($sql);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result) {
     if ($result->num_rows > 0) {
@@ -45,8 +49,9 @@ if ($result) {
         echo json_encode(["ok" => true, "empty" => true, "bookings" => []]);
     }
 } else {
-    echo json_encode(["ok" => false, "message" => "Query failed: " . $conn->error]);
+    echo json_encode(["ok" => false, "message" => "Query failed: " . $stmt->error]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

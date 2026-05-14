@@ -91,31 +91,29 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$email = $conn->real_escape_string($email);
+// Check if email already exists
+$checkStmt = $conn->prepare("SELECT email FROM users WHERE email = ?");
+$checkStmt->bind_param("s", $email);
+$checkStmt->execute();
+$checkStmt->store_result();
 
-$checkSQL = "
-    SELECT email
-    FROM users
-    WHERE email = '$email'
-";
-
-$result = $conn->query($checkSQL);
-
-if ($result->num_rows > 0) {
+if ($checkStmt->num_rows > 0) {
 
     echo json_encode([
         "status" => "error",
         "message" => "Email already taken."
     ]);
 
+    $checkStmt->close();
+    $conn->close();
     exit;
 }
+$checkStmt->close();
 
 $verificationCode = rand(100000, 999999);
 
-$name = $conn->real_escape_string($name);
-
-$insertSQL = "
+// Insert new user
+$insertStmt = $conn->prepare("
     INSERT INTO users (
         name,
         email,
@@ -123,16 +121,13 @@ $insertSQL = "
         verification_code,
         is_verified
     )
-    VALUES (
-        '$name',
-        '$email',
-        'CLIENT',
-        '$verificationCode',
-        0
-    )
-";
+    VALUES (?, ?, 'CLIENT', ?, 0)
+");
+$insertStmt->bind_param("sss", $name, $email, $verificationCode);
 
-if ($conn->query($insertSQL)) {
+if ($insertStmt->execute()) {
+
+    $insertStmt->close();
 
     $sent = sendVerificationCode(
         $email,
@@ -156,6 +151,8 @@ if ($conn->query($insertSQL)) {
     }
 
 } else {
+
+    $insertStmt->close();
 
     echo json_encode([
         "status" => "error",

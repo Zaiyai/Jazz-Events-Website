@@ -27,15 +27,23 @@ $booking_id = (int) $data->booking_id;
 $allowed = ['name', 'type', 'email', 'phone', 'date_from', 'date_to',
             'no_of_guests', 'venue', 'theme', 'status', 'budget'];
 $sets = [];
+$types = "";
+$values = [];
 
 foreach ($allowed as $field) {
     if (isset($data->$field)) {
         if ($field === 'no_of_guests' || $field === 'booking_id') {
-            $sets[] = "$field = " . (int) $data->$field;
+            $sets[] = "$field = ?";
+            $types .= "i";
+            $values[] = (int) $data->$field;
         } elseif ($field === 'budget') {
-            $sets[] = "$field = " . (float) $data->$field;
+            $sets[] = "$field = ?";
+            $types .= "d";
+            $values[] = (float) $data->$field;
         } else {
-            $sets[] = "$field = '" . $conn->real_escape_string($data->$field) . "'";
+            $sets[] = "$field = ?";
+            $types .= "s";
+            $values[] = $data->$field;
         }
     }
 }
@@ -46,14 +54,22 @@ if (empty($sets)) {
 }
 
 $sets[] = "updated_at = NOW()";
-$sql = "UPDATE booking SET " . implode(', ', $sets) . " WHERE booking_id = $booking_id";
-$result = $conn->query($sql);
+
+// Add booking_id for WHERE clause
+$types .= "i";
+$values[] = $booking_id;
+
+$sql = "UPDATE booking SET " . implode(', ', $sets) . " WHERE booking_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param($types, ...$values);
+$result = $stmt->execute();
 
 if ($result) {
     echo json_encode(["ok" => true, "message" => "Booking updated."]);
 } else {
-    echo json_encode(["ok" => false, "message" => "Update failed: " . $conn->error]);
+    echo json_encode(["ok" => false, "message" => "Update failed: " . $stmt->error]);
 }
 
+$stmt->close();
 $conn->close();
 ?>

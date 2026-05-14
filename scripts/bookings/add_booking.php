@@ -28,28 +28,29 @@ echo "Connected successfully</br>";
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$name = $conn->real_escape_string($data->name);
-$email = $conn->real_escape_string($data->email);
-$phone = $conn->real_escape_string($data->phone_number);
-$type = $conn->real_escape_string($data->type);
+$name = $data->name;
+$email = $data->email;
+$phone = $data->phone_number;
+$type = $data->type;
 $client_id = isset($data->client_id) ? (int) $data->client_id : 0;
 
 $client_label = '';
 if ($client_id > 0) {
-    $cid = $client_id;
-    if ($res = $conn->query("SELECT name FROM users WHERE user_id = $cid LIMIT 1")) {
-        if ($row = $res->fetch_assoc()) {
-            $client_label = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8');
-        }
-        $res->free();
+    $clientStmt = $conn->prepare("SELECT name FROM users WHERE user_id = ? LIMIT 1");
+    $clientStmt->bind_param("i", $client_id);
+    $clientStmt->execute();
+    $res = $clientStmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $client_label = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8');
     }
+    $clientStmt->close();
 }
 
-$date_from = $conn->real_escape_string($data->date_from);
-$date_to = $conn->real_escape_string($data->date_to);
-$no_of_guests = $conn->real_escape_string($data->no_of_guests);
-$venue = $conn->real_escape_string($data->venue);
-$theme = $conn->real_escape_string($data->theme);
+$date_from = $data->date_from;
+$date_to = $data->date_to;
+$no_of_guests = $data->no_of_guests;
+$venue = $data->venue;
+$theme = $data->theme;
 $rawBudget = $data->budget ?? 0;
 if (is_numeric($rawBudget)) {
     $budgetNum = (float) $rawBudget;
@@ -58,11 +59,12 @@ if (is_numeric($rawBudget)) {
     $san = str_replace(',', '', $san);
     $budgetNum = (float) $san;
 }
-$budget = $conn->real_escape_string(number_format($budgetNum, 2, '.', ''));
+$budget = number_format($budgetNum, 2, '.', '');
 
-$sql = "INSERT INTO booking 
+$stmt = $conn->prepare("INSERT INTO booking 
 (name, type, client_id, email, phone, date_from, date_to, no_of_guests, venue, theme, budget) 
-VALUES ('$name', '$type', $client_id, '$email', '$phone', '$date_from', '$date_to', '$no_of_guests', '$venue', '$theme', '$budget')";
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssississssd", $name, $type, $client_id, $email, $phone, $date_from, $date_to, $no_of_guests, $venue, $theme, $budget);
 
 $today = date("Y-m-d H:i:s");
 
@@ -77,7 +79,7 @@ $booking_details = "<h3>New Booking on Jazz Events Website</h3><br>
 <p><strong>Theme:</strong> $theme<br>
 <p><strong>Created at:</strong> $today<br>";
 
-$result = $conn->query($sql);
+$result = $stmt->execute();
 
 if ($result) {
     echo json_encode([
@@ -88,6 +90,8 @@ if ($result) {
         "status"  => "error"
     ]);
 }
+
+$stmt->close();
 
 // Send to admin email
 try {

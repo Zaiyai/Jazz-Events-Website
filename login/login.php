@@ -17,12 +17,14 @@ if ($conn->connect_error) {
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 
-$email = $conn->real_escape_string($data->email);
+$email = $data->email;
 $raw_password = $data->password;
 
 // Look up the user by email
-$sql = "SELECT user_id, email, user_type, password FROM users WHERE email = '$email' LIMIT 1";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT user_id, email, user_type, password FROM users WHERE email = ? LIMIT 1");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows === 1) {
     $row = $result->fetch_assoc();
@@ -56,5 +58,6 @@ if ($result && $result->num_rows === 1) {
     ]);
 }
 
+$stmt->close();
 $conn->close();
 ?>
