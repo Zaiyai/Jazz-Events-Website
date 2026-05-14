@@ -456,6 +456,35 @@ body {
     color: var(--settings-text-disabled);
 }
 
+.settings-form-input-field {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+    text-align: right;
+}
+
+.settings-form-input-field::placeholder {
+    color: var(--settings-text-disabled);
+}
+
+.password-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--settings-text-disabled);
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.password-toggle-btn:hover {
+    color: var(--jazz-gold);
+}
+
 .settings-form-button {
     background: var(--jazz-gold);
     color: #000;

@@ -69,7 +69,9 @@
           <div class="settings-form-group">
             <div class="settings-form-label">Current Password</div>
             <div class="settings-form-input">
-              <span class="settings-form-input-disabled">|</span>
+              <input type="password" id="current-password" class="settings-form-input-field"
+                placeholder="Enter current password">
+              <button class="password-toggle-btn" type="button"><i class="fa-solid fa-eye"></i></button>
             </div>
           </div>
 
@@ -77,7 +79,8 @@
           <div class="settings-form-group">
             <div class="settings-form-label">Change Password</div>
             <div class="settings-form-input">
-              <span class="settings-form-input-disabled">|</span>
+              <input type="password" id="new-password" class="settings-form-input-field"
+                placeholder="Enter new password">
             </div>
           </div>
 
@@ -85,12 +88,13 @@
           <div class="settings-form-group">
             <div class="settings-form-label">Confirm Changed Password</div>
             <div class="settings-form-input">
-              <span class="settings-form-input-disabled">|</span>
+              <input type="password" id="confirm-password" class="settings-form-input-field"
+                placeholder="Confirm new password">
             </div>
           </div>
 
           <div class="settings-form-center">
-            <button class="settings-form-button">Confirm Changes</button>
+            <button id="confirm-password-btn" class="settings-form-button">Confirm Changes</button>
           </div>
         </div>
 
@@ -160,6 +164,7 @@
   <script src="../scripts/main.js"></script>
   <script src="../scripts/db.js"></script>
   <script src="settings_common.js"></script>
+  <script src="security_settings.js"></script>
 </body>
 
 </html>

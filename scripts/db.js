@@ -196,6 +196,26 @@ const DB = {
     return { ok: true };
   },
 
+  async changePassword(currentPassword, newPassword) {
+    const email = COOKIES.getCookie("email");
+    if (!email) throw new Error("User not logged in");
+
+    const response = await fetch("../scripts/change_password.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        current_password: currentPassword,
+        new_password: newPassword
+      })
+    });
+
+    if (!response.ok) throw new Error("HTTP error: " + response.status);
+    return await response.json();
+  },
+
   /* ── STATS ──────────────────────────────────────────────── */
   async getStats() {
     return getData('je_stats');
