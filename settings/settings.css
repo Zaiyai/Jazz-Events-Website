@@ -114,18 +114,6 @@ body {
     padding: 40px;
 }
 
-/* Profile Image */
-.settings-profile-image {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 24px;
-    border: 2px solid var(--jazz-gold);
-    padding: 4px;
-    background: #000;
-}
-
 /* User Name */
 .settings-user-name {
     color: var(--text-white);

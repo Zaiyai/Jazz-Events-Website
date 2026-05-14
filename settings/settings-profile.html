@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings (Profile) — Jazz Events</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="settings.css">
   <link rel="stylesheet" href="../login/login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <div id="topbar-root"></div>
@@ -48,44 +52,39 @@
         </button>
         <input type="file" id="profile-file-input" accept="image/*" style="display: none;">
       </div>
-      
+
       <!-- Right Box -->
       <div class="settings-content-right">
         <h2 class="settings-heading">
           <span class="settings-heading-gold">Profile</span> <span class="settings-heading-white">Information</span>
         </h2>
-        
+
         <div class="settings-info-box">
-          
+
           <div class="settings-info-row">
             <div class="settings-info-row-label">Name</div>
             <div class="settings-info-row-value">
-              <span class="user-name">Edrian Albero</span> <button class="settings-edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+              <span class="user-name">Edrian Albero</span> <button class="settings-edit-btn"><i
+                  class="fa-solid fa-pen-to-square"></i></button>
             </div>
           </div>
-          
+
           <div class="settings-info-row">
             <div class="settings-info-row-label">Email</div>
             <div class="settings-info-row-value">
               <span id="user-email">jalbero.XXXX@umak.edu.ph</span>
             </div>
           </div>
-          
-          <div class="settings-info-row">
-            <div class="settings-info-row-label">Profile Picture</div>
-            <div class="settings-info-row-value">
-              <span id="user-profile-picture">windowshot.jpg</span>
-            </div>
-          </div>
-          
+
           <div class="settings-bio-row">
             <div class="settings-bio-label">Bio</div>
             <div class="settings-bio-value">
               <div id="user-bio">top textbottom text</div>
-              <div style="text-align: right;"><button class="settings-edit-btn"><i class="fa-solid fa-pen-to-square"></i></button></div>
+              <div style="text-align: right;"><button class="settings-edit-btn"><i
+                    class="fa-solid fa-pen-to-square"></i></button></div>
             </div>
           </div>
-          
+
         </div>
       </div>
     </main>
@@ -158,4 +157,5 @@
   <script src="settings_common.js"></script>
   <script src="profile_settings.js"></script>
 </body>
+
 </html>
