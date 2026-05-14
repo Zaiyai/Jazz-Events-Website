@@ -1,411 +1,541 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Analytics — Jazz Events Admin</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="../styles.css">
-      <link rel="stylesheet" href="../register/register.css">
-      <link rel="stylesheet" href="dashboard.css">
-      <link rel="stylesheet" href="analytics.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <!-- Chart.js for pixel-perfect charts -->
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
-    <body>
-      <div class="dash-layout">
-        <aside class="sidebar" id="sidebar">
-          <div class="sidebar-brand">
-            <a href="../home.html" style="text-decoration:none;">
-              <div class="brand-script">Jazz Events</div>
-            </a>
-            <div class="brand-sub">Admin Panel</div>
-          </div>
-          <nav class="sidebar-nav">
-            <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
-            <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
-            <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
-            <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
-            <a class="nav-item active" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
-            <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
-          </nav>
-          <div class="sidebar-footer">
-            <div class="sidebar-user">
-              <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
-              <div class="sidebar-user-info">
-                <div class="u-name" id="sidebar-name">Edrian Albero</div>
-                <div class="u-role" id="sidebar-role">Event Organizer</div>
-              </div>
-              <button class="sidebar-logout" title="Log out" onclick="DB.logout();"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-            </div>
-          </div>
-        </aside>
+<!DOCTYPE html>
+<html lang="en">
 
-        <main class="dash-main">
-          <div class="dash-topbar">
-            <div class="topbar-left">
-              <div class="topbar-heading">Analytics</div>
-              <div class="topbar-divider"></div>
-              <div class="topbar-sub">Business insights & metrics</div>
-            </div>
-            <div class="topbar-right">
-              <div class="dash-search-wrap">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search insights..." aria-label="Search analytics">
-              </div>
-              <button class="btn-outline" onclick="openAnalyticsExport()"><i class="fa-solid fa-upload"></i> Export</button>
-            </div>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — Jazz Events Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../register/register.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="analytics.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js for pixel-perfect charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-          <div class="dash-content">
-            <!-- Stats Row -->
-            <div class="stats-grid-4">
-              <div class="page-stat-card">
-                <div class="page-stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
-                <div class="page-stat-label">TOTAL REVENUE</div>
-                <div class="page-stat-value" id="an-val-1">₱0</div>
-                <div class="page-stat-sub" id="an-sub-1"><i class="fa-solid fa-chart-bar"></i> Loading…</div>
-              </div>
-              <div class="page-stat-card">
-                <div class="page-stat-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="page-stat-label">TOTAL CLIENTS</div>
-                <div class="page-stat-value" id="an-val-2">0</div>
-                <div class="page-stat-sub" id="an-sub-2"><i class="fa-solid fa-users"></i> Loading…</div>
-              </div>
-              <div class="page-stat-card">
-                <div class="page-stat-icon"><i class="fa-regular fa-calendar"></i></div>
-                <div class="page-stat-label">AVG. EVENT VALUE</div>
-                <div class="page-stat-value" id="an-val-3">₱0</div>
-                <div class="page-stat-sub" id="an-sub-3"><i class="fa-solid fa-calculator"></i> Loading…</div>
-              </div>
-              <div class="page-stat-card">
-                <div class="page-stat-icon"><i class="fa-solid fa-check-circle"></i></div>
-                <div class="page-stat-label">COMPLETION RATE</div>
-                <div class="page-stat-value" id="an-val-4">0%</div>
-                <div class="page-stat-sub" id="an-sub-4"><i class="fa-solid fa-check-circle"></i> Loading…</div>
-              </div>
-            </div>
-
-            <!-- Charts Row 1 -->
-            <div class="charts-row">
-              <div class="chart-container-main">
-                <div class="chart-header">
-                  <div class="chart-title-group">
-                    <h3 class="chart-title">Revenue Overview</h3>
-                    <p class="chart-subtitle">Monthly revenue performance</p>
-                  </div>
-                  <select class="chart-select">
-                    <option>Last 6 Months</option>
-                    <option>Last Year</option>
-                  </select>
-                </div>
-                <div class="chart-body">
-                  <canvas id="revenueChart"></canvas>
-                </div>
-              </div>
-              <div class="chart-container-side">
-                <div class="chart-header">
-                  <h3 class="chart-title">Event Types</h3>
-                  <p class="chart-subtitle">Distribution by category</p>
-                </div>
-                <div class="chart-body-pie">
-                  <canvas id="eventTypesChart"></canvas>
-                  <div class="pie-legend" id="pieLegend"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Charts Row 2 -->
-            <div class="charts-row">
-              <div class="chart-container-full">
-                <div class="chart-header">
-                  <div class="chart-title-group">
-                    <h3 class="chart-title">Bookings Overview</h3>
-                    <p class="chart-subtitle">Bookings vs Completed Events</p>
-                  </div>
-                  <select class="chart-select">
-                    <option>Last 6 Months</option>
-                  </select>
-                </div>
-                <div class="chart-body-bar">
-                  <canvas id="bookingsChart"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- Table Row -->
-            <div class="table-card-analytics">
-              <div class="chart-header">
-                <div class="chart-title-group">
-                  <h3 class="chart-title">Top Performing Events</h3>
-                  <p class="chart-subtitle">By revenue generated</p>
-                </div>
-              </div>
-              <table class="analytics-table">
-                <thead>
-                  <tr>
-                    <th>EVENT DETAILS</th>
-                    <th>DATE</th>
-                    <th>REVENUE</th>
-                    <th>SATISFACTION</th>
-                  </tr>
-                </thead>
-                <tbody id="top-events-tbody">
-                  <!-- Rendered by JS -->
-                </tbody>
-              </table>
-              <div class="table-footer-analytics">
-                <span id="table-count">Showing 4 of 24 events</span>
-                <div class="pagination">
-                  <button class="pg-btn">Previous</button>
-                  <button class="pg-btn">Next</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+<body>
+  <div class="dash-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <a href="../home.html" style="text-decoration:none;">
+          <div class="brand-script">Jazz Events</div>
+        </a>
+        <div class="brand-sub">Admin Panel</div>
       </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+        <a class="nav-item" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
+        <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+        <a class="nav-item" href="clients.html"><i class="fa-solid fa-users"></i> Clients</a>
+        <a class="nav-item active" href="analytics.html"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+        <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials"
+              id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
+          <div class="sidebar-user-info">
+            <div class="u-name" id="sidebar-name">Edrian Albero</div>
+            <div class="u-role" id="sidebar-role">Event Organizer</div>
+          </div>
+          <button class="sidebar-logout" title="Log out" onclick="DB.logout();"><i
+              class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>
+      </div>
+    </aside>
 
-      <div id="toast" class="toast"></div>
-
-      <!-- Analytics Export Modal -->
-      <div class="modal-overlay" id="modal-analytics-export">
-        <div class="modal-box" style="max-width:540px;">
-          <div class="modal-title">
-            <span>Export Analytics Report</span>
-            <button class="modal-close" onclick="closeModal('modal-analytics-export')"><i class="fa-solid fa-xmark"></i></button>
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <div class="topbar-left">
+          <div class="topbar-heading">Analytics</div>
+          <div class="topbar-divider"></div>
+          <div class="topbar-sub">Business insights & metrics</div>
+        </div>
+        <div class="topbar-right">
+          <div class="dash-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search insights..." aria-label="Search analytics">
           </div>
-          <p style="font-size:.78rem;color:var(--text-gray);margin-bottom:12px;">Choose which sections to include in the analytics PDF report.</p>
-          <!-- Filter -->
-          <div class="axf-bar">
-            <div class="axf-search-wrap">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="axf-search" placeholder="Search events by name, type..." oninput="filterAnalyticsEvents()">
-            </div>
-            <select id="axf-status-filter" class="axf-select" onchange="filterAnalyticsEvents()">
-              <option value="">All Statuses</option>
-              <option value="PLANNING">Planning</option>
-              <option value="ONGOING">Ongoing</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="BLOCKED">Blocked</option>
-            </select>
-          </div>
-          <!-- Sections -->
-          <div class="axf-sections">
-            <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="summary" checked><span class="axf-sec-icon"><i class="fa-solid fa-chart-pie"></i></span><div><div class="axf-sec-title">Executive Summary</div><div class="axf-sec-desc">Revenue, clients, avg. event value, event counts</div></div></label>
-            <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="revenue" checked><span class="axf-sec-icon"><i class="fa-solid fa-chart-line"></i></span><div><div class="axf-sec-title">Revenue Breakdown</div><div class="axf-sec-desc">Monthly revenue by event with totals</div></div></label>
-            <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="types" checked><span class="axf-sec-icon"><i class="fa-solid fa-shapes"></i></span><div><div class="axf-sec-title">Event Types Distribution</div><div class="axf-sec-desc">Count and percentage by event category</div></div></label>
-            <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="events" checked><span class="axf-sec-icon"><i class="fa-regular fa-calendar"></i></span><div><div class="axf-sec-title">Events Detail Table</div><div class="axf-sec-desc">Filtered list of all events with details</div></div></label>
-          </div>
-          <div id="axf-event-count" style="font-size:.7rem;color:var(--text-gray);margin-top:8px;"></div>
-          <div class="modal-footer" style="margin-top:14px;">
-            <button class="btn-ghost" onclick="closeModal('modal-analytics-export')">Cancel</button>
-            <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:.78rem;" onclick="downloadAnalyticsCSV()"><i class="fa-solid fa-download"></i> Download CSV</button>
-          </div>
+          <button class="btn-outline" onclick="openAnalyticsExport()"><i class="fa-solid fa-upload"></i> Export</button>
         </div>
       </div>
 
-      <style>
-        .axf-bar{display:flex;gap:10px;margin-bottom:12px}
-        .axf-search-wrap{flex:1;position:relative}
-        .axf-search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--jazz-gold);font-size:.7rem;pointer-events:none}
-        .axf-search-wrap input{width:100%;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:6px;padding:8px 10px 8px 30px;color:var(--text-white);font-size:.75rem;outline:none;font-family:var(--font-sans);transition:border .2s;box-sizing:border-box}
-        .axf-search-wrap input:focus{border-color:var(--jazz-gold)}
-        .axf-search-wrap input::placeholder{color:#4b5563}
-        .axf-select{background:var(--bg-card);border:1px solid var(--border-dark);border-radius:6px;padding:8px 12px;color:var(--text-gray);font-size:.72rem;outline:none;cursor:pointer;font-family:var(--font-sans);min-width:130px}
-        .axf-sections{border:1px solid var(--border-dark);border-radius:8px;overflow:hidden;background:var(--bg-input)}
-        .axf-section-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border-dark);cursor:pointer;transition:background .15s}
-        .axf-section-row:last-child{border-bottom:none}
-        .axf-section-row:hover{background:rgba(212,175,55,.05)}
-        .axf-section-row input[type=checkbox]{accent-color:var(--jazz-gold);width:16px;height:16px;flex-shrink:0}
-        .axf-sec-icon{width:32px;height:32px;border-radius:6px;background:rgba(212,175,55,.12);display:flex;align-items:center;justify-content:center;color:var(--jazz-gold);font-size:.85rem;flex-shrink:0}
-        .axf-sec-title{font-size:.8rem;font-weight:600;color:var(--text-white)}
-        .axf-sec-desc{font-size:.68rem;color:var(--text-gray);margin-top:1px}
-      </style>
+      <div class="dash-content">
+        <!-- Stats Row -->
+        <div class="stats-grid-4">
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-solid fa-peso-sign"></i></div>
+            <div class="page-stat-label">TOTAL REVENUE</div>
+            <div class="page-stat-value">₱1,029,567</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +32.2% <span
+                style="color:#666; font-weight:400;">vs last period</span></div>
+          </div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="page-stat-label">NEW CLIENTS</div>
+            <div class="page-stat-value">167</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +18.9% <span
+                style="color:#666; font-weight:400;">vs last period</span></div>
+          </div>
+          <div class="page-stat-card">
+            <div class="page-stat-icon"><i class="fa-regular fa-calendar"></i></div>
+            <div class="page-stat-label">AVG. EVENT VALUE</div>
+            <div class="page-stat-value">₱567,293</div>
+            <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +24.6% <span
+                style="color:#666; font-weight:400;">vs last period</span></div>
+          </div>
 
-      <script src="../scripts/db.js"></script>
-      <script src="dashboard_ui.js"></script>
-      <script src="analytics.js"></script>
-      <script>
-      let axfEventsCache = [];
-      let axfFilteredEvents = [];
+        </div>
 
-      async function openAnalyticsExport() {
-        openModal('modal-analytics-export');
-        const s = document.getElementById('axf-search');
-        const f = document.getElementById('axf-status-filter');
-        if(s) s.value='';
-        if(f) f.value='';
-        axfEventsCache = await getData('events');
-        if(!axfEventsCache) axfEventsCache=[];
-        filterAnalyticsEvents();
-      }
+        <!-- Charts Row 1 -->
+        <div class="charts-row">
+          <div class="chart-container-main">
+            <div class="chart-header">
+              <div class="chart-title-group">
+                <h3 class="chart-title">Revenue Overview</h3>
+                <p class="chart-subtitle">Monthly revenue performance</p>
+              </div>
+              <select class="chart-select">
+                <option>Last 6 Months</option>
+                <option>Last Year</option>
+              </select>
+            </div>
+            <div class="chart-body">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-container-side">
+            <div class="chart-header">
+              <h3 class="chart-title">Event Types</h3>
+              <p class="chart-subtitle">Distribution by category</p>
+            </div>
+            <div class="chart-body-pie">
+              <canvas id="eventTypesChart"></canvas>
+              <div class="pie-legend" id="pieLegend"></div>
+            </div>
+          </div>
+        </div>
 
-      function filterAnalyticsEvents() {
-        const q = (document.getElementById('axf-search')?.value||'').toLowerCase().trim();
-        const st = document.getElementById('axf-status-filter')?.value||'';
-        axfFilteredEvents = axfEventsCache.filter(ev => {
-          if(st && ev.status!==st) return false;
-          if(q) {
-            const s=[ev.name,ev.type,ev.venue,ev.theme,ev.client_name].filter(Boolean).join(' ').toLowerCase();
-            if(!s.includes(q)) return false;
-          }
-          return true;
-        });
-        document.getElementById('axf-event-count').textContent = axfFilteredEvents.length + ' of ' + axfEventsCache.length + ' events matched';
-      }
+        <!-- Charts Row 2 -->
+        <div class="charts-row">
+          <div class="chart-container-full">
+            <div class="chart-header">
+              <div class="chart-title-group">
+                <h3 class="chart-title">Bookings Overview</h3>
+                <p class="chart-subtitle">Bookings vs Completed Events</p>
+              </div>
+              <select class="chart-select">
+                <option>Last 6 Months</option>
+              </select>
+            </div>
+            <div class="chart-body-bar">
+              <canvas id="bookingsChart"></canvas>
+            </div>
+          </div>
+        </div>
 
-      function downloadAnalyticsCSV() {
-        const secs = {};
-        document.querySelectorAll('.axf-sec').forEach(cb => { secs[cb.value] = cb.checked; });
-        if (!secs.summary && !secs.revenue && !secs.types && !secs.events) { showToast('Select at least one section.', 'error'); return; }
+        <!-- Table Row -->
+        <div class="table-card-analytics">
+          <div class="chart-header">
+            <div class="chart-title-group">
+              <h3 class="chart-title">Top Performing Events</h3>
+              <p class="chart-subtitle">By revenue generated</p>
+            </div>
+          </div>
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th>EVENT DETAILS</th>
+                <th>DATE</th>
+                <th>REVENUE</th>
+                <th>SATISFACTION</th>
+              </tr>
+            </thead>
+            <tbody id="top-events-tbody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+          <div class="table-footer-analytics">
+            <span id="table-count">Showing 4 of 24 events</span>
+            <div class="pagination">
+              <button class="pg-btn">Previous</button>
+              <button class="pg-btn">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-        const evs = axfFilteredEvents;
-        if (evs.length === 0) { showToast('No events match filters.', 'error'); return; }
+  <div id="toast" class="toast"></div>
 
-        function esc(val) {
-          const s = String(val == null ? '' : val);
-          if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
-          return s;
+  <!-- Analytics Export Modal -->
+  <div class="modal-overlay" id="modal-analytics-export">
+    <div class="modal-box" style="max-width:540px;">
+      <div class="modal-title">
+        <span>Export Analytics Report</span>
+        <button class="modal-close" onclick="closeModal('modal-analytics-export')"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size:.78rem;color:var(--text-gray);margin-bottom:12px;">Choose which sections to include in the
+        analytics PDF report.</p>
+      <!-- Filter -->
+      <div class="axf-bar">
+        <div class="axf-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="axf-search" placeholder="Search events by name, type..."
+            oninput="filterAnalyticsEvents()">
+        </div>
+        <select id="axf-status-filter" class="axf-select" onchange="filterAnalyticsEvents()">
+          <option value="">All Statuses</option>
+          <option value="PLANNING">Planning</option>
+          <option value="ONGOING">Ongoing</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="BLOCKED">Blocked</option>
+        </select>
+      </div>
+      <!-- Sections -->
+      <div class="axf-sections">
+        <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="summary" checked><span
+            class="axf-sec-icon"><i class="fa-solid fa-chart-pie"></i></span>
+          <div>
+            <div class="axf-sec-title">Executive Summary</div>
+            <div class="axf-sec-desc">Revenue, clients, avg. event value, event counts</div>
+          </div>
+        </label>
+        <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="revenue" checked><span
+            class="axf-sec-icon"><i class="fa-solid fa-chart-line"></i></span>
+          <div>
+            <div class="axf-sec-title">Revenue Breakdown</div>
+            <div class="axf-sec-desc">Monthly revenue by event with totals</div>
+          </div>
+        </label>
+        <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="types" checked><span
+            class="axf-sec-icon"><i class="fa-solid fa-shapes"></i></span>
+          <div>
+            <div class="axf-sec-title">Event Types Distribution</div>
+            <div class="axf-sec-desc">Count and percentage by event category</div>
+          </div>
+        </label>
+        <label class="axf-section-row"><input type="checkbox" class="axf-sec" value="events" checked><span
+            class="axf-sec-icon"><i class="fa-regular fa-calendar"></i></span>
+          <div>
+            <div class="axf-sec-title">Events Detail Table</div>
+            <div class="axf-sec-desc">Filtered list of all events with details</div>
+          </div>
+        </label>
+      </div>
+      <div id="axf-event-count" style="font-size:.7rem;color:var(--text-gray);margin-top:8px;"></div>
+      <div class="modal-footer" style="margin-top:14px;">
+        <button class="btn-ghost" onclick="closeModal('modal-analytics-export')">Cancel</button>
+        <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:.78rem;"
+          onclick="downloadAnalyticsCSV()"><i class="fa-solid fa-download"></i> Download CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .axf-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .axf-search-wrap {
+      flex: 1;
+      position: relative
+    }
+
+    .axf-search-wrap i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--jazz-gold);
+      font-size: .7rem;
+      pointer-events: none
+    }
+
+    .axf-search-wrap input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px 10px 8px 30px;
+      color: var(--text-white);
+      font-size: .75rem;
+      outline: none;
+      font-family: var(--font-sans);
+      transition: border .2s;
+      box-sizing: border-box
+    }
+
+    .axf-search-wrap input:focus {
+      border-color: var(--jazz-gold)
+    }
+
+    .axf-search-wrap input::placeholder {
+      color: #4b5563
+    }
+
+    .axf-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-gray);
+      font-size: .72rem;
+      outline: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      min-width: 130px
+    }
+
+    .axf-sections {
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg-input)
+    }
+
+    .axf-section-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      cursor: pointer;
+      transition: background .15s
+    }
+
+    .axf-section-row:last-child {
+      border-bottom: none
+    }
+
+    .axf-section-row:hover {
+      background: rgba(212, 175, 55, .05)
+    }
+
+    .axf-section-row input[type=checkbox] {
+      accent-color: var(--jazz-gold);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0
+    }
+
+    .axf-sec-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: rgba(212, 175, 55, .12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--jazz-gold);
+      font-size: .85rem;
+      flex-shrink: 0
+    }
+
+    .axf-sec-title {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-white)
+    }
+
+    .axf-sec-desc {
+      font-size: .68rem;
+      color: var(--text-gray);
+      margin-top: 1px
+    }
+  </style>
+
+  <script src="../scripts/db.js"></script>
+  <script src="dashboard_ui.js"></script>
+  <script src="analytics.js"></script>
+  <script>
+    let axfEventsCache = [];
+    let axfFilteredEvents = [];
+
+    async function openAnalyticsExport() {
+      openModal('modal-analytics-export');
+      const s = document.getElementById('axf-search');
+      const f = document.getElementById('axf-status-filter');
+      if (s) s.value = '';
+      if (f) f.value = '';
+      axfEventsCache = await getData('events');
+      if (!axfEventsCache) axfEventsCache = [];
+      filterAnalyticsEvents();
+    }
+
+    function filterAnalyticsEvents() {
+      const q = (document.getElementById('axf-search')?.value || '').toLowerCase().trim();
+      const st = document.getElementById('axf-status-filter')?.value || '';
+      axfFilteredEvents = axfEventsCache.filter(ev => {
+        if (st && ev.status !== st) return false;
+        if (q) {
+          const s = [ev.name, ev.type, ev.venue, ev.theme, ev.client_name].filter(Boolean).join(' ').toLowerCase();
+          if (!s.includes(q)) return false;
         }
-        function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''; }
-        function fmtPHP(n) { return 'PHP ' + Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+        return true;
+      });
+      document.getElementById('axf-event-count').textContent = axfFilteredEvents.length + ' of ' + axfEventsCache.length + ' events matched';
+    }
 
-        const rDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        const L = [];
+    function downloadAnalyticsCSV() {
+      const secs = {};
+      document.querySelectorAll('.axf-sec').forEach(cb => { secs[cb.value] = cb.checked; });
+      if (!secs.summary && !secs.revenue && !secs.types && !secs.events) { showToast('Select at least one section.', 'error'); return; }
 
-        // === HEADER ===
-        L.push(',,JAZZ EVENTS MANAGEMENT');
-        L.push(',,ANALYTICS PERFORMANCE REPORT');
-        L.push(',,"Generated: ' + rDate + '"');
+      const evs = axfFilteredEvents;
+      if (evs.length === 0) { showToast('No events match filters.', 'error'); return; }
+
+      function esc(val) {
+        const s = String(val == null ? '' : val);
+        if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }
+      function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''; }
+      function fmtPHP(n) { return 'PHP ' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+      const rDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const L = [];
+
+      // === HEADER ===
+      L.push(',,JAZZ EVENTS MANAGEMENT');
+      L.push(',,ANALYTICS PERFORMANCE REPORT');
+      L.push(',,"Generated: ' + rDate + '"');
+      L.push(',');
+
+      // === EXECUTIVE SUMMARY ===
+      if (secs.summary) {
+        const totalRev = evs.reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+        const avgVal = evs.length ? totalRev / evs.length : 0;
+        const clients = [...new Set(evs.map(e => e.client_id))].length;
+        const totalGuests = evs.reduce((s, e) => s + (parseInt(e.no_of_guests) || 0), 0);
+        const completed = evs.filter(e => e.status === 'COMPLETED').length;
+        const planning = evs.filter(e => e.status === 'PLANNING').length;
+        const ongoing = evs.filter(e => e.status === 'ONGOING').length;
+        const blocked = evs.filter(e => e.status === 'BLOCKED').length;
+        const compRate = evs.length ? Math.round(completed / evs.length * 100) : 0;
+        const cancelRate = evs.length ? Math.round(blocked / evs.length * 100) : 0;
+
+        L.push(',,KEY PERFORMANCE INDICATORS');
+        L.push('METRIC,VALUE,NOTES');
+        L.push('Total Events,' + evs.length + ',Events included in this report');
+        L.push('Total Revenue,' + esc(fmtPHP(totalRev)) + ',Combined event amounts');
+        L.push('Avg. Event Value,' + esc(fmtPHP(avgVal)) + ',Average revenue per event');
+        L.push('Total Guests,' + totalGuests + ',Combined guest count');
+        L.push('Unique Clients,' + clients + ',Distinct clients involved');
+        L.push('Completed,' + completed + ',' + compRate + '% completion rate');
+        L.push('Planning,' + planning + ',In event planning phase');
+        L.push('Ongoing,' + ongoing + ',Currently in progress');
+        L.push('Blocked,' + blocked + ',' + cancelRate + '% blocked rate');
+        L.push('Completion Rate,' + compRate + '%,');
         L.push(',');
 
-        // === EXECUTIVE SUMMARY ===
-        if (secs.summary) {
-          const totalRev = evs.reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
-          const avgVal = evs.length ? totalRev / evs.length : 0;
-          const clients = [...new Set(evs.map(e => e.client_id))].length;
-          const totalGuests = evs.reduce((s,e) => s + (parseInt(e.no_of_guests)||0), 0);
-          const completed = evs.filter(e => e.status === 'COMPLETED').length;
-          const planning = evs.filter(e => e.status === 'PLANNING').length;
-          const ongoing = evs.filter(e => e.status === 'ONGOING').length;
-          const blocked = evs.filter(e => e.status === 'BLOCKED').length;
-          const compRate = evs.length ? Math.round(completed/evs.length*100) : 0;
-          const cancelRate = evs.length ? Math.round(blocked/evs.length*100) : 0;
-
-          L.push(',,KEY PERFORMANCE INDICATORS');
-          L.push('METRIC,VALUE,NOTES');
-          L.push('Total Events,' + evs.length + ',Events included in this report');
-          L.push('Total Revenue,' + esc(fmtPHP(totalRev)) + ',Combined event amounts');
-          L.push('Avg. Event Value,' + esc(fmtPHP(avgVal)) + ',Average revenue per event');
-          L.push('Total Guests,' + totalGuests + ',Combined guest count');
-          L.push('Unique Clients,' + clients + ',Distinct clients involved');
-          L.push('Completed,' + completed + ',' + compRate + '% completion rate');
-          L.push('Planning,' + planning + ',In event planning phase');
-          L.push('Ongoing,' + ongoing + ',Currently in progress');
-          L.push('Blocked,' + blocked + ',' + cancelRate + '% blocked rate');
-          L.push('Completion Rate,' + compRate + '%,');
-          L.push(',');
-
-          // --- STATUS DISTRIBUTION SUB-TABLE ---
-          L.push(',,EVENT STATUS DISTRIBUTION');
-          L.push('STATUS,COUNT,PERCENTAGE');
-          const sts = {PLANNING: planning, ONGOING: ongoing, COMPLETED: completed, BLOCKED: blocked};
-          Object.keys(sts).forEach(st => {
-            const pct = evs.length ? Math.round(sts[st]/evs.length*100) : 0;
-            L.push(st + ',' + sts[st] + ',' + pct + '%');
-          });
-          L.push('TOTAL,' + evs.length + ',100%');
-          L.push(',');
-        }
-
-        // === REVENUE BREAKDOWN ===
-        if (secs.revenue) {
-          const monthly = {};
-          const mNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-          evs.forEach(e => {
-            const d = new Date(e.date);
-            const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-            if (!monthly[k]) monthly[k] = { label: mNames[d.getMonth()] + ' ' + d.getFullYear(), total: 0, count: 0, guests: 0 };
-            monthly[k].total += parseFloat(e.amount) || 0;
-            monthly[k].count++;
-            monthly[k].guests += parseInt(e.no_of_guests) || 0;
-          });
-          const keys = Object.keys(monthly).sort();
-          const grandTotal = keys.reduce((s, k) => s + monthly[k].total, 0);
-          const grandCount = keys.reduce((s, k) => s + monthly[k].count, 0);
-          const grandGuests = keys.reduce((s, k) => s + monthly[k].guests, 0);
-
-          L.push(',,REVENUE BREAKDOWN');
-          L.push('MONTH,EVENTS,GUESTS,REVENUE (PHP)');
-          keys.forEach(k => {
-            L.push(esc(monthly[k].label) + ',' + monthly[k].count + ',' + monthly[k].guests + ',' + esc(fmtPHP(monthly[k].total)));
-          });
-          L.push('TOTAL,' + grandCount + ',' + grandGuests + ',' + esc(fmtPHP(grandTotal)));
-          L.push(',');
-        }
-
-        // === EVENT TYPES ===
-        if (secs.types) {
-          const counts = {};
-          const amts = {};
-          evs.forEach(e => {
-            counts[e.type] = (counts[e.type] || 0) + 1;
-            amts[e.type] = (amts[e.type] || 0) + (parseFloat(e.amount) || 0);
-          });
-          const types = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
-          const total = evs.length;
-
-          L.push(',,EVENT TYPES DISTRIBUTION');
-          L.push('EVENT TYPE,TOTAL EVENTS,PERCENTAGE,TOTAL REVENUE (PHP)');
-          types.forEach(t => {
-            const pct = total ? Math.round(counts[t] / total * 100) : 0;
-            L.push(esc(t) + ',' + counts[t] + ',' + pct + '%,' + esc(fmtPHP(amts[t])));
-          });
-          const totalAmt = Object.values(amts).reduce((s,v) => s+v, 0);
-          L.push('TOTAL,' + total + ',100%,' + esc(fmtPHP(totalAmt)));
-          L.push(',');
-        }
-
-        // === EVENTS DETAIL ===
-        if (secs.events) {
-          L.push(',,EVENTS DETAIL');
-          L.push('EVENT ID,EVENT NAME,TYPE,DATE,VENUE,THEME,GUESTS,CLIENT NAME,CLIENT ID,AMOUNT (PHP),STATUS');
-          evs.forEach(ev => {
-            L.push([
-              ev.event_id || '',
-              esc(ev.name || ''),
-              esc(ev.type || ''),
-              fmtDate(ev.date),
-              esc(ev.venue || ''),
-              esc(ev.theme || ''),
-              ev.no_of_guests || 0,
-              esc(ev.client_name || ''),
-              ev.client_id || '',
-              esc(fmtPHP(ev.amount)),
-              ev.status || ''
-            ].join(','));
-          });
-          L.push(',');
-        }
-
-        // === FOOTER ===
-        L.push('This report is system-generated by the Jazz Events Management System. For internal use only.');
-
-        const csv = L.join('\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Jazz_Analytics_Report_' + new Date().toISOString().split('T')[0] + '.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('Analytics CSV exported!');
-        closeModal('modal-analytics-export');
+        // --- STATUS DISTRIBUTION SUB-TABLE ---
+        L.push(',,EVENT STATUS DISTRIBUTION');
+        L.push('STATUS,COUNT,PERCENTAGE');
+        const sts = { PLANNING: planning, ONGOING: ongoing, COMPLETED: completed, BLOCKED: blocked };
+        Object.keys(sts).forEach(st => {
+          const pct = evs.length ? Math.round(sts[st] / evs.length * 100) : 0;
+          L.push(st + ',' + sts[st] + ',' + pct + '%');
+        });
+        L.push('TOTAL,' + evs.length + ',100%');
+        L.push(',');
       }
-      </script>
-    </body>
-    </html>
+
+      // === REVENUE BREAKDOWN ===
+      if (secs.revenue) {
+        const monthly = {};
+        const mNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        evs.forEach(e => {
+          const d = new Date(e.date);
+          const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+          if (!monthly[k]) monthly[k] = { label: mNames[d.getMonth()] + ' ' + d.getFullYear(), total: 0, count: 0, guests: 0 };
+          monthly[k].total += parseFloat(e.amount) || 0;
+          monthly[k].count++;
+          monthly[k].guests += parseInt(e.no_of_guests) || 0;
+        });
+        const keys = Object.keys(monthly).sort();
+        const grandTotal = keys.reduce((s, k) => s + monthly[k].total, 0);
+        const grandCount = keys.reduce((s, k) => s + monthly[k].count, 0);
+        const grandGuests = keys.reduce((s, k) => s + monthly[k].guests, 0);
+
+        L.push(',,REVENUE BREAKDOWN');
+        L.push('MONTH,EVENTS,GUESTS,REVENUE (PHP)');
+        keys.forEach(k => {
+          L.push(esc(monthly[k].label) + ',' + monthly[k].count + ',' + monthly[k].guests + ',' + esc(fmtPHP(monthly[k].total)));
+        });
+        L.push('TOTAL,' + grandCount + ',' + grandGuests + ',' + esc(fmtPHP(grandTotal)));
+        L.push(',');
+      }
+
+      // === EVENT TYPES ===
+      if (secs.types) {
+        const counts = {};
+        const amts = {};
+        evs.forEach(e => {
+          counts[e.type] = (counts[e.type] || 0) + 1;
+          amts[e.type] = (amts[e.type] || 0) + (parseFloat(e.amount) || 0);
+        });
+        const types = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+        const total = evs.length;
+
+        L.push(',,EVENT TYPES DISTRIBUTION');
+        L.push('EVENT TYPE,TOTAL EVENTS,PERCENTAGE,TOTAL REVENUE (PHP)');
+        types.forEach(t => {
+          const pct = total ? Math.round(counts[t] / total * 100) : 0;
+          L.push(esc(t) + ',' + counts[t] + ',' + pct + '%,' + esc(fmtPHP(amts[t])));
+        });
+        const totalAmt = Object.values(amts).reduce((s, v) => s + v, 0);
+        L.push('TOTAL,' + total + ',100%,' + esc(fmtPHP(totalAmt)));
+        L.push(',');
+      }
+
+      // === EVENTS DETAIL ===
+      if (secs.events) {
+        L.push(',,EVENTS DETAIL');
+        L.push('EVENT ID,EVENT NAME,TYPE,DATE,VENUE,THEME,GUESTS,CLIENT NAME,CLIENT ID,AMOUNT (PHP),STATUS');
+        evs.forEach(ev => {
+          L.push([
+            ev.event_id || '',
+            esc(ev.name || ''),
+            esc(ev.type || ''),
+            fmtDate(ev.date),
+            esc(ev.venue || ''),
+            esc(ev.theme || ''),
+            ev.no_of_guests || 0,
+            esc(ev.client_name || ''),
+            ev.client_id || '',
+            esc(fmtPHP(ev.amount)),
+            ev.status || ''
+          ].join(','));
+        });
+        L.push(',');
+      }
+
+      // === FOOTER ===
+      L.push('This report is system-generated by the Jazz Events Management System. For internal use only.');
+
+      const csv = L.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Jazz_Analytics_Report_' + new Date().toISOString().split('T')[0] + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Analytics CSV exported!');
+      closeModal('modal-analytics-export');
+    }
+  </script>
+</body>
+
+</html>
