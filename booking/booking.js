@@ -12,18 +12,7 @@ if (dateFrom && dateTo) {
 
 var bookingInfo;
 
-/** Per-guest rate (pesos) for each `name="service"` checkbox `value` in booking.html */
-const SERVICE_BUDGET_RATES = {
-    catering: 800,
-    styling: 400,
-    decoration: 200,
-    lights: 200,
-    sounds: 400,
-    photography: 350,
-    videography: 400,
-    coordination: 500,
-};
-
+// Service budget rates are now calculated dynamically within getEstimatedBudgetNumber
 
 // On date change
 function checkDateViability(date) {
@@ -93,11 +82,61 @@ var bookingInfo;
 function getEstimatedBudgetNumber() {
     const guests = Number(String(attendees.value).trim());
     if (!Number.isFinite(guests) || guests < 1 || guests > 99999) return null;
-    let rateSum = 0;
+    
+    let totalBudget = 0;
+    
     document.querySelectorAll('input[name="service"]:checked').forEach((el) => {
-        rateSum += SERVICE_BUDGET_RATES[el.value] ?? 0;
+        const service = el.value;
+        
+        if (service === 'catering') {
+            let cost = 18000; // First 50 guests
+            if (guests > 50) {
+                cost += Math.ceil((guests - 50) / 10) * 3000;
+            }
+            totalBudget += cost;
+        } 
+        else if (service === 'styling') {
+            totalBudget += 8000;
+        } 
+        else if (service === 'decoration') {
+            totalBudget += 5000;
+        } 
+        else if (service === 'lights') {
+            totalBudget += 6000;
+        } 
+        else if (service === 'sounds') {
+            let cost = 7000; // Up to 50 guests
+            if (guests > 50) {
+                cost += Math.ceil((guests - 50) / 25) * 2000;
+            }
+            totalBudget += cost;
+        } 
+        else if (service === 'photography') {
+            totalBudget += 12000;
+        } 
+        else if (service === 'videography') {
+            totalBudget += 15000;
+        } 
+        else if (service === 'coordination') {
+            totalBudget += 7000;
+        } 
+        else if (service === 'ushers') {
+            let staff = 2;
+            if (guests > 50 && guests <= 100) {
+                staff = 4;
+            } else if (guests > 100) {
+                staff = 4 + Math.ceil((guests - 100) / 100) * 2;
+            }
+            
+            let cost = 2000; // Base 2 staff members
+            if (staff > 2) {
+                cost += (staff - 2) * 800;
+            }
+            totalBudget += cost;
+        }
     });
-    return rateSum * guests;
+    
+    return totalBudget;
 }
 
 // On number of guests change
