@@ -142,16 +142,16 @@
                 <div style="display: flex; flex-direction: column; justify-content: center;">
                     <div style="display: grid; grid-template-columns: max-content 1fr; row-gap: 16px; column-gap: 24px;">
                         <span class="info-label">Event name:</span>
-                        <span class="info-value">Golden Anniversary Gala</span>
+                        <span id="event-name" class="info-value">Loading...</span>
                         
                         <span class="info-label">Event type:</span>
-                        <span class="info-value">Corporate Dinner</span>
+                        <span id="event-type" class="info-value">Loading...</span>
                         
                         <span class="info-label">Event theme:</span>
-                        <span class="info-value">Floral Spring</span>
+                        <span id="event-theme" class="info-value">Loading...</span>
                         
                         <span class="info-label" style="margin-top: 16px;">Estimated Event Budget:</span>
-                        <span class="info-value" style="margin-top: 16px;">₱ 390,000</span>
+                        <span id="event-budget" class="info-value" style="margin-top: 16px;">₱ 0</span>
                     </div>
                 </div>
             </div>
@@ -161,16 +161,16 @@
             <!-- Middle Block 1: Contact & Guests -->
             <div class="grid-4col" style="display: grid; grid-template-columns: max-content 1fr max-content 1fr; row-gap: 20px; column-gap: 40px; margin-bottom: 20px;">
                 <span class="info-label">Email:</span>
-                <span class="info-value">corporate@emailcom</span>
+                <span id="client-email" class="info-value">Loading...</span>
                 
                 <span class="info-label">Number of Guests:</span>
-                <span class="info-value">120</span>
+                <span id="guest-count" class="info-value">0</span>
                 
                 <span class="info-label">Venue Location:</span>
-                <span class="info-value">Imus, Cavite</span>
+                <span id="venue-location" class="info-value">Loading...</span>
                 
                 <span class="info-label">Phone number:</span>
-                <span class="info-value">099XXXXXXX</span>
+                <span id="client-phone" class="info-value">Loading...</span>
             </div>
 
             <div class="line"></div>
@@ -219,42 +219,32 @@
             <!-- Middle Block 3: Financials -->
             <div class="grid-4col" style="display: grid; grid-template-columns: max-content 1fr max-content 1fr; row-gap: 24px; column-gap: 40px; margin-bottom: 40px;">
                 <span class="info-label">Total Due:</span>
-                <span class="info-value">₱ 390,000</span>
-                
-                <span class="info-label">Official Contract:</span>
-                <span class="info-value">Jazz_Events_12-GAG.pdf</span>
+                <span id="total-due" class="info-value">₱ 0</span>
                 
                 <span class="info-label">Payment Plan:</span>
-                <span class="info-value">12 months</span>
+                <span id="payment-plan" class="info-value">12 months</span>
                 
-                <span class="info-label">Date Completed:</span>
-                <span class="info-value">Ongoing</span>
+                <span class="info-label">Date From:</span>
+                <span id="date-from" class="info-value">Loading...</span>
+                
+                <span class="info-label">Date To:</span>
+                <span id="date-to" class="info-value">Loading...</span>
                 
                 <span class="info-label">Due Amount Per Month:</span>
-                <span class="info-value">₱ 32,500</span>
+                <span id="monthly-due" class="info-value">₱ 0</span>
                 
-                <span style="grid-column: span 2;"></span>
-                
-                <span class="info-label" style="display: flex; align-items: center;">Monthly Due Date:</span>
-                <div style="display: flex; gap: 16px; align-items: center;">
-                    <span class="info-value">15th of the month</span>
-                    <span style="color: #16a34a; font-weight: 700; font-size: 0.95rem;">On-track</span>
-                </div>
+                <span class="info-label">Status:</span>
+                <span id="booking-status" class="info-value" style="text-transform: capitalize;">Loading...</span>
             </div>
 
-            <!-- Bottom Block: Progress Bar -->
             <div style="margin-bottom: 50px;">
-                <div class="info-label" style="margin-bottom: 8px;">Completed Payments:</div>
-                <div class="info-value" style="font-size: 0.9rem; margin-bottom: 12px;">3 out of 12 months</div>
-                <div style="width: 100%; height: 8px; background-color: #3f3f46; border-radius: 4px; overflow: hidden;">
-                    <div style="width: 25%; height: 100%; background-color: #16a34a; border-radius: 4px;"></div>
-                </div>
+                <div class="info-label" style="margin-bottom: 8px;">Created At:</div>
+                <div id="created-at" class="info-value" style="font-size: 0.9rem; margin-bottom: 12px;">Loading...</div>
             </div>
 
             <!-- Buttons -->
             <div style="display: flex; justify-content: center; gap: 40px;">
                 <a href="client_bookings.html" class="btn-action">Return</a>
-                <a href="javascript:void(0)" class="btn-action" onclick="showPaymentModal()">Pay Now</a>
             </div>
 
         </div>
@@ -372,5 +362,54 @@
     <script src="../scripts/topbar.js"></script>
     <script src="../scripts/main.js"></script>
     <script src="../scripts/db.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingId = urlParams.get('id');
+
+            if (!bookingId) {
+                alert('No booking ID provided');
+                window.location.href = 'client_bookings.html';
+                return;
+            }
+
+            try {
+                const booking = await DB.getBookingById(bookingId);
+                
+                if (!booking) {
+                    alert('Booking not found');
+                    window.location.href = 'client_bookings.html';
+                    return;
+                }
+
+                // Populate Fields
+                document.getElementById('event-name').textContent = booking.name;
+                document.getElementById('event-type').textContent = booking.type;
+                document.getElementById('event-theme').textContent = booking.theme;
+                
+                const budget = parseFloat(booking.budget) || 0;
+                document.getElementById('event-budget').textContent = '₱ ' + budget.toLocaleString();
+                document.getElementById('total-due').textContent = '₱ ' + budget.toLocaleString();
+                
+                // Assuming 12 months plan for now as in the design
+                const monthlyDue = budget / 12;
+                document.getElementById('monthly-due').textContent = '₱ ' + monthlyDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+                document.getElementById('client-email').textContent = booking.email;
+                document.getElementById('guest-count').textContent = booking.no_of_guests;
+                document.getElementById('venue-location').textContent = booking.venue;
+                document.getElementById('client-phone').textContent = booking.phone;
+                
+                document.getElementById('date-from').textContent = booking.date_from;
+                document.getElementById('date-to').textContent = booking.date_to;
+                document.getElementById('booking-status').textContent = booking.status;
+                document.getElementById('created-at').textContent = booking.created_at;
+
+            } catch (error) {
+                console.error('Error fetching booking details:', error);
+                alert('Failed to load booking details.');
+            }
+        });
+    </script>
 </body>
 </html>

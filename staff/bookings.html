@@ -16,29 +16,33 @@
 <body>
   <div class="dash-layout">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-brand">
-        <a href="../home.html" style="text-decoration:none;">
-          <div class="brand-script">Jazz Events</div>
-        </a>
-        <div class="brand-sub">Staff Panel</div>
-      </div>
-      <nav class="sidebar-nav">
-        <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
-        <a class="nav-item active" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
-        <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
-        <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
-      </nav>
-      <div class="sidebar-footer">
-        <div class="sidebar-user">
-          <div class="sidebar-avatar" id="sidebar-avatar">EA</div>
-          <div class="sidebar-user-info">
-            <div class="u-name" id="sidebar-name">Edrian Albero</div>
-            <div class="u-role" id="sidebar-role">Event Organizer</div>
-          </div>
-          <button class="sidebar-logout" title="Log out" onclick="DB.logout();"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    <div class="sidebar-brand">
+      <a href="../home.html" style="text-decoration:none;">
+        <div class="brand-script">Jazz Events</div>
+      </a>
+      <div class="brand-sub">Admin Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><i class="fa-solid fa-grip"></i> Dashboard</a>
+      <a class="nav-item active" href="bookings.html"><i class="fa-solid fa-clipboard-list"></i> Bookings</a>
+      <a class="nav-item" href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+      <a class="nav-item" href="payments.html"><i class="fa-regular fa-credit-card"></i> Payments</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
+        <div class="sidebar-user-info">
+          <div class="u-name" id="sidebar-name">Edrian Albero</div>
+          <div class="u-role" id="sidebar-role">Event Organizer</div>
         </div>
+        <button class="sidebar-logout" title="Log out" onclick="DB.logout();">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
       </div>
-    </aside>
+    </div>
+  </aside>
 
     <main class="dash-main">
       <div class="dash-topbar">

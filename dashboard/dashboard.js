@@ -62,16 +62,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pfp = document.getElementById('profile-avatar-initials');
 
   // Populate sidebar user info
-  document.getElementById('sidebar-name').textContent = user.name;
+  const sidebarName = document.getElementById('sidebar-name');
+  if (sidebarName) sidebarName.textContent = user.name;
   if (user.profile_picture) {
     // Use correct path with prefix
-    pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
-    document.getElementById('sidebar-avatar').innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    if (pfp) pfp.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+    const sidebarAvatar = document.getElementById('sidebar-avatar');
+    if (sidebarAvatar) sidebarAvatar.innerHTML = '<img src="' + prefix + user.profile_picture + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
   } else {
-    pfp.textContent = initials;
-    document.getElementById('sidebar-avatar').textContent = initials;
+    if (pfp) pfp.textContent = initials;
+    const sidebarAvatar = document.getElementById('sidebar-avatar');
+    if (sidebarAvatar) sidebarAvatar.textContent = initials;
   }
-  document.getElementById('topbar-greeting').textContent = `Welcome back, ${user.name.split(' ')[0]}`;
+  const greetingEl = document.getElementById('topbar-greeting');
+  if (greetingEl) greetingEl.textContent = `Welcome back, ${user.name.split(' ')[0]}`;
 
   // Calendar
   const now = new Date();

@@ -3,6 +3,8 @@ const eventBudget  = document.getElementById('event-budget');
 const attendees    = document.getElementById('attendees');
 const attendeesErr = document.getElementById('attendees-err')
 
+const dateFrom     = document.getElementById('datefrom');
+const dateTo       = document.getElementById('dateto');
 if (dateFrom && dateTo) {
     dateFrom.setAttribute('min', today);
     dateTo.setAttribute('min', today);
@@ -10,17 +12,7 @@ if (dateFrom && dateTo) {
 
 var bookingInfo;
 
-/** Per-guest rate (pesos) for each `name="service"` checkbox `value` in booking.html */
-const SERVICE_BUDGET_RATES = {
-    catering: 800,
-    styling: 400,
-    decoration: 200,
-    lights: 200,
-    sounds: 400,
-    photography: 350,
-    videography: 400,
-    coordination: 500,
-};
+// Service budget rates are now calculated dynamically within getEstimatedBudgetNumber
 
 // On date change
 function checkDateViability(date) {
@@ -35,9 +27,8 @@ function checkDateViability(date) {
         dateToErr.innerHTML   = "Cannot be before event start";
         dateFromErr.classList.add('show');
         dateToErr.classList.add('show');
-const attendeesErr = document.getElementById('attendees-err');
-const dateFrom     = document.getElementById('datefrom');
-const dateTo       = document.getElementById('dateto');
+    }
+}
 
 var fp; // Global scope for accessibility
 
@@ -91,11 +82,61 @@ var bookingInfo;
 function getEstimatedBudgetNumber() {
     const guests = Number(String(attendees.value).trim());
     if (!Number.isFinite(guests) || guests < 1 || guests > 99999) return null;
-    let rateSum = 0;
+    
+    let totalBudget = 0;
+    
     document.querySelectorAll('input[name="service"]:checked').forEach((el) => {
-        rateSum += SERVICE_BUDGET_RATES[el.value] ?? 0;
+        const service = el.value;
+        
+        if (service === 'catering') {
+            let cost = 18000; // First 50 guests
+            if (guests > 50) {
+                cost += Math.ceil((guests - 50) / 10) * 3000;
+            }
+            totalBudget += cost;
+        } 
+        else if (service === 'styling') {
+            totalBudget += 8000;
+        } 
+        else if (service === 'decoration') {
+            totalBudget += 5000;
+        } 
+        else if (service === 'lights') {
+            totalBudget += 6000;
+        } 
+        else if (service === 'sounds') {
+            let cost = 7000; // Up to 50 guests
+            if (guests > 50) {
+                cost += Math.ceil((guests - 50) / 25) * 2000;
+            }
+            totalBudget += cost;
+        } 
+        else if (service === 'photography') {
+            totalBudget += 12000;
+        } 
+        else if (service === 'videography') {
+            totalBudget += 15000;
+        } 
+        else if (service === 'coordination') {
+            totalBudget += 7000;
+        } 
+        else if (service === 'ushers') {
+            let staff = 2;
+            if (guests > 50 && guests <= 100) {
+                staff = 4;
+            } else if (guests > 100) {
+                staff = 4 + Math.ceil((guests - 100) / 100) * 2;
+            }
+            
+            let cost = 2000; // Base 2 staff members
+            if (staff > 2) {
+                cost += (staff - 2) * 800;
+            }
+            totalBudget += cost;
+        }
     });
-    return rateSum * guests;
+    
+    return totalBudget;
 }
 
 // On number of guests change
@@ -128,17 +169,102 @@ function validate(id,errId) {
   return !empty;
 }
 
+function toggleOtherType() {
+    const typeSelect = document.getElementById('type');
+    const otherTypeInput = document.getElementById('other_type');
+    if (typeSelect && otherTypeInput) {
+        if (typeSelect.value === 'Others') {
+            otherTypeInput.style.display = 'block';
+        } else {
+            otherTypeInput.style.display = 'none';
+            otherTypeInput.classList.remove('has-error');
+        }
+    }
+}
+
 // Before checking of summary
 async function firstSubmit() {
+    let typeOk = validate('type','type-err');
+    const typeSelect = document.getElementById('type');
+    const otherTypeInput = document.getElementById('other_type');
+    const typeErr = document.getElementById('type-err');
+    
+    if (typeOk && typeSelect.value === 'Others') {
+        if (!otherTypeInput.value.trim()) {
+            otherTypeInput.classList.add('has-error');
+            typeErr.innerHTML = "Please specify the type of event.";
+            typeErr.classList.add('show');
+            typeOk = false;
+        } else {
+            otherTypeInput.classList.remove('has-error');
+        }
+    } else if (!typeOk) {
+        typeErr.innerHTML = "Type of Event is required.";
+    }
+
+    let emailOk = true;
+    const emailInput = document.getElementById('email');
+    const emailErr = document.getElementById('email-err');
+    if (document.getElementById('email-other').checked) {
+        emailOk = validate('email', 'email-err');
+        
+        // Add basic email format validation if it's not empty
+        if (emailOk) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value.trim())) {
+                emailInput.classList.add('has-error');
+                emailErr.innerHTML = "Please enter a valid email address.";
+                emailErr.classList.add('show');
+                emailOk = false;
+            } else {
+                emailErr.innerHTML = "Email Address is required.";
+            }
+        }
+    } else {
+        if (emailInput) emailInput.classList.remove('has-error');
+        if (emailErr) emailErr.classList.remove('show');
+    }
+
+    let phoneOk = validate('phone', 'phone-err');
+    const phoneInput = document.getElementById('phone');
+    const phoneErr = document.getElementById('phone-err');
+    if (phoneOk) {
+        const digits = phoneInput.value.replace(/\D/g, '');
+        if (digits.length !== 11) {
+            phoneInput.classList.add('has-error');
+            phoneErr.innerHTML = "Phone number must be exactly 11 digits.";
+            phoneErr.classList.add('show');
+            phoneOk = false;
+        } else {
+            phoneErr.innerHTML = "Phone Number is required.";
+        }
+    }
+
     const ok = [
         validate('name','name-err'),
-        validate('type','type-err'), 
+        typeOk,
         validate('daterange','daterange-err'),
         validate('attendees','attendees-err'),
         validate('venue','venue-err'),
-        validate('theme','theme-err')].every(Boolean);
+        validate('theme','theme-err'),
+        phoneOk,
+        emailOk].every(Boolean);
         
-    if (!ok) return;
+    if (!ok) {
+        const firstErrorEl = document.querySelector('.has-error');
+        if (firstErrorEl) {
+            // Give the browser a tiny delay to finish rendering the DOM classes before focusing
+            setTimeout(() => {
+                firstErrorEl.focus();
+                
+                // Special case for Flatpickr daterange to actually open the calendar
+                if (firstErrorEl.id === 'daterange' && typeof fp !== 'undefined' && fp) {
+                    fp.open();
+                }
+            }, 50);
+        }
+        return;
+    }
     
     const submitBtn = document.getElementById('submit');
     const originalContent = submitBtn.innerHTML;
@@ -157,7 +283,7 @@ async function firstSubmit() {
     bookingInfo = {
         name:         document.getElementById('name').value.trim(),
         email:        document.getElementById('email').value.trim() || user.email,
-        type:         document.getElementById('type').value.trim(),
+        type:         typeSelect.value === 'Others' ? otherTypeInput.value.trim() : typeSelect.value,
         client_id:    user.user_id,
         date_from:    dateFrom.value,
         date_to:      dateTo.value,
@@ -185,4 +311,85 @@ function submitBooking() {
 
 document.addEventListener('DOMContentLoaded', () => {
     updateEstimatedBudget();
+    
+    const nameInput = document.getElementById('name');
+    if (!nameInput) return; // Exit if not on the booking form page
+    
+    // Restore booking data if editing
+    const storedData = sessionStorage.getItem('bookingData');
+    if (storedData) {
+        try {
+            const bookingInfo = JSON.parse(storedData);
+            
+            if (bookingInfo.name) nameInput.value = bookingInfo.name;
+            
+            if (bookingInfo.type) {
+                const typeSelect = document.getElementById('type');
+                const otherTypeInput = document.getElementById('other_type');
+                if (typeSelect && otherTypeInput) {
+                    const isPredefined = Array.from(typeSelect.options).some(opt => opt.value === bookingInfo.type);
+                    if (isPredefined) {
+                        typeSelect.value = bookingInfo.type;
+                    } else {
+                        typeSelect.value = 'Others';
+                        otherTypeInput.value = bookingInfo.type;
+                        otherTypeInput.style.display = 'block';
+                    }
+                }
+            }
+            
+            if (bookingInfo.date_from && bookingInfo.date_to && typeof fp !== 'undefined' && fp) {
+                fp.setDate([bookingInfo.date_from, bookingInfo.date_to]);
+            }
+            
+            if (bookingInfo.no_of_guests) {
+                const attendeesInput = document.getElementById('attendees');
+                if (attendeesInput) attendeesInput.value = bookingInfo.no_of_guests;
+            }
+            
+            if (bookingInfo.venue) {
+                const venueInput = document.getElementById('venue');
+                if (venueInput) venueInput.value = bookingInfo.venue;
+            }
+            
+            if (bookingInfo.theme) {
+                const themeInput = document.getElementById('theme');
+                if (themeInput) themeInput.value = bookingInfo.theme;
+            }
+            
+            if (bookingInfo.services && Array.isArray(bookingInfo.services)) {
+                document.querySelectorAll('input[name="service"]').forEach(checkbox => {
+                    if (bookingInfo.services.includes(checkbox.value)) checkbox.checked = true;
+                });
+            }
+            
+            if (bookingInfo.phone_number) {
+                const phoneInput = document.getElementById('phone');
+                if (phoneInput) phoneInput.value = bookingInfo.phone_number;
+            }
+            
+            if (bookingInfo.email && typeof DB !== 'undefined') {
+                DB.getUser().then(user => {
+                    if (user && user.email === bookingInfo.email) {
+                        const emailMe = document.getElementById('email-me');
+                        if (emailMe) emailMe.checked = true;
+                    } else {
+                        const emailOther = document.getElementById('email-other');
+                        const emailInput = document.getElementById('email');
+                        if (emailOther) emailOther.checked = true;
+                        if (emailInput) emailInput.value = bookingInfo.email;
+                    }
+                }).catch(() => {
+                    const emailOther = document.getElementById('email-other');
+                    const emailInput = document.getElementById('email');
+                    if (emailOther) emailOther.checked = true;
+                    if (emailInput) emailInput.value = bookingInfo.email;
+                });
+            }
+            
+            updateEstimatedBudget();
+        } catch(e) {
+            console.error("Error restoring booking data:", e);
+        }
+    }
 });

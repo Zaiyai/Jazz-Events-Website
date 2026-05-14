@@ -23,7 +23,7 @@
       <a href="../home.html" style="text-decoration:none;">
         <div class="brand-script">Jazz Events</div>
       </a>
-      <div class="brand-sub">Staff Panel</div>
+      <div class="brand-sub">Admin Panel</div>
     </div>
 
     <nav class="sidebar-nav">
@@ -35,7 +35,7 @@
 
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="sidebar-avatar" id="sidebar-avatar">EA</div>
+        <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
         <div class="sidebar-user-info">
           <div class="u-name" id="sidebar-name">Edrian Albero</div>
           <div class="u-role" id="sidebar-role">Event Organizer</div>
@@ -131,59 +131,92 @@
       <button class="modal-close" onclick="closeModal('modal-new-event')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <input type="hidden" id="event-edit-id">
+
     <div class="form-grid-2">
       <div class="field-group">
         <label class="field-label">Event Name <span class="req">*</span></label>
-        <input class="field-input" id="ev-name" placeholder="e.g. Golden Gala">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-star"></i>
+          <input class="field-input" id="ev-name" placeholder="e.g. Golden Gala">
+        </div>
         <div class="error-msg" id="ev-name-err"></div>
       </div>
       <div class="field-group">
         <label class="field-label">Type <span class="req">*</span></label>
-        <input class="field-input" id="ev-type" placeholder="e.g. Wedding">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-tag"></i>
+          <input class="field-input" id="ev-type" placeholder="e.g. Wedding">
+        </div>
       </div>
     </div>
+
     <div class="form-grid-2">
       <div class="field-group">
         <label class="field-label">Client Name <span class="req">*</span></label>
-        <input class="field-input" id="ev-client" placeholder="e.g. Maria">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-user"></i>
+          <input class="field-input" id="ev-client" placeholder="e.g. Maria">
+        </div>
       </div>
       <div class="field-group">
         <label class="field-label">No. of Guests</label>
-        <input class="field-input" id="ev-guests" type="number" placeholder="e.g. 100">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-users"></i>
+          <input class="field-input" id="ev-guests" type="number" placeholder="e.g. 100">
+        </div>
       </div>
     </div>
+
     <div class="form-grid-2">
       <div class="field-group">
         <label class="field-label">Event Date <span class="req">*</span></label>
-        <input class="field-input" id="ev-date" type="date">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-calendar-days"></i>
+          <input class="field-input" id="ev-date" type="date">
+        </div>
       </div>
       <div class="field-group">
         <label class="field-label">Venue <span class="req">*</span></label>
-        <input class="field-input" id="ev-venue" placeholder="e.g. Shang-ri La">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Theme <span class="req">*</span></label>
-        <input class="field-input" id="ev-theme" placeholder="e.g. Barbie Theme">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-location-dot"></i>
+          <input class="field-input" id="ev-venue" placeholder="e.g. Shang-ri La">
+        </div>
       </div>
     </div>
+
     <div class="form-grid-2">
       <div class="field-group">
-        <label class="field-label">Status</label>
-        <select class="field-input" id="ev-status">
-          <option value="PLANNING">PLANNING</option>
-          <option value="COMPLETED">COMPLETED</option>
-          <option value="ONGOING">ONGOING</option>
-          <option value="BLOCKED">BLOCKED</option>
-        </select>
+        <label class="field-label">Theme <span class="req">*</span></label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-palette"></i>
+          <input class="field-input" id="ev-theme" placeholder="e.g. Barbie Theme">
+        </div>
       </div>
       <div class="field-group">
-        <label class="field-label">Amount (₱)</label>
+        <label class="field-label">Status</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-circle-info"></i>
+          <select class="field-input" id="ev-status">
+            <option value="PLANNING">PLANNING</option>
+            <option value="COMPLETED">COMPLETED</option>
+            <option value="ONGOING">ONGOING</option>
+            <option value="BLOCKED">BLOCKED</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Amount (₱)</label>
+      <div class="input-with-icon">
+        <i class="fa-solid fa-peso-sign"></i>
         <input class="field-input" id="ev-amount" type="number" placeholder="e.g. 250000">
       </div>
     </div>
+
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('modal-new-event')">Cancel</button>
-      <button class="btn-gold" style="border-radius:6px;padding:9px 22px;font-size:0.78rem;" onclick="saveEvent()">
+      <button class="btn-gold" style="border-radius:8px; padding:12px 28px; font-size:0.85rem;" onclick="saveEvent()">
         <i class="fa-solid fa-floppy-disk"></i> Save Event
       </button>
     </div>

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analytics — Jazz Events Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="../register/register.css">
   <link rel="stylesheet" href="dashboard.css">
@@ -15,6 +18,7 @@
   <!-- Chart.js for pixel-perfect charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <div class="dash-layout">
     <aside class="sidebar" id="sidebar">
@@ -34,12 +38,14 @@
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
-          <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials" id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
+          <div class="sidebar-avatar" id="sidebar-avatar"><span class="profile-avatar-initials"
+              id="profile-avatar-initials"><i class="fa-regular fa-user"></i></span></div>
           <div class="sidebar-user-info">
             <div class="u-name" id="sidebar-name">Edrian Albero</div>
             <div class="u-role" id="sidebar-role">Event Organizer</div>
           </div>
-          <button class="sidebar-logout" title="Log out" onclick="DB.logout();"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          <button class="sidebar-logout" title="Log out" onclick="DB.logout();"><i
+              class="fa-solid fa-arrow-right-from-bracket"></i></button>
         </div>
       </div>
     </aside>
@@ -56,7 +62,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Search insights..." aria-label="Search analytics">
           </div>
-          <button class="btn-outline"><i class="fa-solid fa-download"></i> Export Report</button>
+          <button class="btn-outline" onclick="openAnalyticsExport()"><i class="fa-solid fa-upload"></i> Export</button>
         </div>
       </div>
 
@@ -172,5 +178,184 @@
   <script src="../scripts/db.js"></script>
   <script src="dashboard_ui.js"></script>
   <script src="analytics.js"></script>
+  <script>
+    let axfEventsCache = [];
+    let axfFilteredEvents = [];
+
+    async function openAnalyticsExport() {
+      openModal('modal-analytics-export');
+      const s = document.getElementById('axf-search');
+      const f = document.getElementById('axf-status-filter');
+      if (s) s.value = '';
+      if (f) f.value = '';
+      axfEventsCache = await getData('events');
+      if (!axfEventsCache) axfEventsCache = [];
+      filterAnalyticsEvents();
+    }
+
+    function filterAnalyticsEvents() {
+      const q = (document.getElementById('axf-search')?.value || '').toLowerCase().trim();
+      const st = document.getElementById('axf-status-filter')?.value || '';
+      axfFilteredEvents = axfEventsCache.filter(ev => {
+        if (st && ev.status !== st) return false;
+        if (q) {
+          const s = [ev.name, ev.type, ev.venue, ev.theme, ev.client_name].filter(Boolean).join(' ').toLowerCase();
+          if (!s.includes(q)) return false;
+        }
+        return true;
+      });
+      document.getElementById('axf-event-count').textContent = axfFilteredEvents.length + ' of ' + axfEventsCache.length + ' events matched';
+    }
+
+    function downloadAnalyticsCSV() {
+      const secs = {};
+      document.querySelectorAll('.axf-sec').forEach(cb => { secs[cb.value] = cb.checked; });
+      if (!secs.summary && !secs.revenue && !secs.types && !secs.events) { showToast('Select at least one section.', 'error'); return; }
+
+      const evs = axfFilteredEvents;
+      if (evs.length === 0) { showToast('No events match filters.', 'error'); return; }
+
+      function esc(val) {
+        const s = String(val == null ? '' : val);
+        if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }
+      function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''; }
+      function fmtPHP(n) { return 'PHP ' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+      const rDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const L = [];
+
+      // === HEADER ===
+      L.push(',,JAZZ EVENTS MANAGEMENT');
+      L.push(',,ANALYTICS PERFORMANCE REPORT');
+      L.push(',,"Generated: ' + rDate + '"');
+      L.push(',');
+
+      // === EXECUTIVE SUMMARY ===
+      if (secs.summary) {
+        const totalRev = evs.reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+        const avgVal = evs.length ? totalRev / evs.length : 0;
+        const clients = [...new Set(evs.map(e => e.client_id))].length;
+        const totalGuests = evs.reduce((s, e) => s + (parseInt(e.no_of_guests) || 0), 0);
+        const completed = evs.filter(e => e.status === 'COMPLETED').length;
+        const planning = evs.filter(e => e.status === 'PLANNING').length;
+        const ongoing = evs.filter(e => e.status === 'ONGOING').length;
+        const blocked = evs.filter(e => e.status === 'BLOCKED').length;
+        const compRate = evs.length ? Math.round(completed / evs.length * 100) : 0;
+        const cancelRate = evs.length ? Math.round(blocked / evs.length * 100) : 0;
+
+        L.push(',,KEY PERFORMANCE INDICATORS');
+        L.push('METRIC,VALUE,NOTES');
+        L.push('Total Events,' + evs.length + ',Events included in this report');
+        L.push('Total Revenue,' + esc(fmtPHP(totalRev)) + ',Combined event amounts');
+        L.push('Avg. Event Value,' + esc(fmtPHP(avgVal)) + ',Average revenue per event');
+        L.push('Total Guests,' + totalGuests + ',Combined guest count');
+        L.push('Unique Clients,' + clients + ',Distinct clients involved');
+        L.push('Completed,' + completed + ',' + compRate + '% completion rate');
+        L.push('Planning,' + planning + ',In event planning phase');
+        L.push('Ongoing,' + ongoing + ',Currently in progress');
+        L.push('Blocked,' + blocked + ',' + cancelRate + '% blocked rate');
+        L.push('Completion Rate,' + compRate + '%,');
+        L.push(',');
+
+        // --- STATUS DISTRIBUTION SUB-TABLE ---
+        L.push(',,EVENT STATUS DISTRIBUTION');
+        L.push('STATUS,COUNT,PERCENTAGE');
+        const sts = { PLANNING: planning, ONGOING: ongoing, COMPLETED: completed, BLOCKED: blocked };
+        Object.keys(sts).forEach(st => {
+          const pct = evs.length ? Math.round(sts[st] / evs.length * 100) : 0;
+          L.push(st + ',' + sts[st] + ',' + pct + '%');
+        });
+        L.push('TOTAL,' + evs.length + ',100%');
+        L.push(',');
+      }
+
+      // === REVENUE BREAKDOWN ===
+      if (secs.revenue) {
+        const monthly = {};
+        const mNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        evs.forEach(e => {
+          const d = new Date(e.date);
+          const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+          if (!monthly[k]) monthly[k] = { label: mNames[d.getMonth()] + ' ' + d.getFullYear(), total: 0, count: 0, guests: 0 };
+          monthly[k].total += parseFloat(e.amount) || 0;
+          monthly[k].count++;
+          monthly[k].guests += parseInt(e.no_of_guests) || 0;
+        });
+        const keys = Object.keys(monthly).sort();
+        const grandTotal = keys.reduce((s, k) => s + monthly[k].total, 0);
+        const grandCount = keys.reduce((s, k) => s + monthly[k].count, 0);
+        const grandGuests = keys.reduce((s, k) => s + monthly[k].guests, 0);
+
+        L.push(',,REVENUE BREAKDOWN');
+        L.push('MONTH,EVENTS,GUESTS,REVENUE (PHP)');
+        keys.forEach(k => {
+          L.push(esc(monthly[k].label) + ',' + monthly[k].count + ',' + monthly[k].guests + ',' + esc(fmtPHP(monthly[k].total)));
+        });
+        L.push('TOTAL,' + grandCount + ',' + grandGuests + ',' + esc(fmtPHP(grandTotal)));
+        L.push(',');
+      }
+
+      // === EVENT TYPES ===
+      if (secs.types) {
+        const counts = {};
+        const amts = {};
+        evs.forEach(e => {
+          counts[e.type] = (counts[e.type] || 0) + 1;
+          amts[e.type] = (amts[e.type] || 0) + (parseFloat(e.amount) || 0);
+        });
+        const types = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+        const total = evs.length;
+
+        L.push(',,EVENT TYPES DISTRIBUTION');
+        L.push('EVENT TYPE,TOTAL EVENTS,PERCENTAGE,TOTAL REVENUE (PHP)');
+        types.forEach(t => {
+          const pct = total ? Math.round(counts[t] / total * 100) : 0;
+          L.push(esc(t) + ',' + counts[t] + ',' + pct + '%,' + esc(fmtPHP(amts[t])));
+        });
+        const totalAmt = Object.values(amts).reduce((s, v) => s + v, 0);
+        L.push('TOTAL,' + total + ',100%,' + esc(fmtPHP(totalAmt)));
+        L.push(',');
+      }
+
+      // === EVENTS DETAIL ===
+      if (secs.events) {
+        L.push(',,EVENTS DETAIL');
+        L.push('EVENT ID,EVENT NAME,TYPE,DATE,VENUE,THEME,GUESTS,CLIENT NAME,CLIENT ID,AMOUNT (PHP),STATUS');
+        evs.forEach(ev => {
+          L.push([
+            ev.event_id || '',
+            esc(ev.name || ''),
+            esc(ev.type || ''),
+            fmtDate(ev.date),
+            esc(ev.venue || ''),
+            esc(ev.theme || ''),
+            ev.no_of_guests || 0,
+            esc(ev.client_name || ''),
+            ev.client_id || '',
+            esc(fmtPHP(ev.amount)),
+            ev.status || ''
+          ].join(','));
+        });
+        L.push(',');
+      }
+
+      // === FOOTER ===
+      L.push('This report is system-generated by the Jazz Events Management System. For internal use only.');
+
+      const csv = L.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Jazz_Analytics_Report_' + new Date().toISOString().split('T')[0] + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Analytics CSV exported!');
+      closeModal('modal-analytics-export');
+    }
+  </script>
 </body>
+
 </html>

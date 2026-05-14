@@ -68,10 +68,11 @@
   function setupUserAuth() {
     var slot = document.getElementById('nav-auth-slot');
     if (!slot) return;
-
+    
     // If logged in, show admin panel or regular user profile dropdown
     if (COOKIES.hasEmail()) {
       var prefix = getPrefix();
+
       if (COOKIES.getCookie("user_type") == 'ADMIN') {
         const navLinks = document.getElementsByClassName('nav-links')[0];
         
@@ -84,7 +85,18 @@
           '<a href="' + prefix + 'home.html#reviews-section">Reviews</a>' +
           '<a href="' + prefix + 'home.html#about">About Us</a>' +
           '<a href="' + prefix + 'home.html#cta-section">Contact</a>';
-      } 
+      } else if (COOKIES.getCookie("user_type") == 'STAFF') {
+        const navLinks = document.getElementsByClassName('nav-links')[0];
+        navLinks.innerHTML = 
+          '<a href="' + prefix + 'staff/dashboard.html" style="color: #d4af37;">STAFF PANEL</a>' +
+          '<span style="color: #333; margin: 0 10px;">|</span>' +
+          '<a href="' + prefix + 'home.html#">Home</a>' +
+          '<a href="' + prefix + 'home.html#services-section">Services</a>' +
+          '<a href="' + prefix + 'home.html#team-section">Team</a>' +
+          '<a href="' + prefix + 'home.html#reviews-section">Reviews</a>' +
+          '<a href="' + prefix + 'home.html#about">About Us</a>' +
+          '<a href="' + prefix + 'home.html#cta-section">Contact</a>';
+      }
 
       // Build profile avatar + dropdown for regular users
       slot.innerHTML =
@@ -150,14 +162,10 @@
         slot.innerHTML ='<a onclick="displayLogin()" class="btn-nav-login">LOG IN</a>';
     }
   }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function() {
-      renderTopbar();
-      setupUserAuth();
-    });
-  } else {
+  
+  document.addEventListener("DOMContentLoaded", function() {
     renderTopbar();
     setupUserAuth();
-  }
+  });
+
 })();

@@ -40,7 +40,17 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="type">Type of Event <span class="text-red">*</span></label>
-                        <input type="text" id="type" name="type" placeholder="e.g. Wedding Reception">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <select id="type" name="type" onchange="if(typeof toggleOtherType === 'function') toggleOtherType()">
+                                <option value="" disabled selected>Select event type...</option>
+                                <option value="Wedding">Wedding</option>
+                                <option value="Debut">Debut</option>
+                                <option value="Birthday">Birthday</option>
+                                <option value="Conference">Conference</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <input type="text" id="other_type" name="other_type" placeholder="Please specify..." style="display: none;">
+                        </div>
                         <div class="err-msg" id="type-err">Type of Event is required.</div>
                     </div>
 
@@ -196,6 +206,7 @@
                             <div class="phone-divider"></div>
                             <input type="tel" id="phone" name="phone" placeholder="(+63) 9XX XXX XXXX">
                         </div>
+                        <div class="err-msg" id="phone-err">Phone Number is required.</div>
                     </div>
                 </div>
 
@@ -216,6 +227,7 @@
 
                     <div class="other-email-input-wrap">
                         <input type="email" id="email" name="email" placeholder="e.g. maria@domain.com" style="width: 100%; background: #0f131a; border: 1px solid #1f2937; border-radius: 6px; padding: 12px 16px; color: #fff; font-size: 0.9rem; outline: none; box-sizing: border-box;">
+                        <div class="err-msg" id="email-err">Email Address is required.</div>
                     </div>
 
                     <div class="additional-detail" style="margin-top: 16px;">

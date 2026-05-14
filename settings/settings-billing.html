@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings (Billing) — Jazz Events</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="settings.css">
   <link rel="stylesheet" href="../login/login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <div id="topbar-root"></div>
@@ -38,45 +42,40 @@
     <main class="settings-content">
       <!-- Left Box -->
       <div class="settings-content-left">
-        <img src="../assets/team/edrian.jpg" alt="Profile" class="settings-profile-image">
+        <div id="settings-profile-avatar" class="settings-profile-image-container">
+          <!-- Dynamically populated by settings_common.js -->
+          <div class="settings-profile-initials">EA</div>
+        </div>
         <h3 class="settings-user-name">Edrian Albero</h3>
       </div>
-      
+
       <!-- Right Box -->
       <div class="settings-content-right">
-        
+
         <div class="settings-info-box-padded">
           <h2 class="settings-heading">
             <span class="settings-heading-gold">Billings & Payment Options</span>
           </h2>
-          
-          <!-- Current Card Linked -->
-          <div class="settings-billing-section">
-            <div class="settings-billing-label">Current Card Linked:</div>
-            <div class="settings-billing-container">
-              <div class="settings-card-display">
-                <span class="settings-card-number">XXXX-XXXX-XXXX-0072</span>
-                <button class="settings-edit-btn" style="margin-left: 16px;"><i class="fa-solid fa-pen-to-square"></i></button>
-              </div>
-              <div class="settings-verified-badge">
-                <i class="fa-solid fa-circle-check settings-verified-icon"></i> *Card is verified
-              </div>
-            </div>
-          </div>
-          
+
           <!-- Available Online Payment Options -->
           <div class="settings-billing-section">
             <div class="settings-billing-label">Available Online Payment Options:</div>
             <div class="settings-payment-grid">
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard"></div>
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay"></div>
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa"></div>
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"></div>
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" alt="Google Pay"></div>
-              <div class="settings-payment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin"></div>
+              <div class="settings-payment-logo" style="font-size: 32px; color: #eb001b; padding: 0;"><i
+                  class="fa-brands fa-cc-mastercard"></i></div>
+              <div class="settings-payment-logo" style="font-size: 32px; color: #1a1f71; padding: 0;"><i
+                  class="fa-brands fa-cc-visa"></i></div>
+              <div class="settings-payment-logo" style="font-size: 10px; font-weight: 800;"><span
+                  style="color:#ce1126">Union</span><span style="color:#004b87">Pay</span></div>
+              <div class="settings-payment-logo"
+                style="font-size: 12px; font-weight: 800; font-family: sans-serif; color: #0050d2;">G<span
+                  style="color:#00a3ff">Cash</span></div>
+              <div class="settings-payment-logo"
+                style="font-size: 11px; font-weight: 800; font-family: sans-serif; color: #000;">Pay<span
+                  style="color:#00c853">Maya</span></div>
             </div>
           </div>
-          
+
           <!-- Available Offline Payment Options -->
           <div>
             <div class="settings-billing-label">Available Offline Payment Options:</div>
@@ -84,9 +83,9 @@
               <div class="settings-payment-cash">CASH</div>
             </div>
           </div>
-          
+
         </div>
-        
+
       </div>
     </main>
   </div>
@@ -152,5 +151,7 @@
   <script src="../scripts/topbar.js"></script>
   <script src="../scripts/main.js"></script>
   <script src="../scripts/db.js"></script>
+  <script src="settings_common.js"></script>
 </body>
+
 </html>

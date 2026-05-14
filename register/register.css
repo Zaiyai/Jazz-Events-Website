@@ -3,27 +3,26 @@
    All class names are unique to avoid conflicts with login.css
    ============================================================ */
 
-/* --- Hero Banner --- */
-.reg-hero {
+/* --- Main Hero Section --- */
+.reg-hero-main {
     position: relative;
     width: 100%;
-    height: 300px;
+    min-height: 100vh;
+    /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 80px;
+    /* Space for fixed header and footer buffer */
     overflow: hidden;
-    margin-top: 80px;
-}
-
-@media (min-width: 601px) {
-    .reg-hero {
-        height: 550px;
-    }
+    background: #0a0a0a;
 }
 
 .reg-hero-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
+    z-index: 0;
 }
 
 .reg-hero-img {
@@ -34,53 +33,60 @@
 
 .reg-hero-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 70%, rgba(10,10,10,0.7) 100%);
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.6) 50%,
+            rgba(10, 10, 10, 0.9) 100%);
 }
 
-.reg-hero-content {
+.reg-hero-container {
     position: relative;
     z-index: 2;
-    height: 100%;
+    width: 100%;
+    max-width: 1200px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
+.reg-logo-wrap {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
 .reg-hero-logo {
-    width: 350px;
+    width: 320px;
     max-width: 80vw;
-    filter: drop-shadow(2px 6px 20px rgba(0,0,0,0.7));
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.9));
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- Form Section --- */
-.reg-form-section {
-    background: #0a0a0a;
-    padding: 0 24px 100px;
-    display: flex;
-    justify-content: center;
-    margin-top: -100px;
-    position: relative;
-    z-index: 10;
+.reg-hero-logo:hover {
+    transform: scale(1.05);
 }
 
-/* --- Card --- */
+/* --- Registration Card --- */
 .reg-card {
-    background: #111;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 14px;
-    padding: 30px 22px 28px;
+    background: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 24px;
+    padding: 35px 25px 30px;
     width: 100%;
-    max-width: 650px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    max-width: 580px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
 }
 
 @media (min-width: 601px) {
     .reg-card {
-        padding: 50px 48px 45px;
+        padding: 50px 60px 50px;
     }
 }
 
@@ -95,9 +101,10 @@
 
 .reg-card-subtitle {
     text-align: center;
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     color: #9ca3af;
     margin-bottom: 2rem;
+    line-height: 1.5;
 }
 
 /* --- Fields --- */
@@ -122,21 +129,23 @@
 
 .reg-input {
     width: 100%;
-    background: #111827;
-    border: 1px solid #374151;
-    border-radius: 8px;
-    padding: 11px 14px;
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid rgba(55, 65, 81, 0.8);
+    border-radius: 12px;
+    padding: 13px 16px;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.9rem;
     outline: none;
     box-sizing: border-box;
-    transition: border 0.25s, box-shadow 0.25s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reg-input:focus {
     border-color: #D4AF37;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+    background: rgba(31, 41, 55, 0.8);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1), 0 4px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
 }
 
 .reg-input::placeholder {
@@ -147,44 +156,81 @@
     border-color: #f87171;
 }
 
-/* --- Verification Code Row --- */
-.reg-code-row {
+/* --- Verification Code Styling --- */
+.reg-code-container {
     display: flex;
-    background: #111827;
-    border: 1px solid #374151;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: border 0.25s, box-shadow 0.25s;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.reg-code-row:focus-within {
-    border-color: #D4AF37;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+@media (min-width: 481px) {
+    .reg-code-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
-.reg-code-row .reg-input {
-    border: none;
-    background: transparent;
+.reg-digits-row {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
     flex: 1;
-    border-radius: 0;
+}
+
+.reg-digit-input {
+    width: 100%;
+    max-width: 45px;
+    height: 50px;
+    background: #111827;
+    border: 2px solid #374151;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.reg-digit-input:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+    background: #1f2937;
+}
+
+.reg-digit-input.has-value {
+    border-color: rgba(212, 175, 55, 0.5);
 }
 
 .reg-resend-btn {
-    background: transparent;
-    border: none;
-    border-left: 1px solid #374151;
-    color: #6b7280;
-    padding: 0 16px;
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: #D4AF37;
+    padding: 10px 20px;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.3s ease;
     white-space: nowrap;
 }
 
-.reg-resend-btn:hover {
-    color: #D4AF37;
+.reg-resend-btn:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #D4AF37;
+    transform: translateY(-1px);
+}
+
+.reg-resend-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: #6b7280;
+    border-color: #374151;
 }
 
 /* --- Password Wrap --- */
@@ -295,21 +341,27 @@
 }
 
 /* --- Toast --- */
+/* --- Toast --- */
 .page-toast {
     position: fixed;
     bottom: 24px;
     right: 24px;
     background: #1a1a1a;
     border: 1px solid #D4AF37;
+    border: 1px solid #D4AF37;
     border-radius: 10px;
     padding: 13px 18px;
     font-size: 0.8rem;
     font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-family: 'Montserrat', sans-serif;
     color: #fff;
     z-index: 9999;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     transform: translateY(80px);
     opacity: 0;
+    transition: all 0.3s ease;
     transition: all 0.3s ease;
     max-width: 320px;
     pointer-events: none;
@@ -322,4 +374,15 @@
 
 .page-toast.error {
     border-color: #CC0000;
+}
+
+@media (max-width: 600px) {
+    .reg-digits-row {
+        gap: 5px;
+    }
+
+    .reg-digit-input {
+        height: 45px;
+        font-size: 1.1rem;
+    }
 }
