@@ -13,15 +13,15 @@ if ($conn->connect_error) {
     exit;
 }
 
-// ── Total Revenue (sum of event amounts) ──
-$revResult = $conn->query("SELECT COALESCE(SUM(amount), 0) AS total_revenue FROM events");
+// ── Total Revenue (sum of payment amounts — matches Payments page) ──
+$revResult = $conn->query("SELECT COALESCE(SUM(amount), 0) AS total_revenue FROM payments");
 $totalRevenue = $revResult ? $revResult->fetch_assoc()['total_revenue'] : 0;
 
 // ── Total Events ──
 $evCountResult = $conn->query("SELECT COUNT(*) AS cnt FROM events");
 $totalEvents = $evCountResult ? $evCountResult->fetch_assoc()['cnt'] : 0;
 
-// ── Average Event Value ──
+// ── Average Event Value (total payment revenue / total events) ──
 $avgValue = $totalEvents > 0 ? round($totalRevenue / $totalEvents, 2) : 0;
 
 // ── New Clients (count of clients) ──
