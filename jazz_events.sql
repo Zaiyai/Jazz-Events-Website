@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2026 at 04:35 PM
+-- Generation Time: May 14, 2026 at 04:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,8 +18,28 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `jazz_events`
+-- Database: `jazz_events_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `analytics_summary`
+--
+
+CREATE TABLE `analytics_summary` (
+  `summary_id` int(11) NOT NULL,
+  `total_revenue` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `new_clients` int(11) NOT NULL DEFAULT 0,
+  `average_event_value` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `client_satisfaction` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `revenue_growth` decimal(5,2) DEFAULT 0.00,
+  `client_growth` decimal(5,2) DEFAULT 0.00,
+  `event_value_growth` decimal(5,2) DEFAULT 0.00,
+  `satisfaction_growth` decimal(5,2) DEFAULT 0.00,
+  `period_label` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -60,6 +80,41 @@ INSERT INTO `booking` (`booking_id`, `name`, `type`, `client_id`, `email`, `phon
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `booking_analytics`
+--
+
+CREATE TABLE `booking_analytics` (
+  `booking_analytics_id` int(11) NOT NULL,
+  `analytics_month` varchar(20) NOT NULL,
+  `analytics_year` year(4) NOT NULL,
+  `total_bookings` int(11) NOT NULL DEFAULT 0,
+  `completed_events` int(11) NOT NULL DEFAULT 0,
+  `cancelled_events` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dashboard`
+--
+
+CREATE TABLE `dashboard` (
+  `dashboard_id` int(11) NOT NULL,
+  `total_revenue` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `last_month_revenue` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `active_events` int(11) NOT NULL DEFAULT 0,
+  `weekly_events` int(11) NOT NULL DEFAULT 0,
+  `pending_payments` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `pending_invoices` int(11) NOT NULL DEFAULT 0,
+  `client_satisfaction` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `total_reviews` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `events`
 --
 
@@ -86,6 +141,73 @@ CREATE TABLE `events` (
 
 INSERT INTO `events` (`event_id`, `name`, `type`, `no_of_guests`, `celebrant`, `client_id`, `date`, `venue`, `theme`, `status`, `amount`, `created_by`, `created_at`, `updated_at`) VALUES
 (22, 'Golden Gala', 'Conference', 123, 'Golden Gala', 82, '6523-09-07', 'Shangri-La', 'Spongebob', 'PLANNING', 30000, 'Albero, Edrian', '2026-05-13 03:11:21', '2026-05-13 03:11:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `event_type_analytics`
+--
+
+CREATE TABLE `event_type_analytics` (
+  `event_type_id` int(11) NOT NULL,
+  `event_type` varchar(100) NOT NULL,
+  `total_events` int(11) NOT NULL DEFAULT 0,
+  `percentage` decimal(5,2) DEFAULT 0.00,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `payment_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `invoice_number` varchar(30) NOT NULL,
+  `amount` decimal(12,2) NOT NULL,
+  `payment_method` enum('CREDIT_CARD','BANK_TRANSFER','GCASH','PAYMAYA','CASH') NOT NULL,
+  `payment_status` enum('PENDING','PAID','OVERDUE','REFUNDED','PARTIAL') DEFAULT 'PENDING',
+  `payment_date` date DEFAULT NULL,
+  `due_date` date NOT NULL,
+  `reference_number` varchar(100) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `revenue_analytics`
+--
+
+CREATE TABLE `revenue_analytics` (
+  `revenue_id` int(11) NOT NULL,
+  `revenue_month` varchar(20) NOT NULL,
+  `revenue_year` year(4) NOT NULL,
+  `total_revenue` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `total_bookings` int(11) DEFAULT 0,
+  `completed_events` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `top_performing_events`
+--
+
+CREATE TABLE `top_performing_events` (
+  `top_event_id` int(11) NOT NULL,
+  `event_id` int(11) UNSIGNED NOT NULL,
+  `revenue_generated` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `satisfaction_rate` decimal(5,2) DEFAULT 0.00,
+  `ranking` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -243,6 +365,12 @@ INSERT INTO `users` (`user_id`, `name`, `initials`, `email`, `password`, `profil
 --
 
 --
+-- Indexes for table `analytics_summary`
+--
+ALTER TABLE `analytics_summary`
+  ADD PRIMARY KEY (`summary_id`);
+
+--
 -- Indexes for table `booking`
 --
 ALTER TABLE `booking`
@@ -250,11 +378,49 @@ ALTER TABLE `booking`
   ADD KEY `fk_booking_client` (`client_id`);
 
 --
+-- Indexes for table `booking_analytics`
+--
+ALTER TABLE `booking_analytics`
+  ADD PRIMARY KEY (`booking_analytics_id`);
+
+--
+-- Indexes for table `dashboard`
+--
+ALTER TABLE `dashboard`
+  ADD PRIMARY KEY (`dashboard_id`);
+
+--
 -- Indexes for table `events`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
   ADD KEY `fk_events_client` (`client_id`);
+
+--
+-- Indexes for table `event_type_analytics`
+--
+ALTER TABLE `event_type_analytics`
+  ADD PRIMARY KEY (`event_type_id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD UNIQUE KEY `invoice_number` (`invoice_number`);
+
+--
+-- Indexes for table `revenue_analytics`
+--
+ALTER TABLE `revenue_analytics`
+  ADD PRIMARY KEY (`revenue_id`);
+
+--
+-- Indexes for table `top_performing_events`
+--
+ALTER TABLE `top_performing_events`
+  ADD PRIMARY KEY (`top_event_id`),
+  ADD KEY `fk_top_event` (`event_id`);
 
 --
 -- Indexes for table `users`
@@ -267,16 +433,58 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `analytics_summary`
+--
+ALTER TABLE `analytics_summary`
+  MODIFY `summary_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
   MODIFY `booking_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
+-- AUTO_INCREMENT for table `booking_analytics`
+--
+ALTER TABLE `booking_analytics`
+  MODIFY `booking_analytics_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `dashboard`
+--
+ALTER TABLE `dashboard`
+  MODIFY `dashboard_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
   MODIFY `event_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `event_type_analytics`
+--
+ALTER TABLE `event_type_analytics`
+  MODIFY `event_type_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `revenue_analytics`
+--
+ALTER TABLE `revenue_analytics`
+  MODIFY `revenue_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `top_performing_events`
+--
+ALTER TABLE `top_performing_events`
+  MODIFY `top_event_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -299,6 +507,12 @@ ALTER TABLE `booking`
 --
 ALTER TABLE `events`
   ADD CONSTRAINT `fk_events_client` FOREIGN KEY (`client_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `top_performing_events`
+--
+ALTER TABLE `top_performing_events`
+  ADD CONSTRAINT `fk_top_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
