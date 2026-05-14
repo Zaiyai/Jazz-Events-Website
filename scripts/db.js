@@ -83,13 +83,13 @@ const DB = {
     });
     const all = await response.json();
     const start = (page - 1) * perPage;
-    console.log("Fetched clients:", all.clients[0]);
     return {
       data: all.clients.slice(start, start + perPage),
       total: all.clients.length,
       page,
-      perPage
-    };;
+      perPage,
+      stats: all.stats || null
+    };
   },
 
   /* ── PAYMENTS ────────────────────────────────────────────── */

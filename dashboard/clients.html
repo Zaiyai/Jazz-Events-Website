@@ -69,26 +69,26 @@
         <div class="page-stat-card">
           <div class="page-stat-label">TOTAL CLIENTS</div>
           <div class="page-stat-icon"><i class="fa-solid fa-users"></i></div>
-          <div class="page-stat-value">284</div>
-          <div class="page-stat-sub up"><i class="fa-solid fa-arrow-up"></i> +18 new this month</div>
+          <div class="page-stat-value" id="stat-total-clients">—</div>
+          <div class="page-stat-sub up" id="stat-new-clients"><i class="fa-solid fa-arrow-up"></i> Loading…</div>
         </div>
         <div class="page-stat-card">
           <div class="page-stat-label">ACTIVE CLIENTS</div>
           <div class="page-stat-icon"><i class="fa-solid fa-user-check"></i></div>
-          <div class="page-stat-value">156</div>
-          <div class="page-stat-sub">With active bookings</div>
+          <div class="page-stat-value" id="stat-active-clients">—</div>
+          <div class="page-stat-sub">With active events</div>
         </div>
         <div class="page-stat-card">
           <div class="page-stat-label">VIP CLIENTS</div>
           <div class="page-stat-icon"><i class="fa-solid fa-user-tie"></i></div>
-          <div class="page-stat-value">42</div>
-          <div class="page-stat-sub warn">Premium Tier members</div>
+          <div class="page-stat-value" id="stat-vip-clients">—</div>
+          <div class="page-stat-sub warn">Clients with 3+ events</div>
         </div>
         <div class="page-stat-card">
           <div class="page-stat-label">RETENTION RATE</div>
           <div class="page-stat-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-          <div class="page-stat-value">94.2%</div>
-          <div class="page-stat-sub up">-2.4 from last quarter</div>
+          <div class="page-stat-value" id="stat-retention-rate">—</div>
+          <div class="page-stat-sub" id="stat-retention-sub">Returning clients</div>
         </div>
       </div>
 
@@ -118,8 +118,8 @@
         
         <!-- Footer -->
         <div class="table-footer" style="border-top: 1px solid var(--border-dark);">
-          <span>Showing 6 of 120 clients</span>
-          <div class="pagination">
+          <span id="clients-count">Loading…</span>
+          <div class="pagination" id="clients-pagination">
             <button class="pg-btn">Previous</button>
             <button class="pg-btn">Next</button>
           </div>
