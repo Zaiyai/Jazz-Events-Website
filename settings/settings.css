@@ -555,4 +555,22 @@ body {
         border-right: none;
         border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
+    .settings-info-row, .info-row, .settings-bio-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .settings-info-row-label, .info-label, .settings-bio-label {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    .settings-info-row-value, .info-val, .settings-bio-value {
+        width: 100%;
+        text-align: left;
+        justify-content: flex-start;
+    }
+    .info-edit-btn, .settings-edit-btn {
+        margin-left: 0;
+        margin-top: 10px;
+        align-self: flex-end;
+    }
 }

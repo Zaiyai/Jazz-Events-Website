@@ -1236,6 +1236,10 @@ footer {
         justify-content: space-between;
     }
 
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .info-section {
         padding-bottom: 0;
     }

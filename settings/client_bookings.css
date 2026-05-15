@@ -5,7 +5,8 @@
   border: 1px solid rgba(212, 175, 55, 0.4);
   border-radius: var(--radius-lg);
   margin-bottom: 20px;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 8px 0;
 }
 

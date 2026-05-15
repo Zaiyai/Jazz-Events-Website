@@ -63,43 +63,50 @@ if (fileName != "home.html") {
 document.querySelectorAll(".logo").forEach(logo => { logo.src = logoPath; });
 document.querySelectorAll(".gold_accent").forEach(accent => { accent.src = decorPath; });
 
-// Mobile Burger Menu
-const burger   = document.getElementById("burger");
-const overlay  = document.getElementById("nav-overlay");
-const closeBtn = document.getElementById("close-overlay");
+  // Mobile Burger Menu
+  document.addEventListener("click", (e) => {
+    // OPEN BURGER
+    const burger = e.target.closest("#burger");
+    if (burger) {
+      if (window.innerWidth >= 768) return;
+      const overlay = document.getElementById("nav-overlay");
+      if (overlay) {
+        overlay.classList.add("open");
+        document.body.classList.add("menu-open");
+        burger.setAttribute("aria-expanded", "true");
+      }
+    }
 
-/* OPEN */
-burger.addEventListener("click", () => {
-  if (window.innerWidth >= 768) return;
+    // CLOSE BUTTON
+    const closeBtn = e.target.closest("#close-overlay");
+    if (closeBtn) {
+      closeMenu();
+    }
 
-  overlay.classList.add("open");
-  document.body.classList.add("menu-open");
-  burger.setAttribute("aria-expanded", "true");
-});
+    // CLOSE ON LINK CLICK
+    const overlay = document.getElementById("nav-overlay");
+    if (overlay && overlay.contains(e.target) && e.target.closest("a")) {
+      closeMenu();
+    }
+  });
 
-/* CLOSE BUTTON */
-closeBtn.addEventListener("click", closeMenu);
+  /* ESC KEY */
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeMenu();
+  });
 
-/* CLOSE ON LINK CLICK */
-overlay.querySelectorAll("a").forEach(link => {
-  link.addEventListener("click", closeMenu);
-});
+  /* RESIZE SAFETY */
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) closeMenu();
+  });
 
-/* ESC KEY */
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeMenu();
-});
-
-/* RESIZE SAFETY */
-window.addEventListener("resize", () => {
-  if (window.innerWidth >= 768) closeMenu();
-});
-
-function closeMenu() {
-  overlay.classList.remove("open");
-  document.body.classList.remove("menu-open");
-  burger.setAttribute("aria-expanded", "false");
-}
+  function closeMenu() {
+    const overlay = document.getElementById("nav-overlay");
+    if (overlay) overlay.classList.remove("open");
+    document.body.classList.remove("menu-open");
+    const burger = document.getElementById("burger");
+    if (burger) burger.setAttribute("aria-expanded", "false");
+  }
 
 const eyeBtn = document.getElementsByClassName('eye-btn')[0];
 
