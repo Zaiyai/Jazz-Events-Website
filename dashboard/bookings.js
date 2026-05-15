@@ -91,6 +91,7 @@ function renderBookingsTable(bookings) {
         <div class="actions-cell">
           <button class="row-action-btn" title="View Details" onclick="viewBooking('${b.id}')"><i class="fa-solid fa-eye"></i></button>
           <button class="row-action-btn" title="Edit Booking" onclick="editBooking('${b.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button class="row-action-btn success" title="Accept Booking" onclick="confirmAcceptBooking('${b.id}')"><i class="fa-solid fa-check"></i></button>
           <button class="row-action-btn danger" title="Reject Booking" onclick="confirmCancelBooking('${b.id}')"><i class="fa-solid fa-ban"></i></button>
         </div>
       </td>
@@ -221,15 +222,37 @@ async function saveBooking() {
 function confirmCancelBooking(id) {
   const b = allBookings.find(bk => String(bk.id) === String(id));
   if (!b) return;
-  document.getElementById('cancel-confirm-msg').innerHTML = `Are you sure you want to reject the booking for <strong style="color:var(--jazz-gold)">${b.clientName}</strong>? This action will set the status to Rejected.`;
+  document.getElementById('cancel-confirm-msg').innerHTML = `Are you sure you want to reject and delete the booking for <strong style="color:var(--jazz-gold)">${b.clientName}</strong>? This action cannot be undone.`;
   const confirmBtn = document.getElementById('confirm-cancel-btn');
   confirmBtn.onclick = async () => {
-    await window.useBookings.changeStatus(id, 'REJECTED');
-    showToast('Booking has been rejected.');
+    const res = await window.useBookings.deleteBooking(id);
+    if (res && res.ok) {
+        showToast('Booking has been rejected and deleted.');
+    } else {
+        showToast('Failed to reject booking.', 'error');
+    }
     closeModal('modal-cancel-booking');
     await loadBookings();
   };
   openModal('modal-cancel-booking');
+}
+
+function confirmAcceptBooking(id) {
+  const b = allBookings.find(bk => String(bk.id) === String(id));
+  if (!b) return;
+  document.getElementById('accept-confirm-msg').innerHTML = `Are you sure you want to accept the booking for <strong style="color:var(--jazz-gold)">${b.clientName}</strong>? This action will convert the booking into an event.`;
+  const confirmBtn = document.getElementById('confirm-accept-btn');
+  confirmBtn.onclick = async () => {
+    const res = await window.useBookings.acceptBooking(id);
+    if (res && res.ok) {
+        showToast('Booking has been accepted and converted to an event.');
+    } else {
+        showToast('Failed to accept booking.', 'error');
+    }
+    closeModal('modal-accept-booking');
+    await loadBookings();
+  };
+  openModal('modal-accept-booking');
 }
 
 function statusBadge(status) {
@@ -251,6 +274,7 @@ function debounce(fn, ms) {
 window.viewBooking = viewBooking;
 window.editBooking = editBooking;
 window.confirmCancelBooking = confirmCancelBooking;
+window.confirmAcceptBooking = confirmAcceptBooking;
 window.changeBookingPage = changeBookingPage;
 window.saveBooking = saveBooking;
 

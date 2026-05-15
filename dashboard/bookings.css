@@ -97,3 +97,10 @@
     overflow-x: visible;
   }
 }
+
+.row-action-btn.success {
+  color: var(--text-gray);
+}
+.row-action-btn.success:hover {
+  color: #10b981;
+}

@@ -60,6 +60,40 @@ const useBookings = {
   /** Change just the status of a booking */
   async changeStatus(id, newStatus) {
     return useBookings.updateBooking(id, { status: newStatus });
+  },
+
+  /** Accept a booking: convert to event and delete */
+  async acceptBooking(id) {
+    try {
+      const response = await fetch('../scripts/bookings/accept_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking_id: id })
+      });
+
+      if (!response.ok) throw new Error('HTTP error: ' + response.status);
+      return await response.json();
+    } catch (error) {
+      console.error('useBookings.acceptBooking failed:', error);
+      return { ok: false };
+    }
+  },
+
+  /** Delete a booking */
+  async deleteBooking(id) {
+    try {
+      const response = await fetch('../scripts/bookings/delete_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking_id: id })
+      });
+
+      if (!response.ok) throw new Error('HTTP error: ' + response.status);
+      return await response.json();
+    } catch (error) {
+      console.error('useBookings.deleteBooking failed:', error);
+      return { ok: false };
+    }
   }
 };
 

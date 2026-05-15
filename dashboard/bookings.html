@@ -156,17 +156,28 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="modal-accept-booking" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:400px;">
+      <div class="modal-title">Accept Booking</div>
+      <p style="font-size:0.85rem; color:var(--text-gray); margin-bottom:8px;" id="accept-confirm-msg">Are you sure you want to accept this booking?</p>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal('modal-accept-booking')">Close</button>
+        <button class="btn-gold" id="confirm-accept-btn">Accept Booking</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="modal-cancel-booking" role="dialog" aria-modal="true">
     <div class="modal-box" style="max-width:400px;">
-      <div class="modal-title">Cancel Booking</div>
-      <p style="font-size:0.85rem; color:var(--text-gray); margin-bottom:8px;" id="cancel-confirm-msg">Are you sure you want to cancel this booking?</p>
+      <div class="modal-title">Reject Booking</div>
+      <p style="font-size:0.85rem; color:var(--text-gray); margin-bottom:8px;" id="cancel-confirm-msg">Are you sure you want to reject this booking?</p>
       <div class="field-group">
         <label class="field-label">Reason (optional)</label>
-        <input class="field-input" id="cancel-reason" placeholder="Reason for cancellation">
+        <input class="field-input" id="cancel-reason" placeholder="Reason for rejection">
       </div>
       <div class="modal-footer">
         <button class="btn-ghost" onclick="closeModal('modal-cancel-booking')">Close</button>
-        <button class="btn-danger" id="confirm-cancel-btn">Cancel Booking</button>
+        <button class="btn-danger" id="confirm-cancel-btn">Reject Booking</button>
       </div>
     </div>
   </div>
